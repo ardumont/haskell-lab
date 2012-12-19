@@ -1,4 +1,10 @@
 module Init where
 
-double :: Num a => a -> a
-double x = x + x
+doublee :: Num a => a -> a
+doublee x = x + x
+
+-- doublee 2
+-- 4
+
+-- doublee (doublee (doublee 2))
+-- 16
