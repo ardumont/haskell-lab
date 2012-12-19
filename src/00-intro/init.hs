@@ -18,3 +18,14 @@ summ (x:xs) = x + summ xs
 -- 4
 -- summ [1..10]
 -- 55
+
+-- qsort
+qsort :: Ord a => [a] -> [a]
+qsort [] = []
+qsort (x:xs) = (qsort smaller) ++ [x] ++ (qsort larger)
+               where
+                 smaller = [a | a <- xs, a <= x]
+                 larger  = [a | a <- xs, a > x]
+
+-- qsort [3, 1, 7, 9, 6]
+-- [1,3,6,7,9]
