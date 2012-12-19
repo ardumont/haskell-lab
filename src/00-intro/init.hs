@@ -24,8 +24,8 @@ qsort :: Ord a => [a] -> [a]
 qsort [] = []
 qsort (x:xs) = (qsort smaller) ++ [x] ++ (qsort larger)
                where
-                 smaller = [a | a <- xs, a <= x]
-                 larger  = [a | a <- xs, a > x]
+                 smaller = filter (<= x) xs
+                 larger  = filter (> x) xs
 
 -- qsort [3, 1, 7, 9, 6]
 -- [1,3,6,7,9]
