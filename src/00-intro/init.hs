@@ -22,10 +22,7 @@ summ (x:xs) = x + summ xs
 -- qsort
 qsort :: Ord a => [a] -> [a]
 qsort [] = []
-qsort (x:xs) = (qsort smaller) ++ [x] ++ (qsort larger)
-               where
-                 smaller = filter (<= x) xs
-                 larger  = filter (> x) xs
+qsort (x:xs) = qsort (filter (<= x) xs) ++ [x] ++ qsort (filter (> x) xs)
 
 -- qsort [3, 1, 7, 9, 6]
 -- [1,3,6,7,9]
