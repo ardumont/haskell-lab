@@ -28,8 +28,7 @@ qsort (x:xs) = qsort (filter (<= x) xs) ++ [x] ++ qsort (filter (> x) xs)
 -- [1,3,6,7,9]
 
 rqsort :: Ord a => [a] -> [a]
-rqsort [] = []
-rqsort (x:xs) = rqsort (filter (> x) xs) ++ [x] ++ rqsort (filter (<= x) xs)
+rqsort xs = reverse (qsort xs)
 
 -- rqsort [3, 1, 7, 9, 6]
 -- [9,7,6,3,1]
