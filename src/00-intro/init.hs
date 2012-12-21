@@ -91,3 +91,12 @@ n = a `div` (length xs)
     where
       a  = 10
       xs = [1, 2, 3, 4, 5]
+
+-- function `currify` that curries any function with 2 variables
+currify :: ((a,a) -> a) -> a -> a -> a
+currify f x y = f(x,y)
+
+multiply :: Num a => (a,a) -> a
+multiply (x, y) = x * y
+
+multiply10 = (currify multiply) 10
