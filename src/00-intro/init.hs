@@ -87,10 +87,10 @@ uqsort (x:xs) = rqsort (filter (< x) xs) ++ [x] ++ rqsort (filter (> x) xs)
 -- reverse [1,2,3,4,5]
 -- [5,4,3,2,1]
 
-n = a `div` (length xs)
-    where
-      a  = 10
-      xs = [1, 2, 3, 4, 5]
+-- n = a `div` (length xs)
+--     where
+--       a  = 10
+--       xs = [1, 2, 3, 4, 5]
 
 -- function `currify` that curries any function with 2 variables
 currify :: ((a,a) -> a) -> (a -> a -> a)
@@ -99,11 +99,12 @@ currify f x y = f(x,y)
 multiply :: Num a => (a,a) -> a
 multiply (x, y) = x * y
 
-multiply10 = (currify multiply) 10
+-- multiply10 = (currify multiply) 10
 
 -- function uncurrify
 uncurrify :: (a -> a -> a) -> (a,a) -> a
 uncurrify f (x,y) = f x y
 
 -- map
-map (\ x  -> 2  * x) [1, 3, 4]
+-- map (\ x  -> 2  * x) [1, 3, 4]
+-- [2,6,8]
