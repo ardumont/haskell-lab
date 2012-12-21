@@ -36,3 +36,10 @@ rqsort xs = reverse (qsort xs)
 -- take
 -- take 2 [1,3,4,5,8]
 -- [1,3]
+
+pdt :: Num a => [a] -> a
+pdt [] = 1
+pdt (x:xs) = x * pdt xs
+
+-- pdt [2,3,4]
+-- 24
