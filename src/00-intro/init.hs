@@ -86,3 +86,8 @@ uqsort (x:xs) = rqsort (filter (< x) xs) ++ [x] ++ rqsort (filter (> x) xs)
 
 -- reverse [1,2,3,4,5]
 -- [5,4,3,2,1]
+
+n = a `div` (length xs)
+    where
+      a  = 10
+      xs = [1, 2, 3, 4, 5]
