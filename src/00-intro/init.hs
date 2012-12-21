@@ -104,3 +104,6 @@ multiply10 = (currify multiply) 10
 -- function uncurrify
 uncurrify :: (a -> a -> a) -> (a,a) -> a
 uncurrify f (x,y) = f x y
+
+-- map
+map (\ x  -> 2  * x) [1, 3, 4]
