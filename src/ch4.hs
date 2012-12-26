@@ -16,14 +16,15 @@ abso1 n = if n >= 0 then n else -n
 
 -- abso1 (-10) -- 10
 -- abso1 10 -- 10
+signum1 :: Int -> Int
+signum1 x = if x < 0 then -1
+            else if x > 0 then 1 else 0
+
+-- guarded equations
 
 abso2 :: Int -> Int
 abso2 n | n >= 0 = n
        | otherwise = -n
-
-signum1 :: Int -> Int
-signum1 x = if x < 0 then -1
-            else if x > 0 then 1 else 0
 
 signum2 :: Int -> Int
 signum2 x | x < 0 = -1
