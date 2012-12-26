@@ -36,3 +36,7 @@ signum2 x | x < 0 = -1
 nott :: Bool -> Bool
 nott False = True
 nott True  = False
+
+andd :: Bool -> Bool -> Bool
+andd True True = True
+andd _ _       = False
