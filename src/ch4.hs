@@ -30,3 +30,9 @@ signum2 :: Int -> Int
 signum2 x | x < 0 = -1
           | x > 0 = 1
           | otherwise = 0
+
+-- pattern matching
+
+nott :: Bool -> Bool
+nott False = True
+nott True  = False
