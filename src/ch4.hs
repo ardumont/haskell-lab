@@ -69,3 +69,8 @@ odds n = map (\ x -> 2 * x + 1) [0..n-1]
 
 halve :: [a] -> ([a], [a])
 halve xs = splitAt (length xs `div` 2) xs
+
+-- safetail
+
+safetail1 :: [a] -> [a]
+safetail1 xs = if null xs then [] else drop 1 xs
