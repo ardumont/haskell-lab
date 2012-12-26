@@ -7,3 +7,6 @@ evn x = x `mod` 2 == 0
 
 spltAt :: Int -> [a] -> ([a], [a])
 spltAt i xs = (take i xs, drop i xs)
+
+recipr :: Fractional a => a -> a
+recipr n = 1 / n
