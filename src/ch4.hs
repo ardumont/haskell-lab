@@ -73,11 +73,11 @@ halve xs = splitAt (length xs `div` 2) xs
 -- safetail
 
 safetail1 :: [a] -> [a]
-safetail1 xs = if null xs then [] else drop 1 xs
+safetail1 xs = if null xs then [] else tail xs
 
 safetail2 :: [a] -> [a]
 safetail2 xs | null xs   = []
-             | otherwise = drop 1 xs
+             | otherwise = tail xs
 
 safetail3 :: [a] -> [a]
 safetail3 [] = []
