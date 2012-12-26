@@ -40,3 +40,7 @@ nott True  = False
 andd :: Bool -> Bool -> Bool
 andd True True = True
 andd _ _       = False
+
+-- Tuple patterns
+fstt :: (a,a) -> a
+fstt (a,_) = a
