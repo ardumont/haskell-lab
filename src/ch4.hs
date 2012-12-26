@@ -56,3 +56,6 @@ nil (_:_) = False
 
 headd :: [a] -> a
 headd (x:_) = x
+
+taill :: [a] -> [a]
+taill (_:xs) = xs
