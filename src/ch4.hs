@@ -44,3 +44,6 @@ andd _ _       = False
 -- Tuple patterns
 fstt :: (a,a) -> a
 fstt (a,_) = a
+
+sndd :: (a,a) -> a
+sndd (_,a) = a
