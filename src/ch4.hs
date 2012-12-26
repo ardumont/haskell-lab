@@ -82,3 +82,29 @@ safetail2 xs | null xs   = []
 safetail3 :: [a] -> [a]
 safetail3 [] = []
 safetail3 (_:xs) = xs
+
+-- logical conjunction
+
+orr :: Bool -> Bool -> Bool
+orr False False = False
+orr True True   = True
+orr True False  = True
+orr False True  = True
+
+orr2 :: Bool -> Bool -> Bool
+orr2 False False = False
+orr2 _     _     = True
+
+orr3 :: Bool -> Bool -> Bool
+orr3 False b     = b
+orr3 b     False = b
+orr3 _     _     = True
+
+orr4 :: Bool -> Bool -> Bool
+orr4 False b = b
+orr4 True  _ = True
+
+-- orr4 :: Bool -> Bool -> Bool
+-- orr4 x x = x
+-- orr4 _ _ = True
+-- Do not get why this poses pb
