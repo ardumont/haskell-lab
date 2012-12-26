@@ -108,3 +108,21 @@ orr4 True  _ = True
 -- orr4 x x = x
 -- orr4 _ _ = True
 -- Do not get why this poses pb
+
+-- map (\ (f,s) -> orr4 f s) [(False, False), (False, True), (True, False), (True, True)]
+
+-- conjunction operator
+
+and1 :: Bool -> Bool -> Bool
+and1 a b = if not a
+           then False
+           else if not b
+                then False
+                else True
+
+and2 :: Bool -> Bool -> Bool
+and2 a b | not a = False
+         | not b = False
+         | otherwise = True
+-- map (\ (f,s) -> and1 f s) [(False, False), (False, True), (True, False), (True, True)]
+-- [False, False, False, True]
