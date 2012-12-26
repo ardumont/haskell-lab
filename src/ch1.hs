@@ -1,4 +1,4 @@
-module Init where
+module Ch1 where
 
 doublee :: Num a => a -> a
 doublee x = x + x
