@@ -126,3 +126,17 @@ and2 a b | not a = False
          | otherwise = True
 -- map (\ (f,s) -> and1 f s) [(False, False), (False, True), (True, False), (True, True)]
 -- [False, False, False, True]
+
+--
+
+-- True ∧ b  = b
+-- False ∧ _ = False
+
+and3 :: Bool -> Bool -> Bool
+and3 a b = if a
+           then b
+           else if not a
+                then False
+                else False
+-- *Ch4> map (\ (f,s) -> and3 f s) [(False, False), (False, True), (True, False), (True, True)]
+-- [False,False,False,True]o
