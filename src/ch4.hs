@@ -64,3 +64,8 @@ taill (_:xs) = xs
 
 odds :: Int -> [Int]
 odds n = map (\ x -> 2 * x + 1) [0..n-1]
+
+-- Exercises
+
+halve :: [a] -> ([a], [a])
+halve xs = splitAt (length xs `div` 2) xs
