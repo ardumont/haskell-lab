@@ -10,3 +10,9 @@ spltAt i xs = (take i xs, drop i xs)
 
 recipr :: Fractional a => a -> a
 recipr n = 1 / n
+
+abso1 :: Int -> Int
+abso1 n = if n >= 0 then n else -n
+
+-- abso1 (-10) -- 10
+-- abso1 10 -- 10
