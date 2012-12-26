@@ -59,3 +59,8 @@ headd (x:_) = x
 
 taill :: [a] -> [a]
 taill (_:xs) = xs
+
+-- lambda expressions
+
+odds :: Int -> [Int]
+odds n = map (\ x -> 2 * x + 1) [0..n-1]
