@@ -16,3 +16,7 @@ abso1 n = if n >= 0 then n else -n
 
 -- abso1 (-10) -- 10
 -- abso1 10 -- 10
+
+abso2 :: Int -> Int
+abso2 n | n >= 0 = n
+       | otherwise = -n
