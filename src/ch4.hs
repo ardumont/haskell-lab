@@ -47,3 +47,9 @@ fstt (a,_) = a
 
 sndd :: (a,a) -> a
 sndd (_,a) = a
+
+-- list patterns
+
+nil :: [a] -> Bool
+nil [] = True
+nil (_:_) = False
