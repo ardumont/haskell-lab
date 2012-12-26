@@ -139,3 +139,9 @@ and3 a b = if a
 
 -- *Ch4> map (\ (f,s) -> and3 f s) [(False, False), (False, True), (True, False), (True, True)]
 -- [False,False,False,True]o
+
+
+-- mult x y z = x * y * z
+
+multi :: Int -> Int -> Int -> Int
+multi = (\ x -> \ y -> \ z -> x * y * z)
