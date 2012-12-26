@@ -78,3 +78,7 @@ safetail1 xs = if null xs then [] else drop 1 xs
 safetail2 :: [a] -> [a]
 safetail2 xs | null xs   = []
              | otherwise = drop 1 xs
+
+safetail3 :: [a] -> [a]
+safetail3 [] = []
+safetail3 (_:xs) = xs
