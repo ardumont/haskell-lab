@@ -53,3 +53,6 @@ sndd (_,a) = a
 nil :: [a] -> Bool
 nil [] = True
 nil (_:_) = False
+
+headd :: [a] -> a
+headd (x:_) = x
