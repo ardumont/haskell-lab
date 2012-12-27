@@ -26,3 +26,8 @@ ffsts ps = [x | (x,_) <- ps]
 
 lgth :: [a] -> Int
 lgth xs = sum [1 | _ <-xs]
+
+-- generator with guardian (filter)
+
+factors :: Int -> [Int]
+factors n = [ x | x <- [1..n], n `mod` x == 0]
