@@ -35,5 +35,14 @@ factors n = [ x | x <- [1..n], n `mod` x == 0]
 prime :: Int -> Bool
 prime n = factors n == [1, n]
 
+-- prime 1 -- False
+-- prime 2 -- True
+-- prime 3 -- True
+-- prime 4 -- False
+-- prime 7 -- True
+
 primes :: Int -> [Int]
 primes n = [x | x <- [1..n], prime x]
+
+-- primes 250
+-- [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229,233,239,241]
