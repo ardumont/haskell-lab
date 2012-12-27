@@ -3,7 +3,7 @@ module Ch5 where
 -- generators
 
 sq :: Num a => [a] -> [a]
-sq g = [x^2 | x <- g]
+sq xs = [x^2 | x <- xs]
 
 -- *Ch5> [(x,y) | x<-[1,2,3] , y <- [3,4]]
 -- [(1,3),(1,4),(2,3),(2,4),(3,3),(3,4)]
