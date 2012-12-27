@@ -16,3 +16,10 @@ ccat xxs = [x | xs <- xxs, x <- xs]
 -- [1,2,3,3,4,4,5]
 -- *Ch5> concat [[1,2,3], [3,4], [4,5]]
 -- [1,2,3,3,4,4,5]
+
+-- function that selects all the first elements from a list of pairs
+ffsts :: [(a,a)] -> [a]
+ffsts ps = [x | (x,_) <- ps]
+
+-- *Ch5> ffsts [(1,2), (3,4), (5,6)]
+-- [1,3,5]
