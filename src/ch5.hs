@@ -97,7 +97,7 @@ positions v vs = [i | (v', i) <- zip vs [1..(length vs - 1)], v == v']
 -- [1,4]
 
 -- count the numbers of lower letters
-lowers :: [Char] -> Int
+lowers :: String -> Int
 lowers cs = sum [1 | c <- cs, C.isLower c]
 
 -- *Ch5> lowers "Christelle"
