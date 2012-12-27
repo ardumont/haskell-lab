@@ -73,3 +73,12 @@ pairs xs = zip xs (tail xs)
 
 sorted :: Ord a => [a] -> Bool
 sorted xs = and [x <= y | (x, y) <- pairs xs]
+
+-- *Ch5> sorted [1,2,3]
+-- True
+-- *Ch5> sorted [1,3, 2]
+-- False
+-- *Ch5> sorted [1,1, 2]
+-- True
+-- *Ch5> sorted [1,1,3,2]
+-- False
