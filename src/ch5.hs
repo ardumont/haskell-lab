@@ -190,3 +190,19 @@ rotate n xs = drop n xs ++ take n xs
 -- [3,4,5,1,2]
 -- *Ch5> rotate 3 [1,2,3,4,5]
 -- [4,5,1,2,3]
+
+crack :: String -> String
+crack xs = encode (- factor) xs
+           where
+             factor = head (positions (minimum chitab) chitab)
+             chitab = [ chisqr (rotate n t) table | n <- [1..25]]
+             t = freqs xs
+
+-- *Ch5> encode 3 "haskell is fun"
+-- "kdvnhoo lv ixq"
+-- *Ch5> crack "kdvnhoo lv ixq"
+-- "haskell is fun"
+-- *Ch5> encode 10 "haskell is fun"
+-- "rkcuovv sc pex"
+-- *Ch5> crack "rkcuovv sc pex"
+-- "haskell is fun"
