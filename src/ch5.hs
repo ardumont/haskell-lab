@@ -62,7 +62,7 @@ find k hs = [v | (k', v) <- hs, k == k']
 
 -- pairs that returns the list of all pairs of adjacent elements from a list
 pairs :: [a] -> [(a,a)]
-pairs xs = [(x, y) | (x, y) <- zip xs (tail xs)]
+pairs xs = zip xs (tail xs)
 
 -- *Ch5> pairs [10, 20, 30, 40]
 -- [(10,20),(20,30),(30,40)]
