@@ -167,3 +167,10 @@ table = [8.2, 1.5, 2.8, 4.3, 12.7, 2.2, 2.0, 6.1, 7.0, 0.2, 0.8, 4.0, 2.4,
 -- calculates the percentage of one integer with respect to another
 percent :: Int -> Int -> Float
 percent n m = (fromIntegral n / fromIntegral m) * 100
+
+-- function that returns a frequency table for any string
+freqs :: String -> [Float]
+freqs cs = [percent (count c cs) (length cs)  | c <- ['a'..'z']]
+
+-- > freqs "abbcccddddeeeee"
+-- [6.666667,13.333334,20.0,26.666668,33.333336,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
