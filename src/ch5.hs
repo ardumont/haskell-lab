@@ -119,3 +119,11 @@ count c cs = sum [1 | c' <- cs, c' == c]
 -- 2
 -- *Ch5> count 's' "Mississipi"
 -- 4
+
+-- caesar cipher
+
+-- converts a lower-case letter between ’a’ and ’z’ into the corresponding
+-- integer between 0 and 25,
+
+let2int :: Char -> Int
+let2int c = C.ord c - C.ord 'a'
