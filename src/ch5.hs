@@ -139,7 +139,8 @@ int2let l = C.chr (C.ord 'a' + l)
 -- "abcdefghijklmnopqrstuvwxyz"
 
 shift :: Int -> Char -> Char
-shift n c = int2let ((n + let2int c) `mod` 26)
+shift n c | C.isLower c = int2let ((n + let2int c) `mod` 26)
+          | otherwise = c
 
 -- *Ch5> shift 3 'z'
 -- 'c'
@@ -147,3 +148,13 @@ shift n c = int2let ((n + let2int c) `mod` 26)
 -- 'd'
 -- *Ch5> shift (-3) 'c'
 -- 'z'
+
+encode :: Int -> String -> String
+encode n cs = [shift n c | c <- cs]
+
+-- *Ch5> encode 3 "abc"
+-- "def"
+-- *Ch5> encode 3 "haskell is fun to learn!"
+-- "kdvnhoo lv ixq wr ohduq!"
+-- *Ch5> encode (-3) "kdvnhoo lv ixq wr ohduq!"
+-- "haskell is fun to learn!"
