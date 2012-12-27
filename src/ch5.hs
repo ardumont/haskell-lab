@@ -1,5 +1,7 @@
 module Ch5 where
 
+import qualified Data.Char as C
+
 -- generators
 
 sq :: Num a => [a] -> [a]
@@ -93,3 +95,10 @@ positions v vs = [i | (v', i) <- zip vs [1..(length vs - 1)], v == v']
 -- []
 -- *Ch5> positions 1 [1,2,3,1,4]
 -- [1,4]
+
+-- count the numbers of lower letters
+lowers :: [Char] -> Int
+lowers cs = sum [1 | c <- cs, C.isLower c]
+
+-- *Ch5> lowers "Christelle"
+-- 9
