@@ -121,6 +121,7 @@ count c cs = sum [1 | c' <- cs, c' == c]
 -- 4
 
 -- caesar cipher
+-- only with lower case characters
 
 -- converts a lower-case letter between ’a’ and ’z’ into the corresponding
 -- integer between 0 and 25,
@@ -136,3 +137,13 @@ int2let l = C.chr (C.ord 'a' + l)
 
 -- *Ch5> map int2let [0..25]
 -- "abcdefghijklmnopqrstuvwxyz"
+
+shift :: Int -> Char -> Char
+shift n c = int2let ((n + let2int c) `mod` 26)
+
+-- *Ch5> shift 3 'z'
+-- 'c'
+-- *Ch5> shift 3 'a'
+-- 'd'
+-- *Ch5> shift (-3) 'c'
+-- 'z'
