@@ -170,7 +170,8 @@ percent n m = (fromIntegral n / fromIntegral m) * 100
 
 -- function that returns a frequency table for any string
 freqs :: String -> [Float]
-freqs cs = [percent (count c cs) (lowers cs) | c <- ['a'..'z']]
+freqs cs = [percent (count c cs) n | c <- ['a'..'z']]
+           where n = (lowers cs)
 
 -- > freqs "abbcccddddeeeee"
 -- [6.666667,13.333334,20.0,26.666668,33.333336,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
