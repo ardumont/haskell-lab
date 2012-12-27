@@ -178,3 +178,15 @@ freqs cs = [percent (count c cs) n | c <- ['a'..'z']]
 
 chisqr :: [Float] -> [Float] -> Float
 chisqr os es = sum [ ((o - e) ^ 2) / e | (o, e) <- zip os es]
+
+-- rotates the elements of a list n places to the left, wrapping around
+-- at the start of the list
+rotate :: Int -> [a] -> [a]
+rotate n xs = drop n xs ++ take n xs
+
+-- *Ch5> rotate 1 [1,2,3,4,5]
+-- [2,3,4,5,1]
+-- *Ch5> rotate 2 [1,2,3,4,5]
+-- [3,4,5,1,2]
+-- *Ch5> rotate 3 [1,2,3,4,5]
+-- [4,5,1,2,3]
