@@ -82,3 +82,14 @@ sorted xs = and [x <= y | (x, y) <- pairs xs]
 -- True
 -- *Ch5> sorted [1,1,3,2]
 -- False
+
+-- function that returns the list of all positions at which a value occurs
+-- in a list, by pairing each element with its position, and selecting those
+-- positions at which the desired value occurs
+positions :: Eq a => a -> [a] -> [Int]
+positions v vs = [i | (v', i) <- zip vs [1..(length vs - 1)], v == v']
+
+-- *Ch5> positions 0 [1,2,3,4]
+-- []
+-- *Ch5> positions 1 [1,2,3,1,4]
+-- [1,4]
