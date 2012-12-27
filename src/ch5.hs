@@ -102,3 +102,20 @@ lowers cs = sum [1 | c <- cs, C.isLower c]
 
 -- *Ch5> lowers "Christelle"
 -- 9
+
+-- count the number of occurences of a particular characters
+count :: Char -> String -> Int
+count c cs = sum [1 | c' <- cs, c' == c]
+
+-- *Ch5> count 'c' "Christelle"
+-- 0
+-- *Ch5> count 'C' "Christelle"
+-- 1
+-- *Ch5> count 'e' "Christelle"
+-- 2
+-- *Ch5> count 'r' "Christelle"
+-- 1
+-- *Ch5> count 'l' "Christelle"
+-- 2
+-- *Ch5> count 's' "Mississipi"
+-- 4
