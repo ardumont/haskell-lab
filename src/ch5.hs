@@ -23,3 +23,6 @@ ffsts ps = [x | (x,_) <- ps]
 
 -- *Ch5> ffsts [(1,2), (3,4), (5,6)]
 -- [1,3,5]
+
+lgth :: Num b => [a] -> b
+lgth xs = sum [1 | _ <-xs]
