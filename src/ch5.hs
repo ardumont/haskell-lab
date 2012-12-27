@@ -130,3 +130,9 @@ let2int c = C.ord c - C.ord 'a'
 
 -- *Ch5> map let2int ['a'..'z']
 -- [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]
+
+int2let :: Int -> Char
+int2let l = C.chr (C.ord 'a' + l)
+
+-- *Ch5> map int2let [0..25]
+-- "abcdefghijklmnopqrstuvwxyz"
