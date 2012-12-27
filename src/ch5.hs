@@ -66,3 +66,10 @@ pairs xs = zip xs (tail xs)
 
 -- *Ch5> pairs [10, 20, 30, 40]
 -- [(10,20),(20,30),(30,40)]
+
+-- A function that decides if a list of elements of any ordered type is sorted
+-- by simply checking that all pairs of adjacent elements from the list are in
+-- the correct order
+
+sorted :: Ord a => [a] -> Bool
+sorted xs = and [x <= y | (x, y) <- pairs xs]
