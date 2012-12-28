@@ -221,3 +221,14 @@ replica n x = [x | _ <- [1..n] ]
 -- "aaaaaaaaaa"
 -- *Ch5> replica 10 1
 -- [1,1,1,1,1,1,1,1,1,1]
+
+-- A triple *(x, y, z)* of positive integers is pythagorean if *x^2 + y^2 = z^2*.
+-- Using a list comprehension, define a function *pyths :: Int → [(Int, Int, Int)]* that
+-- returns the list of all pythagorean triples whose components are at most a given limit.
+
+pyths :: Int -> [(Int, Int, Int)]
+pyths n = [(x, y, z) | x <- m, y <- m, z <- m, x^2 + y^2 == z^2 ]
+          where m = [1..n]
+
+-- *Ch5> pyths 10
+-- [(3,4,5),(4,3,5),(6,8,10),(8,6,10)]
