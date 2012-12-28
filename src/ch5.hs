@@ -206,3 +206,8 @@ crack xs = encode (- factor) xs
 -- "rkcuovv sc pex"
 -- *Ch5> crack "rkcuovv sc pex"
 -- "haskell is fun"
+
+-- Using a list comprehension, give an expression that calculates the
+-- sum *1^2 + 2^2 + . . . 100^2* of the first one hundred integer squares.
+ssqr :: Int -> Int
+ssqr n = sum [ x^2 | x <- [1..n]]
