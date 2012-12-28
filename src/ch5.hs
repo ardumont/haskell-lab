@@ -235,3 +235,18 @@ pyths n = [(x, y, z) | x <- m,
 
 -- *Ch5> pyths 10
 -- [(3,4,5),(4,3,5),(6,8,10),(8,6,10)]
+
+-- couple (a,b) such that a*b = n
+
+-- naive first
+couple :: Int -> [(Int,Int)]
+couple n = [(a,b) | a <- m, b <- m, a * b == n]
+           where m = [1..n]
+
+-- little more intelligent
+couple1 :: Int -> [(Int,Int)]
+couple1 n = [(a,b) | a <- lfactors n, b <- m, a * b == n]
+           where
+             m = [1..n]
+             lfactors :: Int -> [Int]
+             lfactors n' = [ x | x <- m, n' `mod` x == 0]
