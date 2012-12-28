@@ -211,3 +211,13 @@ crack xs = encode (- factor) xs
 -- sum *1^2 + 2^2 + . . . 100^2* of the first one hundred integer squares.
 ssqr :: Int -> Int
 ssqr n = sum [ x^2 | x <- [1..n]]
+
+-- In a similar way to the function *length*, show how the library function *replicate :: Int → a → [ a ]*
+-- that produces a list of identical elements can be defined using a list comprehension.
+replica :: Int -> a -> [a]
+replica n x = [x | _ <- [1..n] ]
+
+-- *Ch5> replica 10 'a'
+-- "aaaaaaaaaa"
+-- *Ch5> replica 10 1
+-- [1,1,1,1,1,1,1,1,1,1]
