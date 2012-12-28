@@ -256,12 +256,26 @@ couple1 n = [(a,b) | a <- lfactors n, b <- m, a * b == n]
 -- Using a list comprehension and the function *factors*, define a function
 -- *perfects :: Int → [ Int ]*
 -- that returns the list of all perfect numbers up to a given limit.
+perfect :: Int -> Bool
+perfect m = sum [ y | y <- factors m, y /= m ] == m
+
+-- *Ch5> perfect 1
+-- False
+-- *Ch5> perfect 28
+-- True
+-- *Ch5> perfect 27
+-- False
+-- *Ch5> perfect 26
+-- False
+-- *Ch5> perfect 6
+-- True
+-- *Ch5> perfect 6496
+-- False
+-- *Ch5> perfect 496
+-- True
 
 perfects :: Int -> [Int]
 perfects n = [x | x <- [1..n], perfect x]
-             where
-               perfect :: Int -> Bool
-               perfect m = sum [ y | y <- factors m, y /= m ] == m
 
 -- *Ch5> perfects 500
 -- [6,28,496]
