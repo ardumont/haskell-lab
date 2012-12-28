@@ -250,3 +250,18 @@ couple1 n = [(a,b) | a <- lfactors n, b <- m, a * b == n]
              m = [1..n]
              lfactors :: Int -> [Int]
              lfactors n' = [ x | x <- m, n' `mod` x == 0]
+
+-- A positive integer is perfect if it equals the sum of its factors,
+-- excluding the number itself.
+-- Using a list comprehension and the function *factors*, define a function
+-- *perfects :: Int → [ Int ]*
+-- that returns the list of all perfect numbers up to a given limit.
+
+perfects :: Int -> [Int]
+perfects n = [x | x <- [1..n], perfect x]
+             where
+               perfect :: Int -> Bool
+               perfect m = sum [ y | y <- factors m, y /= m ] == m
+
+-- *Ch5> perfects 500
+-- [6,28,496]
