@@ -257,7 +257,8 @@ couple1 n = [(a,b) | a <- lfactors n, b <- m, a * b == n]
 -- *perfects :: Int → [ Int ]*
 -- that returns the list of all perfect numbers up to a given limit.
 perfect :: Int -> Bool
-perfect m = sum [ y | y <- factors m, y /= m ] == m
+--perfect m = sum [ y | y <- factors m, y /= m ] == m
+perfect m = sum (init (factors m)) == m
 
 -- *Ch5> perfect 1
 -- False
