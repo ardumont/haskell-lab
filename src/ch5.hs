@@ -227,7 +227,10 @@ replica n x = [x | _ <- [1..n] ]
 -- returns the list of all pythagorean triples whose components are at most a given limit.
 
 pyths :: Int -> [(Int, Int, Int)]
-pyths n = [(x, y, z) | x <- m, y <- m, z <- m, x^2 + y^2 == z^2 ]
+pyths n = [(x, y, z) | x <- m,
+                       y <- m,
+                       z <- m,
+                       x^2 + y^2 == z^2 ]
           where m = [1..n]
 
 -- *Ch5> pyths 10
