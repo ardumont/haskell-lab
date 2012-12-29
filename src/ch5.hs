@@ -293,14 +293,12 @@ perfects n = [x | x <- [1..n], perfect x]
 -- [(1,4),(1,5),(1,6),(2,4),(2,5),(2,6),(3,4),(3,5),(3,6)]
 
 positions2 :: Int -> [Int] -> [Int]
-positions2 v vs = find v valpos
+positions2 v vs = find v (zip vs [0..n])
                   where
-                    valpos = [(v', p) | (v', p) <- zip vs [1..(length vs)]]
+                    n = (length vs) - 1
 
--- *Ch5> positions 1 [0,1,3,4,2,1,3]
--- [2,6]
 -- *Ch5> positions2 1 [0,1,3,4,2,1,3]
--- [2,6]
+-- [1,5]
 
 scalarproduct :: [Int] -> [Int] -> Int
 scalarproduct xs ys = sum [x * y | (x, y) <- zip xs ys]
