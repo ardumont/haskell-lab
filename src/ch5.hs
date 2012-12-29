@@ -1,6 +1,8 @@
 module Ch5 where
 
 import qualified Data.Char as C
+import qualified Data.List as L
+import qualified Data.Tuple as T
 
 -- generators
 
@@ -212,8 +214,9 @@ crack xs = encode (- factor) xs
 ssqr :: Int -> Int
 ssqr n = sum [ x^2 | x <- [1..n]]
 
--- In a similar way to the function *length*, show how the library function *replicate :: Int → a → [ a ]*
--- that produces a list of identical elements can be defined using a list comprehension.
+-- In a similar way to the function *length*, show how the library function
+-- *replicate :: Int → a → [ a ]* that produces a list of identical elements
+-- can be defined using a list comprehension.
 replica :: Int -> a -> [a]
 replica n x = [x | _ <- [1..n] ]
 
@@ -258,7 +261,7 @@ couple1 n = [(a,b) | a <- lfactors n, b <- m, b <= a, a * b == n]
 -- *perfects :: Int → [ Int ]*
 -- that returns the list of all perfect numbers up to a given limit.
 perfect :: Int -> Bool
---perfect m = sum [ y | y <- factors m, y /= m ] == m
+-- perfect m = sum [ y | y <- factors m, y /= m ] == m
 perfect m = sum (init (factors m)) == m
 
 -- *Ch5> perfect 1
