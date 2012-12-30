@@ -305,3 +305,36 @@ scalarproduct xs ys = sum [x * y | (x, y) <- zip xs ys]
 
 -- *Ch5> scalarproduct [1,2,3] [4,5,6]
 -- 32
+
+-- caesar with upper case too
+
+char2int :: Char -> Char -> Int
+char2int c cr = C.ord c - C.ord cr
+
+low2int :: Char -> Int
+low2int c = char2int c 'a'
+
+upp2int :: Char -> Int
+upp2int c = char2int c 'A'
+
+int2char :: Int -> Char -> Char
+int2char l c = C.chr (C.ord c + l)
+
+int2low :: Int -> Char
+int2low l = int2char l 'a'
+
+int2upp :: Int -> Char
+int2upp l = int2char l 'A'
+
+shift2 :: Int -> Char -> Char
+shift2 n c | C.isLower c = int2low ((n + low2int c) `mod` 26)
+           | C.isUpper c = int2upp ((n + upp2int c) `mod` 26)
+           | otherwise = c
+
+encode2 :: Int -> String -> String
+encode2 n cs = [shift2 n c | c <- cs]
+
+-- *Ch5> encode2 3 "functional programming rocks!"
+-- "ixqfwlrqdo surjudpplqj urfnv!"
+-- *Ch5> encode2 3 "Functional programming ROCKS!"
+-- "Ixqfwlrqdo surjudpplqj URFNV!"
