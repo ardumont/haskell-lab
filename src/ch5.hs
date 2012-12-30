@@ -326,9 +326,12 @@ int2low l = int2char l 'a'
 int2upp :: Int -> Char
 int2upp l = int2char l 'A'
 
+shiftchar :: (Int -> Char) -> (Char -> Int) -> Int -> Char -> Char
+shiftchar i2c c2i n c = i2c ((n + c2i c) `mod` 26)
+
 shift2 :: Int -> Char -> Char
-shift2 n c | C.isLower c = int2low ((n + low2int c) `mod` 26)
-           | C.isUpper c = int2upp ((n + upp2int c) `mod` 26)
+shift2 n c | C.isLower c = shiftchar int2low low2int n c
+           | C.isUpper c = shiftchar int2upp upp2int n c
            | otherwise = c
 
 encode2 :: Int -> String -> String
