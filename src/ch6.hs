@@ -37,3 +37,8 @@ rev (x:xs) = (rev xs) ++ [x]
 
 -- *Ch6> [1..5] Ch6.++ [2..4]
 -- [1,2,3,4,5,2,3,4]
+
+ins :: Ord a => a -> [a] -> [a]
+ins x [] = [x]
+ins x (y:ys) | x <= y    = x:y:ys
+             | otherwise = y:(ins x ys)
