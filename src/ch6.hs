@@ -17,3 +17,10 @@ pdt (x:xs) = x * pdt xs
 lgth :: [a] -> Int
 lgth [] = 0
 lgth (_:xs) = 1 + lgth xs
+
+rev :: [a] -> [a]
+rev [] = []
+rev (x:xs) = (rev xs) ++ [x]
+
+-- *Ch6> rev [1,3,4]
+-- [4,3,1]
