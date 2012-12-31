@@ -51,3 +51,8 @@ zp :: [a] -> [a] -> [(a,a)]
 zp [] _ = []
 zp _ [] = []
 zp (x:xs) (y:ys) = (x,y):(zip xs ys)
+
+drp :: Int -> [a] -> [a]
+drp 0 ys = ys
+drp _ [] = []
+drp n (_:ys) = drp (n-1) ys
