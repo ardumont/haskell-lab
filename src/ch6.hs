@@ -63,3 +63,7 @@ fibonacci n = fibonacci (n-1) + fibonacci (n-2)
 ini :: [a] -> [a]
 ini [_] = []
 ini (x:xs) = x:(ini xs)
+
+pow :: Int -> Int -> Int
+pow _ 0 = 1
+pow x n = x * pow x (n-1)
