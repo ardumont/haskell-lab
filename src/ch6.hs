@@ -13,3 +13,7 @@ factorial n = n * factorial (n - 1)
 pdt :: [Int] -> Int
 pdt [] = 1
 pdt (x:xs) = x * pdt xs
+
+lgth :: [a] -> Int
+lgth [] = 0
+lgth (_:xs) = 1 + lgth xs
