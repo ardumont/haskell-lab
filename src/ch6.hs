@@ -26,14 +26,14 @@ lgth (_:xs) = 1 + lgth xs
 
 rev :: [a] -> [a]
 rev [] = []
-rev (x:xs) = (rev xs) Ch6.++ [x]
+rev (x:xs) = (rev xs) ++ [x]
 
 -- *Ch6> rev [1,3,4]
 -- [4,3,1]
 
-(++) :: [a] -> [a] -> [a]
-[] ++ ys = ys
-(x:xs) ++ ys = x:(xs Ch6.++ ys)
+-- (++) :: [a] -> [a] -> [a]
+-- [] ++ ys = ys
+-- (x:xs) ++ ys = x:(xs Ch6.++ ys)
 
 -- *Ch6> [1..5] Ch6.++ [2..4]
 -- [1,2,3,4,5,2,3,4]
