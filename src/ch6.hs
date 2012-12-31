@@ -54,3 +54,8 @@ drp :: Int -> [a] -> [a]
 drp 0 ys = ys
 drp _ [] = []
 drp n (_:ys) = drp (n-1) ys
+
+fibonacci :: Int -> Int
+fibonacci 0 = 0
+fibonacci 1 = 1
+fibonacci n = fibonacci (n-1) + fibonacci (n-2)
