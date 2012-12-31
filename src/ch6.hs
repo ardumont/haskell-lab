@@ -46,3 +46,8 @@ ins x (y:ys) | x <= y    = x:y:ys
 isort :: Ord a => [a] -> [a]
 isort [] = []
 isort (x:xs) = ins x (isort xs)
+
+zp :: [a] -> [a] -> [(a,a)]
+zp [] _ = []
+zp _ [] = []
+zp (x:xs) (y:ys) = (x,y):(zip xs ys)
