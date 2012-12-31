@@ -14,9 +14,15 @@ pdt :: [Int] -> Int
 pdt [] = 1
 pdt (x:xs) = x * pdt xs
 
+-- *Ch6> pdt [1..10]
+-- 3628800
+
 lgth :: [a] -> Int
 lgth [] = 0
 lgth (_:xs) = 1 + lgth xs
+
+-- *Ch6> lgth [1..10]
+-- 10
 
 rev :: [a] -> [a]
 rev [] = []
