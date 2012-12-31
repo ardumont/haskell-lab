@@ -42,3 +42,7 @@ ins :: Ord a => a -> [a] -> [a]
 ins x [] = [x]
 ins x (y:ys) | x <= y    = x:y:ys
              | otherwise = y:(ins x ys)
+
+isort :: Ord a => [a] -> [a]
+isort [] = []
+isort (x:xs) = ins x (isort xs)
