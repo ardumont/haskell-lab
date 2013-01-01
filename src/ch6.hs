@@ -68,6 +68,6 @@ pow :: Int -> Int -> Int
 pow _ 0 = 1
 pow x n = x * pow x (n-1)
 
--- (^) :: Int -> Int -> Int
--- x (^) 0 = 1
--- x (^) n = x * x ^ (n-1)
+every :: [Bool] -> Bool
+every [] = True
+every (x:xs) = x && (every xs)
