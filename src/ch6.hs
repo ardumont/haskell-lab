@@ -71,3 +71,7 @@ pow x n = x * pow x (n-1)
 every :: [Bool] -> Bool
 every [] = True
 every (x:xs) = x && (every xs)
+
+ccat :: [[a]] -> [a]
+ccat [xs] = xs
+ccat (xs:xxs) = xs ++ (ccat xxs)
