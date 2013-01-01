@@ -156,3 +156,25 @@ merge (x:xs) (y:ys) | x <= y    = x : merge xs     (y:ys)
 
 -- *Ch6> merge [2,5,6] [1,3,4]
 -- [1,2,3,4,5,6]
+
+-- Using *merge*, define a recursive function =msort :: Ord a ⇒ [a] → [a]= that
+-- implements merge sort, in which the empty list and singleton lists are already
+-- sorted, and any other list is sorted by merging together the two lists that
+-- result from sorting the two halves of the list separately.
+
+-- *Hint:*
+-- First define a function =halve :: [a] → ([a], [a])= that splits a list into
+-- two halves whose lengths differ by at most one.
+
+halve :: [a] -> ([a], [a])
+halve xs = splitAt (length xs `div` 2) xs
+
+msort :: Ord a => [a] -> [a]
+msort [] = []
+msort [x] = [x]
+msort xs = merge (msort fh) (msort sh)
+           where
+             (fh, sh) = halve xs
+
+-- *Ch6> msort [3,2,90,54,1]
+-- [1,2,3,54,90]
