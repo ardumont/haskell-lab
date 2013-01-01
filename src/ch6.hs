@@ -131,3 +131,16 @@ repli n x = x:(repli (n-1) x)
 -- 3
 -- *Ch6> [1,2,3] Ch6.!! 0
 -- 1
+
+-- Decide if a value is an element of a list: =elem :: Eq a ⇒ a → [a] → Bool=
+elm :: Eq a => a -> [a] -> Bool
+elm _ [] = False
+elm x (y:ys) | x == y    = True
+             | otherwise = elm x ys
+
+-- *Ch6> elm 1 [10,20,30]
+-- False
+-- *Ch6> elm 10 [10,20,30]
+-- True
+-- *Ch6> elm 40 [10,20,30,40]
+-- True
