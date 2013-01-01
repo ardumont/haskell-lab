@@ -68,10 +68,26 @@ pow :: Int -> Int -> Int
 pow _ 0 = 1
 pow x n = x * pow x (n-1)
 
+(^) :: Int -> Int -> Int
+_ ^ 0 = 1
+x ^ n = x * (x Ch6.^ (n-1))
+
+-- Decide if all logical values in a list are True: =and :: [Bool] → Bool=
 every :: [Bool] -> Bool
 every [] = True
 every (x:xs) = x && (every xs)
 
+-- Concatenate a list of lists: =concat :: [[a] ] → [a]=
 ccat :: [[a]] -> [a]
 ccat [xs] = xs
 ccat (xs:xxs) = xs ++ (ccat xxs)
+
+-- Produce a list with n identical elements: =replic\ate :: Int → a → [a]
+repli :: Int -> a -> [a]
+repli 0 _ = []
+repli n x = x:(repli (n-1) x)
+
+-- Select the n^th element of a list: =(!!) :: [a] → Int → a=
+(!!) :: [a] -> Int -> a
+(x:_) !! 0 = x
+(_:xs) !! n = xs Ch6.!! (n-1)
