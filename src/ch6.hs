@@ -197,3 +197,11 @@ tke n (x:xs) = x : (tke (n-1) xs)
 -- []
 -- *Ch6> tke 10 []
 -- []
+-- Select the *last* element of a non empty list.
+
+lst :: [a] -> a
+lst [x] = x
+lst (_:xs) = lst xs
+
+-- *Ch6> lst [1..10]
+-- 10
