@@ -182,5 +182,4 @@ msort xs = merge (msort fh) (msort sh)
 -- Calculate the sum of a list of numbers.
 
 summ :: Num a => [a] -> a
-summ [] = 0
-summ (x:xs) = x + summ xs
+summ = foldr (+) 0
