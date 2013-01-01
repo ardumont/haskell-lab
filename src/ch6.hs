@@ -183,3 +183,17 @@ msort xs = merge (msort fh) (msort sh)
 
 summ :: Num a => [a] -> a
 summ = foldr (+) 0
+
+-- *take* a given number of elements.
+
+tke :: Int -> [a] -> [a]
+tke 0 _ = []
+tke _ [] = []
+tke n (x:xs) = x : (tke (n-1) xs)
+
+-- *Ch6> tke 3 [1..10]
+-- [1,2,3]
+-- *Ch6> tke 0 [1..10]
+-- []
+-- *Ch6> tke 10 []
+-- []
