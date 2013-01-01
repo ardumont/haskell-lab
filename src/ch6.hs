@@ -178,3 +178,9 @@ msort xs = merge (msort fh) (msort sh)
 
 -- *Ch6> msort [3,2,90,54,1]
 -- [1,2,3,54,90]
+
+-- Calculate the sum of a list of numbers.
+
+summ :: Num a => [a] -> a
+summ [] = 0
+summ (x:xs) = x + summ xs
