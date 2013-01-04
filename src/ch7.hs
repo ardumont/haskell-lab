@@ -190,3 +190,9 @@ twice2 f = f . f
 
 -- *Ch7> twice2 (add0 10) 100
 -- 120
+
+sumsqeven :: [Integer] -> Integer
+sumsqeven = sum . map (\ x -> x ^ 2) . filter even
+
+-- *Ch7> sumsqeven [1..10]
+-- 220
