@@ -207,3 +207,6 @@ type Bit = Int
 
 bin2Int :: [Bit] -> Int
 bin2Int xs = sum [ x * y | (x, y) <- zip (reverse xs) [2 ^ n | n <- [0..(length xs - 1)] ] ]
+
+-- *Ch7> map bin2Int [[1,1,1,1], [1,1,1], [1,1,0,1]]
+-- [15,7,13]
