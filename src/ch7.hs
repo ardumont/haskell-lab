@@ -17,3 +17,9 @@ twice f x = f (f x)
 -- 40
 -- *Ch7> twice reverse [1,2,3]
 -- [1,2,3]
+
+mmap :: (a -> a) -> [a] -> [a]
+mmap f xs = [f x | x <- xs]
+
+-- *Ch7> mmap (add0 2) [1,2,3]
+-- [3,4,5]
