@@ -175,3 +175,6 @@ revl = mfoldl (\ x xs -> x : xs) []
 
 -- *Ch7> revl [12,20,1,0]
 -- [0,1,20,12]
+
+mcomp :: (b -> c) -> (a -> b) -> a -> c
+mcomp f g = \ x -> f (g x)
