@@ -107,6 +107,14 @@ revr = mfoldr (\ x xs -> xs ++ [x]) []
 -- *Ch7> revr [12,20,1,0]
 -- [0,1,20,12]
 
+orr :: [Bool] -> Bool
+orr = mfoldr (||) False
+
+-- *Ch7> orr [False, False, False]
+-- False
+-- *Ch7> orr [True, False, False]
+-- True
+
 mfoldl :: (a -> b -> b) -> b -> [a] -> b
 mfoldl _ v [] = v
 mfoldl f v (x:xs) = (mfoldl f (f x v) xs)
