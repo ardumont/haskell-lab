@@ -1,5 +1,7 @@
 module Ch7 where
 
+import qualified Data.Char as C
+
 add0 :: Num a => a -> a -> a
 add0 = \ x -> (\ y -> x + y)
 
@@ -48,3 +50,22 @@ mrfilter p (x:xs) | p x       = x : mrfilter p xs
 -- [2,4,6,8,10]
 -- *Ch7> mrfilter (/= ' ') "abc def ghi"
 -- "abcdefghi"
+
+-- OTHER HOF
+
+-- *Ch7> all (\ x -> even x || odd x) [1,2,3,4]
+-- True
+-- *Ch7> all odd [1,2,3,4]
+-- False
+-- *Ch7> all even [1,2,3,4]
+-- False
+-- *Ch7> any even [1,2,3,4]
+-- True
+-- *Ch7> any odd [1,2,3,4]
+-- True
+-- *Ch7> takeWhile C.isLower "ZNBDHFabcdefghiljkl"
+-- ""
+-- *Ch7> takeWhile C.isLower "abdZNBDHFabcdefghiljkl"
+-- "abd"
+-- *Ch7> dropWhile C.isLower "abdZNBDHFabcdefghiljkl"
+-- "ZNBDHFabcdefghiljkl"
