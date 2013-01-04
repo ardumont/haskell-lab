@@ -83,6 +83,14 @@ mfoldr f v (x:xs) = f x (mfoldr f v xs)
 -- *Ch7> (mfoldr (\ x xs -> xs ++ [x]) []) [1,2,3,4]
 -- [4,3,2,1]
 
+addr :: [Integer] -> Integer
+addr = mfoldr (+) 0
+
+-- *Ch7> addr [1,2,3,4]
+-- 10
+-- *Ch7> addr [10,2,30,4]
+-- 46
+
 mfoldl :: (a -> b -> b) -> b -> [a] -> b
 mfoldl _ v [] = v
 mfoldl f v (x:xs) = (mfoldl f (f x v) xs)
