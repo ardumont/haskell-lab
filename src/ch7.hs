@@ -23,3 +23,10 @@ mmap f xs = [f x | x <- xs]
 
 -- *Ch7> mmap (add0 2) [1,2,3]
 -- [3,4,5]
+
+mrmap :: (a -> a) -> [a] -> [a]
+mrmap _ [] = []
+mrmap f (x:xs) = f x:(mrmap f xs)
+
+-- *Ch7> mrmap (add0 2) [1,2,3]
+-- [3,4,5]
