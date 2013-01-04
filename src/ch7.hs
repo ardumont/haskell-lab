@@ -91,6 +91,16 @@ addr = mfoldr (+) 0
 -- *Ch7> addr [10,2,30,4]
 -- 46
 
+productr :: [Integer] -> Integer
+productr = mfoldr (*) 1
+
+-- *Ch7> productr [1,2,3]
+-- 6
+-- *Ch7> productr [1,10,3]
+-- 30
+-- *Ch7> productr [21,10,3]
+-- 630
+
 mfoldl :: (a -> b -> b) -> b -> [a] -> b
 mfoldl _ v [] = v
 mfoldl f v (x:xs) = (mfoldl f (f x v) xs)
