@@ -88,3 +88,7 @@ mfoldl f v (x:xs) = (mfoldl f (f x v) xs)
 -- 11
 -- *Ch7> (mfoldl (*) 1) [1,2,3,4]
 -- 24
+-- *Ch7> (mfoldl (\ _ n -> n + 1) 0) [1,2,3,4]
+-- 4
+-- *Ch7> (mfoldl (\ x xs -> x:xs) []) [1,2,3,4]
+-- [4,3,2,1]
