@@ -115,6 +115,14 @@ orr = mfoldr (||) False
 -- *Ch7> orr [True, False, False]
 -- True
 
+andr :: [Bool] -> Bool
+andr = mfoldr (&&) True
+
+-- *Ch7> andr [True, True, True, True]
+-- True
+-- *Ch7> andr [True, False, True]
+-- False
+
 mfoldl :: (a -> b -> b) -> b -> [a] -> b
 mfoldl _ v [] = v
 mfoldl f v (x:xs) = (mfoldl f (f x v) xs)
