@@ -78,7 +78,10 @@ mfoldr f v (x:xs) = f x (mfoldr f v xs)
 -- 11
 -- *Ch7> (mfoldr (*) 1) [1,2,3,4]
 -- 24
-
+-- *Ch7> (mfoldr (\ _ n -> n + 1) 0) [1,2,3,4]
+-- 4
+-- *Ch7> (mfoldr (\ x xs -> xs ++ [x]) []) [1,2,3,4]
+-- [4,3,2,1]
 
 mfoldl :: (a -> b -> b) -> b -> [a] -> b
 mfoldl _ v [] = v
