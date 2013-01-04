@@ -1,13 +1,9 @@
 module Ch7 where
 
-fmap0 :: (a -> a) -> (a -> Bool) -> [a] -> [a]
-fmap0 f p xs = [ f x | x <- xs, p x]
+add0 :: Num a => a -> a -> a
+add0 = \ x -> (\ y -> x + y)
 
--- *Ch7> fmap0 (+1) even [1..10]
--- [3,5,7,9,11]
-
-fmap1 :: (a -> a) -> (a -> Bool) -> [a] -> [a]
-fmap1 f p xs = map f (filter p xs)
-
--- *Ch7> fmap1 (+1) even [1..10]
--- [3,5,7,9,11]
+-- *Ch7> (add0 1) 3
+-- 4
+-- *Ch7> map (add0 1) [1,2,3]
+-- [2,3,4]
