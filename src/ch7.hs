@@ -196,3 +196,6 @@ sumsqeven = sum . map (\ x -> x ^ 2) . filter even
 
 -- *Ch7> sumsqeven [1..10]
 -- 220
+
+compose :: [a -> a] -> (a -> a)
+compose = foldr (.) id
