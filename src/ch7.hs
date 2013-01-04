@@ -202,3 +202,8 @@ compose = foldr (.) id
 
 dec2Int :: [Int] -> Int
 dec2Int xs = sum [ x * y | (x, y) <- zip (reverse xs) [10 ^ n | n <- [0..(length xs - 1)] ] ]
+
+type Bit = Int
+
+bin2Int :: [Bit] -> Int
+bin2Int xs = sum [ x * y | (x, y) <- zip (reverse xs) [2 ^ n | n <- [0..(length xs - 1)] ] ]
