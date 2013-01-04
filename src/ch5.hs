@@ -242,18 +242,8 @@ pyths n = [(x, y, z) | x <- m,
 -- unique couple (a,b) such that a*b = n
 -- As the multiplication is commutative, we consider (a,b) == (b,a)
 
--- naive first
 couple :: Int -> [(Int,Int)]
-couple n = [(a,b) | a <- m, b <- m, b <= a, a * b == n]
-           where m = [1..n]
-
--- little more intelligent
-couple1 :: Int -> [(Int,Int)]
-couple1 n = [(a,b) | a <- lfactors n, b <- m, b <= a, a * b == n]
-           where
-             m = [1..n]
-             lfactors :: Int -> [Int]
-             lfactors n' = [ x | x <- m, n' `mod` x == 0]
+couple n = [(a,b) | a <- [1..n], b <- [1..a], a * b == n]
 
 -- A positive integer is perfect if it equals the sum of its factors,
 -- excluding the number itself.
