@@ -30,3 +30,9 @@ mrmap f (x:xs) = f x:(mrmap f xs)
 
 -- *Ch7> mrmap (add0 2) [1,2,3]
 -- [3,4,5]
+
+mfilter :: (a -> Bool) -> [a] -> [a]
+mfilter p xs = [x | x <- xs, p x]
+
+-- *Ch7> mfilter even [1..10]
+-- [2,4,6,8,10]
