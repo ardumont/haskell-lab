@@ -7,3 +7,13 @@ add0 = \ x -> (\ y -> x + y)
 -- 4
 -- *Ch7> map (add0 1) [1,2,3]
 -- [2,3,4]
+
+twice :: (a -> a) -> a -> a
+twice f x = f (f x)
+
+-- *Ch7> twice (add0 1) 1
+-- 3
+-- *Ch7> twice (*2) 10
+-- 40
+-- *Ch7> twice reverse [1,2,3]
+-- [1,2,3]
