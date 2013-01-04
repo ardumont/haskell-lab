@@ -135,3 +135,43 @@ mfoldl f v (x:xs) = (mfoldl f (f x v) xs)
 -- 4
 -- *Ch7> (mfoldl (\ x xs -> x:xs) []) [1,2,3,4]
 -- [4,3,2,1]
+
+addl :: [Integer] -> Integer
+addl = mfoldl (+) 0
+
+-- *Ch7> addl [1,2,3,4]
+-- 10
+-- *Ch7> addl [10,2,30,4]
+-- 46
+
+productl :: [Integer] -> Integer
+productl = mfoldl (*) 1
+
+-- *Ch7> productl [1,2,3]
+-- 6
+-- *Ch7> productl [1,10,3]
+-- 30
+-- *Ch7> productl [21,10,3]
+-- 630
+
+orl :: [Bool] -> Bool
+orl = mfoldl (||) False
+
+-- *Ch7> orl [False, False, False]
+-- False
+-- *Ch7> orl [True, False, False]
+-- True
+
+andl :: [Bool] -> Bool
+andl = mfoldl (&&) True
+
+-- *Ch7> andl [True, True, True, True]
+-- True
+-- *Ch7> andl [True, False, True]
+-- False
+
+revl :: [a] -> [a]
+revl = mfoldl (\ x xs -> x : xs) []
+
+-- *Ch7> revl [12,20,1,0]
+-- [0,1,20,12]
