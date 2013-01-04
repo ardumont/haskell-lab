@@ -36,6 +36,8 @@ mfilter p xs = [x | x <- xs, p x]
 
 -- *Ch7> mfilter even [1..10]
 -- [2,4,6,8,10]
+-- *Ch7> mfilter (/= ' ') "abc def ghi"
+-- "abcdefghi"
 
 mrfilter :: (a -> Bool) -> [a] -> [a]
 mrfilter _ [] = []
@@ -44,3 +46,5 @@ mrfilter p (x:xs) | p x       = x : mrfilter p xs
 
 -- *Ch7> mrfilter even [1..10]
 -- [2,4,6,8,10]
+-- *Ch7> mrfilter (/= ' ') "abc def ghi"
+-- "abcdefghi"
