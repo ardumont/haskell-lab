@@ -73,3 +73,8 @@ mrfilter p (x:xs) | p x       = x : mrfilter p xs
 mfoldr :: (a -> b -> b) -> b -> [a] -> b
 mfoldr _ v [] = v
 mfoldr f v (x:xs) = f x (mfoldr f v xs)
+
+-- *Ch7> (mfoldr (+) 1) [1,2,3,4]
+-- 11
+-- *Ch7> (mfoldr (*) 1) [1,2,3,4]
+-- 24
