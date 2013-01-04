@@ -200,7 +200,5 @@ sumsqeven = sum . map (\ x -> x ^ 2) . filter even
 compose :: [a -> a] -> (a -> a)
 compose = foldr (.) id
 
-arr2Int :: [Integer] -> Integer
-arr2Int xs = sum [ x * y | (x, y) <- zip (reverse xs) [10 ^ n | n <- [0..(length xs - 1)] ] ]
-
-arr2Bin xs = sum [ x * y | (x, y) <- zip (reverse xs) [2 ^ n | n <- [0..(length xs - 1)] ] ]
+dec2Int :: [Int] -> Int
+dec2Int xs = sum [ x * y | (x, y) <- zip (reverse xs) [10 ^ n | n <- [0..(length xs - 1)] ] ]
