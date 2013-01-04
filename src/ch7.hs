@@ -69,3 +69,7 @@ mrfilter p (x:xs) | p x       = x : mrfilter p xs
 -- "abd"
 -- *Ch7> dropWhile C.isLower "abdZNBDHFabcdefghiljkl"
 -- "ZNBDHFabcdefghiljkl"
+
+mfoldr :: (a -> b -> b) -> b -> [a] -> b
+mfoldr _ v [] = v
+mfoldr f v (x:xs) = f x (mfoldr f v xs)
