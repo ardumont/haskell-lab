@@ -178,3 +178,15 @@ revl = mfoldl (\ x xs -> x : xs) []
 
 mcomp :: (b -> c) -> (a -> b) -> a -> c
 mcomp f g = \ x -> f (g x)
+
+modd :: Integer -> Bool
+modd = not . even
+
+-- *ch7> map modd [1..5]
+-- [True,False,True,False,True]
+
+twice2 :: (a -> a) -> a -> a
+twice2 f = f . f
+
+-- *Ch7> twice2 (add0 10) 100
+-- 120
