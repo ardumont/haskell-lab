@@ -78,3 +78,13 @@ mfoldr f v (x:xs) = f x (mfoldr f v xs)
 -- 11
 -- *Ch7> (mfoldr (*) 1) [1,2,3,4]
 -- 24
+
+
+mfoldl :: (a -> b -> b) -> b -> [a] -> b
+mfoldl _ v [] = v
+mfoldl f v (x:xs) = (mfoldl f (f x v) xs)
+
+-- *Ch7> (mfoldl (+) 1) [1,2,3,4]
+-- 11
+-- *Ch7> (mfoldl (*) 1) [1,2,3,4]
+-- 24
