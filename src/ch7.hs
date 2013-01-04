@@ -101,6 +101,12 @@ productr = mfoldr (*) 1
 -- *Ch7> productr [21,10,3]
 -- 630
 
+revr :: [a] -> [a]
+revr = mfoldr (\ x xs -> xs ++ [x]) []
+
+-- *Ch7> revr [12,20,1,0]
+-- [0,1,20,12]
+
 mfoldl :: (a -> b -> b) -> b -> [a] -> b
 mfoldl _ v [] = v
 mfoldl f v (x:xs) = (mfoldl f (f x v) xs)
