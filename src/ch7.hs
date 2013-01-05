@@ -314,3 +314,15 @@ mfmap f = foldr (\ x xs -> f x : xs) []
 
 mffilter :: (a -> Bool) -> [a] -> [a]
 mffilter p = foldr (\ x xs -> if (p x) then x : xs else xs) []
+
+-- Indeed, a decimal conversion can be rewritten like this
+-- Given a list of int [d,c,b,a] representing a 4-digit number
+-- It's decomposition can be written like this:
+-- [d, c, b, a]
+-- 1000*d + 100*c + 10*b + 1*a
+-- (100 * d + 10 * c + b) * 10 + a
+-- (((10 * d + c) * 10) + b) * 10 + a
+-- ((((d + 0) * 10 + c) * 10) + b) * 10 + a
+
+dec2int :: [Int] -> Int
+dec2int = foldl (\ x y -> x * 10 + y) 0
