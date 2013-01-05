@@ -240,4 +240,11 @@ int2bin n = n `mod` 2 : int2bin (n `div` 2)
 
 -- make sure a list of bits is of same length 8
 make8 :: [Bit] -> [Bit]
-make8 bits = take 8 (bits ++ repeat 0)
+make8 bits = reverse (take 8 (reverse bits ++ repeat 0))
+
+-- *Ch7> make8 [1,1,0,1]
+-- [0,0,0,0,1,1,0,1]
+-- *Ch7> bin2int (make8 [1,1,0,1])
+-- 13
+-- *Ch7> bin2int [0,0,0,0,1,1,0,1]
+-- 13
