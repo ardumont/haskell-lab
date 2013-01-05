@@ -248,3 +248,8 @@ make8 bits = reverse (take 8 (reverse bits ++ repeat 0))
 -- 13
 -- *Ch7> bin2int [0,0,0,0,1,1,0,1]
 -- 13
+
+-- make a list of infinite bits a list of list of 8 bits
+chop8 :: [Bit] -> [[Bit]]
+chop8 [] = []
+chop8 bits = take 8 bits : (chop8 (drop 8 bits))
