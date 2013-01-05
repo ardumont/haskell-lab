@@ -197,8 +197,14 @@ sumsqeven = sum . map (\ x -> x ^ 2) . filter even
 -- *Ch7> sumsqeven [1..10]
 -- 220
 
-compose :: [a -> a] -> (a -> a)
+compose :: [a -> a] -> a -> a
 compose = foldr (.) id
+
+sumsqeven2 :: [Integer] -> Integer
+sumsqeven2 = sum . (compose [map (^2), filter even])
+
+-- *Ch7> sumsqeven2 [1..10]
+-- 220
 
 dec2Int :: [Int] -> Int
 dec2Int xs = sum [x * y | (x, y) <- zip (reverse xs) (iterate (*10) 1)]
