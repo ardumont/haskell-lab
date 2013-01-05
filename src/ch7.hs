@@ -270,3 +270,16 @@ transmit = decode . channel . encode
 
 all1 :: (a -> Bool) -> [a] -> Bool
 all1 p = and . map p
+
+-- *Ch7> all even1 [1,2,4]
+-- False
+-- *Ch7> all even1 [0,2,4]
+-- True
+
+any1 :: (a -> Bool) -> [a] -> Bool
+any1 p = or . map p
+
+-- *Ch7> any1 odd [0,2,1]
+-- True
+-- *Ch7> any1 odd [0,2,4]
+-- False
