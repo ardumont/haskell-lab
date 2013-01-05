@@ -293,3 +293,13 @@ takeWhile1 p (x:xs) | p x       = x : takeWhile1 p xs
 -- [0,2]
 -- *Ch7> takeWhile1 even []
 -- []
+
+dropWhile1 :: (a -> Bool) -> [a] -> [a]
+dropWhile1 _ [] = []
+dropWhile1 p (x:xs) | p x        = dropWhile1 p xs
+                    | otherwise  = x : xs
+
+-- *Ch7> dropWhile1 odd [1,3,5,7,0,2,3,4,5,6]
+-- [0,2,3,4,5,6]
+-- *Ch7> dropWhile1 odd []
+-- []
