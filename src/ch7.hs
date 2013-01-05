@@ -303,3 +303,11 @@ dropWhile1 p (x:xs) | p x        = dropWhile1 p xs
 -- [0,2,3,4,5,6]
 -- *Ch7> dropWhile1 odd []
 -- []
+
+mfmap :: (a -> b) -> [a] -> [b]
+mfmap f = foldr (\ x xs -> f x : xs) []
+
+-- *ch7> mfmap even [1,2,3]
+-- [False,True,False]
+-- *Ch7> mfmap (*3) [1,2,3]
+-- [3,6,9]
