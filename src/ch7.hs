@@ -207,8 +207,8 @@ type Bit = Int
 
 -- from the left 10 -> 2; 11 -> 3; etc...
 
-bin2Int :: [Bit] -> Int
-bin2Int xs = sum [x * y | (x, y) <- zip (reverse xs) (iterate (*2) 1)]
+bin2Integer :: [Bit] -> Int
+bin2Integer xs = sum [x * y | (x, y) <- zip (reverse xs) (iterate (*2) 1)]
 
 -- *Ch7> map bin2Int [[1,1,1,1], [1,1,1], [1,1,0,1]]
 -- [15,7,13]
@@ -220,5 +220,5 @@ bin2Int xs = sum [x * y | (x, y) <- zip (reverse xs) (iterate (*2) 1)]
 -- (((2d + c) * 2) + b) * 2 + a
 -- ((((d + 0) * 2 + c) * 2) + b) * 2 + a
 
-bin2Integer :: [Bit] -> Int
-bin2Integer = mfoldl (\ x y -> x * 2 + y) 0
+bin2Int :: [Bit] -> Int
+bin2Int = mfoldl (\ x y -> x * 2 + y) 0
