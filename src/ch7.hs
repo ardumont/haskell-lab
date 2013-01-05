@@ -123,9 +123,9 @@ revr = mfoldr (\ x xs -> xs ++ [x]) []
 -- *Ch7> revr [12,20,1,0]
 -- [0,1,20,12]
 
-mfoldl :: (a -> b -> b) -> b -> [a] -> b
+mfoldl :: (a -> b -> a) -> a -> [b] -> a
 mfoldl _ v [] = v
-mfoldl f v (x:xs) = (mfoldl f (f x v) xs)
+mfoldl f v (x:xs) = (mfoldl f (f v x) xs)
 
 -- *Ch7> (mfoldl (+) 1) [1,2,3,4]
 -- 11
@@ -171,7 +171,7 @@ andl = mfoldl (&&) True
 -- False
 
 revl :: [a] -> [a]
-revl = mfoldl (\ x xs -> x : xs) []
+revl = mfoldl (\ xs x -> x : xs) []
 
 -- *Ch7> revl [12,20,1,0]
 -- [0,1,20,12]
