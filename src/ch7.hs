@@ -222,3 +222,7 @@ bin2Integer xs = sum [x * y | (x, y) <- zip (reverse xs) (iterate (*2) 1)]
 
 bin2int :: [Bit] -> Int
 bin2int = mfoldl (\ x y -> x * 2 + y) 0
+
+int2bin :: Int -> [Bit]
+int2bin 0 = []
+int2bin n = n `mod` 2 : int2bin (n `div` 2)
