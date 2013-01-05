@@ -311,3 +311,6 @@ mfmap f = foldr (\ x xs -> f x : xs) []
 -- [False,True,False]
 -- *Ch7> mfmap (*3) [1,2,3]
 -- [3,6,9]
+
+mffilter :: (a -> Bool) -> [a] -> [a]
+mffilter p = foldr (\ x xs -> if (p x) then x : xs else xs) []
