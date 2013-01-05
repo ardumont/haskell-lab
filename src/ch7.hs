@@ -265,3 +265,9 @@ channel = id
 
 transmit :: String -> String
 transmit = decode . channel . encode
+
+------------------ Exercise
+
+alll :: (a -> Bool) -> [a] -> Bool
+alll _ [] = True
+alll p (x:xs) = p x && (alll p xs)
