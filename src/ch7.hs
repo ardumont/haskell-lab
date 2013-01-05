@@ -283,3 +283,13 @@ any1 p = or . map p
 -- True
 -- *Ch7> any1 odd [0,2,4]
 -- False
+
+takeWhile1 :: (a -> Bool) -> [a] -> [a]
+takeWhile1 _ [] = []
+takeWhile1 p (x:xs) | p x       = x : takeWhile1 p xs
+                    | otherwise = []
+
+-- *Ch7> takeWhile1 even [0,2,3,4,5,6]
+-- [0,2]
+-- *Ch7> takeWhile1 even []
+-- []
