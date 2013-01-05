@@ -268,6 +268,5 @@ transmit = decode . channel . encode
 
 ------------------ Exercise
 
-alll :: (a -> Bool) -> [a] -> Bool
-alll _ [] = True
-alll p (x:xs) = p x && (alll p xs)
+all1 :: (a -> Bool) -> [a] -> Bool
+all1 p = and . map p
