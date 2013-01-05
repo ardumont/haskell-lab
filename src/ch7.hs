@@ -237,3 +237,7 @@ int2bin n = n `mod` 2 : int2bin (n `div` 2)
 -- [0,0,0,0,0,0,0,1]
 -- *Ch7> int2bin 128
 -- [0,0,0,0,0,0,0,1]
+
+-- make sure a list of bits is of same length 8
+make8 :: [Bit] -> [Bit]
+make8 bits = take 8 (bits ++ repeat 0)
