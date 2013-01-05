@@ -255,7 +255,7 @@ chop8 [] = []
 chop8 bits = take 8 bits : (chop8 (drop 8 bits))
 
 encode :: String -> [Bit]
-encode xs = (concat . map (make8 . int2bin . C.ord)) xs
+encode = concat . map (make8 . int2bin . C.ord)
 
 decode :: [Bit] -> String
-decode xs = map (C.chr . bin2int) (chop8 xs)
+decode = map (C.chr . bin2int) . chop8
