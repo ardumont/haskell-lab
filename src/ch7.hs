@@ -225,7 +225,7 @@ bin2int = mfoldl (\ x y -> x * 2 + y) 0
 
 int2bin :: Int -> [Bit]
 int2bin 0 = []
-int2bin n = n `mod` 2 : int2bin (n `div` 2)
+int2bin n = int2bin (n `div` 2) ++ [n `mod` 2]
 
 -- *Ch7> int2bin 13
 -- [1,0,1,1]
