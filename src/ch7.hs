@@ -220,5 +220,5 @@ bin2Integer xs = sum [x * y | (x, y) <- zip (reverse xs) (iterate (*2) 1)]
 -- (((2d + c) * 2) + b) * 2 + a
 -- ((((d + 0) * 2 + c) * 2) + b) * 2 + a
 
-bin2Int :: [Bit] -> Int
-bin2Int = mfoldl (\ x y -> x * 2 + y) 0
+bin2int :: [Bit] -> Int
+bin2int = mfoldl (\ x y -> x * 2 + y) 0
