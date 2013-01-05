@@ -259,3 +259,9 @@ encode = concat . map (make8 . int2bin . C.ord)
 
 decode :: [Bit] -> String
 decode = map (C.chr . bin2int) . chop8
+
+channel :: a -> a
+channel = id
+
+transmit :: String -> String
+transmit = decode . channel . encode
