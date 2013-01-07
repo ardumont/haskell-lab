@@ -143,11 +143,11 @@ chop9 = unfold null (take 9) (drop 9)
 decode :: [Bit] -> String
 decode = map (C.chr . bin2int . checkParbit) . chop9
 
-channel :: a -> a
-channel = id
+channel :: [a] -> [a]
+channel = tail
 
 transmit :: String -> String
 transmit = decode . channel . encode
 
 -- *Ch7_2> transmit "haskell is great"
--- "haskell is great"
+-- "\209\195\231\215\202\216\216A\210\231A\207\228\202\195*** Exception: Not ok
