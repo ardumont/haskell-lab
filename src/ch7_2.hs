@@ -1,5 +1,7 @@
 module Ch7_2 where
 
+import qualified Data.Char as C
+
 -- given a function that takes pair as parameter
 add :: Num a => (a,a) -> a
 add (x,y) = x + y
@@ -64,3 +66,13 @@ chop8 = unfold null (take 8) (drop 8)
 
 -- *Ch7_2> chop8 [1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,0]
 -- [[1,1,0,1,0,0,1,0],[1,1,0,1,0,0,1,0],[1,1,0,1,0,0,1,0]]
+
+mapu :: (a -> b) -> [a] -> [b]
+mapu f = unfold null (f . head) tail
+
+-- *Ch7_2> mapu (+1) [1,2,4]
+-- [2,3,5]
+-- *Ch7_2> mapu even [1,2,4]
+-- [False,True,True]
+-- *Ch7_2> mapu int2bin [1,2,4,8,16]
+-- [[1],[0,1],[0,0,1],[0,0,0,1],[0,0,0,0,1]]
