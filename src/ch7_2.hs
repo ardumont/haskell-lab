@@ -53,8 +53,8 @@ type Bit = Int
 -- int2bin n = int2bin (n `div` 2) ++ [n `mod` 2]
 
 -- then
-int2bin :: Int -> [Bit]
-int2bin = unfold (== 0) (`mod` 2) (`div` 2)
+int2bin0 :: Int -> [Bit]
+int2bin0 = unfold (== 0) (`mod` 2) (`div` 2)
 
 -- *Ch7_2> int2bin 20
 -- [0,0,1,0,1]
@@ -96,3 +96,58 @@ iter3 f = unfold (const False) id f
 
 -- *Ch7_2> take 10 (iter3 (*2) 0)
 -- [0,2,4,6,8,10,12,14,16,18]
+
+bin2int :: [Bit] -> Int
+bin2int = foldl (\ x y -> x * 2 + y) 0
+
+-- *Ch7> bin2int [0,0,0,0,1,1,0,1]
+-- 13
+
+-- make sure a list of bits is of same length 8
+make8 :: [Bit] -> [Bit]
+make8 bits = reverse (take 8 (reverse bits ++ repeat 0))
+
+-- *Ch7> make8 [1,1,0,1]
+-- [0,0,0,0,1,1,0,1]
+-- *Ch7> bin2int (make8 [1,1,0,1])
+-- 13
+
+parbit :: [Bit] -> [Bit]
+parbit xs | even (sum xs) = xs ++ [0] -- even number of ones
+          | otherwise     = xs ++ [1] -- odd number of ones
+
+-- *Ch7_2> parbit [1,1,0]
+-- [1,1,0,0]
+-- *Ch7_2> parbit [1,1,1]
+-- [1,1,1,1]
+
+int2bin :: Int -> [Bit]
+int2bin 0 = []
+int2bin n = int2bin (n `div` 2) ++ [n `mod` 2]
+
+encode :: String -> [Bit]
+encode = concat . map (parbit . make8 . int2bin . C.ord)
+
+checkParbit :: [Bit] -> [Bit]
+checkParbit xs | (parbit (take 8 xs) == xs) = (take 8 xs)
+               | otherwise = error "Not ok"
+
+-- *Ch7_2> checkParbit (encode "a")
+-- [0,1,0,0,0,0,1,1]
+-- *Ch7_2> checkParbit [0,1,0,0,0,0,1,0]
+-- *** Exception: Not ok
+
+chop9 :: [Bit] -> [[Bit]]
+chop9 = unfold null (take 9) (drop 9)
+
+decode :: [Bit] -> String
+decode = map (C.chr . bin2int . checkParbit) . chop9
+
+channel :: a -> a
+channel = id
+
+transmit :: String -> String
+transmit = decode . channel . encode
+
+-- *Ch7_2> transmit "haskell is great"
+-- "haskell is great"
