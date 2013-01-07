@@ -82,3 +82,17 @@ iter f x = x : iter f (f x)
 
 -- *Ch7_2> take 10 (iter (+1) 10)
 -- [10,11,12,13,14,15,16,17,18,19]
+
+iter2 :: (a -> a) -> a -> [a]
+iter2 f = unfold (\ _ -> False) id f
+
+-- *Ch7_2> take 10 (iter2 (+1) 10)
+-- [10,11,12,13,14,15,16,17,18,19]
+-- *Ch7_2> take 10 (iter2 (+2) 0)
+-- [0,2,4,6,8,10,12,14,16,18]
+
+iter3 :: (a -> a) -> a -> [a]
+iter3 f = unfold (const False) id f
+
+-- *Ch7_2> take 10 (iter3 (*2) 0)
+-- [0,2,4,6,8,10,12,14,16,18]
