@@ -76,3 +76,9 @@ mapu f = unfold null (f . head) tail
 -- [False,True,True]
 -- *Ch7_2> mapu int2bin [1,2,4,8,16]
 -- [[1],[0,1],[0,0,1],[0,0,0,1],[0,0,0,0,1]]
+
+iter :: (a -> a) -> a -> [a]
+iter f x = x : iter f (f x)
+
+-- *Ch7_2> take 10 (iter (+1) 10)
+-- [10,11,12,13,14,15,16,17,18,19]
