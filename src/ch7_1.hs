@@ -1,4 +1,4 @@
-module Ch7 where
+module Ch7_1 where
 
 import qualified Data.Char as C
 
