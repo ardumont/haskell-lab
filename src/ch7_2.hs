@@ -4,7 +4,7 @@ module Ch7_2 where
 add :: Num a => (a,a) -> a
 add (x,y) = x + y
 
--- given the curry function
+-- Given the curry function
 cur :: ((a,b) -> c) -> a -> b -> c
 cur f = \x -> \y -> f (x,y)
 
@@ -12,4 +12,14 @@ cur f = \x -> \y -> f (x,y)
 -- *Ch7_2> ((cur add) 1) 2
 -- 3
 -- *Ch7_2> (cur add) 1 2
+-- 3
+
+uncur :: (a -> b -> c) -> (a, b) -> c
+uncur f = \ (x, y) -> (f x y)
+
+-- *Ch7_2> add (1,2)
+-- 3
+-- *Ch7_2> (cur add) 1 2
+-- 3
+-- *Ch7_2> uncur (cur add) (1,2)
 -- 3
