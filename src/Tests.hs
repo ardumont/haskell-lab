@@ -27,3 +27,18 @@ take5 = take 5 . filter (`elem` ['a'..'e'])
 -- "a"
 -- *Tests> take5 ("afhe" ++ ['g'..'z'])
 -- "ae"
+
+-- Invariant - length is always 5...
+-- *Tests> quickCheck (\s -> length (take5 s) == 5)
+
+-- *** Failed! Falsifiable (after 1 test):
+-- ""
+
+-- Quickcheck Says: Go screw!
+
+-- By loosening the invariant, this pass
+-- *Tests> quickCheck (\s -> length (take5 s) <= 5)
+-- +++ OK, passed 100 tests.
+
+-- *Tests> quickCheck (\s -> all (`elem` ['a'..'e']) (take5 s))
+-- +++ OK, passed 100 tests.
