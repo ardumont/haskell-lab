@@ -239,12 +239,6 @@ pyths n = [(x, y, z) | x <- m,
 -- *Ch5> pyths 10
 -- [(3,4,5),(4,3,5),(6,8,10),(8,6,10)]
 
--- unique couple (a,b) such that a*b = n
--- As the multiplication is commutative, we consider (a,b) == (b,a)
-
-couple :: Int -> [(Int,Int)]
-couple n = [(a,b) | a <- [1..n], b <- [1..a], a * b == n]
-
 -- A positive integer is perfect if it equals the sum of its factors,
 -- excluding the number itself.
 -- Using a list comprehension and the function *factors*, define a function
