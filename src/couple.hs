@@ -6,9 +6,11 @@ import Test.QuickCheck.All
 -- unique couple (a,b) such that a*b = n
 -- As the multiplication is commutative, we consider (a,b) == (b,a)
 
-couple :: Int -> [(Int, Int)]
-couple n = [(a,b) | a <- [1..n], b <- [1..a], a * b == n]
+isqrt :: Int -> Int
+isqrt = floor . sqrt . fromIntegral
 
+couple :: Int -> [(Int, Int)]
+couple n = [(a,b) | a <- [1..isqrt n], b <- [a..n], a * b == n]
 
 -- *Couple> couple 10
 -- [(5,2),(10,1)]
@@ -22,9 +24,6 @@ couple n = [(a,b) | a <- [1..n], b <- [1..a], a * b == n]
 -- [(40,25),(50,20),(100,10),(125,8),(200,5),(250,4),(500,2),(1000,1)]
 -- *Couple> couple 10000
 -- [(100,100),(125,80),(200,50),(250,40),(400,25),(500,20),(625,16),(1000,10),(1250,8),(2000,5),(2500,4),(5000,2),(10000,1)]
-
-isqrt :: Int -> Int
-isqrt = floor . sqrt . fromIntegral
 
 rg :: Int -> Int -> [a] -> [a]
 rg inf sup s = take sup $ drop inf s
@@ -45,8 +44,10 @@ rgc inf sup = rg inf sup [(n, isqrt n, couple n) | n <- [1..]]
 -- define the properties to check
 prop_productOk = (\ n -> all (\ (a,b) -> a * b == n ) (couple n))
 prop_coupleIdempotence = (\ x y -> couple x == couple y)
+prop_coupleInfSqrt = (\ n -> all (\ (a,b) -> a <= isqrt n ) (couple n))
 
 -- adding
 main = do
-  verboseCheckWith stdArgs { maxSuccess = 10 } prop_productOk
-  verboseCheckWith stdArgs { maxSuccess = 10 } prop_coupleIdempotence
+  verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_productOk
+  verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_coupleIdempotence
+  verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_coupleInfSqrt
