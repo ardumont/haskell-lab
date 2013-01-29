@@ -12,18 +12,23 @@ isqrt = floor . sqrt . fromIntegral
 couple :: Int -> [(Int, Int)]
 couple n = [(a,b) | a <- [1..isqrt n], b <- [a..n], a * b == n]
 
+coupleSimple :: Int -> [(Int, Int)]
+coupleSimple n = [(a,b) | a <- [1..n], b <- [a..n], a * b == n]
+
 -- *Couple> couple 10
--- [(5,2),(10,1)]
--- *Couple> couple 100
--- [(10,10),(20,5),(25,4),(50,2),(100,1)]
+-- [(1,10),(2,5)]
 -- *Couple> couple 12
--- [(4,3),(6,2),(12,1)]
+-- [(1,12),(2,6),(3,4)]
 -- *Couple> couple 24
--- [(6,4),(8,3),(12,2),(24,1)]
+-- [(1,24),(2,12),(3,8),(4,6)]
+-- *Couple> couple 100
+-- [(1,100),(2,50),(4,25),(5,20),(10,10)]
 -- *Couple> couple 1000
--- [(40,25),(50,20),(100,10),(125,8),(200,5),(250,4),(500,2),(1000,1)]
+-- [(1,1000),(2,500),(4,250),(5,200),(8,125),(10,100),(20,50),(25,40)]
+-- *Couple> couple 1000
+-- [(1,1000),(2,500),(4,250),(5,200),(8,125),(10,100),(20,50),(25,40)]
 -- *Couple> couple 10000
--- [(100,100),(125,80),(200,50),(250,40),(400,25),(500,20),(625,16),(1000,10),(1250,8),(2000,5),(2500,4),(5000,2),(10000,1)]
+-- [(1,10000),(2,5000),(4,2500),(5,2000),(8,1250),(10,1000),(16,625),(20,500),(25,400),(40,250),(50,200),(80,125),(100,100)]
 
 rg :: Int -> Int -> [a] -> [a]
 rg inf sup s = take sup $ drop inf s
@@ -45,9 +50,11 @@ rgc inf sup = rg inf sup [(n, isqrt n, couple n) | n <- [1..]]
 prop_productOk = (\ n -> all (\ (a,b) -> a * b == n ) (couple n))
 prop_coupleIdempotence = (\ x y -> couple x == couple y)
 prop_coupleInfSqrt = (\ n -> all (\ (a,b) -> a <= isqrt n ) (couple n))
+prop_coupleVsCoupleSimple = (\ n -> (couple n) == (coupleSimple n))
 
 -- adding
 main = do
   verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_productOk
   verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_coupleIdempotence
   verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_coupleInfSqrt
+  verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_coupleVsCoupleSimple
