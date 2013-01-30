@@ -11,3 +11,10 @@ r v = \ inp -> [(v, inp)]
 
 -- *Parsers> (r "value") "input"
 -- [("value","input")]
+
+-- failure parser
+failure :: Parser a
+failure = \ _ -> []
+
+-- *Parsers> failure "input"
+-- []
