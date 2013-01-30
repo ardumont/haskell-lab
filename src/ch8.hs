@@ -18,3 +18,13 @@ failure = \ _ -> []
 
 -- *Parsers> failure "input"
 -- []
+
+-- parser char
+
+item :: Parser Char
+item = \ inp -> case inp of
+                     []     -> []
+                     (x:xs) -> [(x, xs)]
+
+-- *Parsers> item "abc"
+-- [('a',"bc")]
