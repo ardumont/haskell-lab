@@ -29,3 +29,11 @@ item = \ input -> case input of
 
 -- *Parsers> item  "input-string-without-consuming"
 -- [('i',"nput-string-without-consuming")]
+
+-- abstract the application of parser using the parse function
+
+parse :: Parser a -> Parser a
+parse p input = p input
+
+-- *Parsers> parse item  "input-string-without-consuming"
+-- [('i',"nput-string-without-consuming")]
