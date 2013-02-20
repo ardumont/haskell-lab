@@ -35,5 +35,13 @@ item = \ input -> case input of
 parse :: Parser a -> Parser a
 parse p input = p input
 
--- *Parsers> parse item  "input-string-without-consuming"
--- [('i',"nput-string-without-consuming")]
+-- *Parsers> parse (ret 1) "abc"
+-- [(1,"abc")]
+-- *Parsers> parse item "abc"
+-- [('a',"bc")]
+-- *Parsers> parse item "bc"
+-- [('b',"c")]
+-- *Parsers> parse item ""
+-- []
+-- *Parsers> parse failure "abc"
+-- []
