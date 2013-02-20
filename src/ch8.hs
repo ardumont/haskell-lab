@@ -19,14 +19,13 @@ failure = \ _ -> []
 -- *Parsers> failure "input"
 -- []
 
--- parser char
+-- parser char: fails if the input is empty, otherwise, return the first item
+-- consumed from the input string
 
 item :: Parser Char
-item = \ inp -> case inp of
-                     []     -> []
-                     (x:xs) -> [(x, xs)]
+item = \ input -> case input of
+                       []     -> []
+                       (x:xs) -> [(x, xs)]
 
--- *Parsers> item "abc"
--- [('a',"bc")]
-                -- *Parsers> item ""
--- []
+-- *Parsers> item  "input-string-without-consuming"
+-- [('i',"nput-string-without-consuming")]
