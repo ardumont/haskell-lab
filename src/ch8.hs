@@ -5,12 +5,13 @@ type Parser a = String -> [(a, String)]
 -- basic parsers
 
 -- return parser
+-- always succeeds by returning the result value v without consuming
+-- the input
+ret :: a -> Parser a
+ret v = \ input -> [(v, input)]
 
-r :: a -> Parser a
-r v = \ inp -> [(v, inp)]
-
--- *Parsers> (r "value") "input"
--- [("value","input")]
+-- *Parsers> ret 1 "input-string-without-consuming"
+-- [(1,"input-string-without-consuming")]
 
 -- failure parser
 failure :: Parser a
@@ -28,3 +29,5 @@ item = \ inp -> case inp of
 
 -- *Parsers> item "abc"
 -- [('a',"bc")]
+                -- *Parsers> item ""
+-- []
