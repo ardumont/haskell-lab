@@ -62,3 +62,19 @@ parse p input = p input
 --     item >>= \ _ ->
 --     item >>= \ y ->
 --     ret (x, y)
+
+(+++) :: Parser a -> Parser a -> Parser a
+p +++ q = \ inp -> case parse p inp of
+  [ ] -> parse q inp
+  [(v , out)] -> [(v , out)]
+
+-- *Parsers> parse (item +++ ret 'd') "abcde"
+-- [('a',"bcde")]
+-- *Parsers> parse (item +++ ret 'd') ""
+-- [('d',"")]
+-- *Parsers> parse (fail +++ ret 'd') ""
+-- [('d',"")]
+-- *Parsers> parse (fail +++ ret 'd') "abcd"
+-- [('d',"abcd")]
+-- *Parsers> parse (fail +++ fail) "abcd"
+-- []
