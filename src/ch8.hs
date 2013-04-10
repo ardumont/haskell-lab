@@ -45,3 +45,20 @@ parse p input = p input
 -- []
 -- *Parsers> parse failure "abc"
 -- []
+
+-- p :: Parser (Char, Char)
+-- p = do
+--     x <- item
+--     item
+--     y <- item
+--     ret (x, y)
+
+-- (>>=) :: Parser a -> (a -> Parser b) -> Parser b
+-- p >>= f = \ inp -> case parse p inp of
+--   [] -> []
+--   [(v , out)] -> parse (f v ) out
+
+-- p = item >>= \ x ->
+--     item >>= \ _ ->
+--     item >>= \ y ->
+--     ret (x, y)
