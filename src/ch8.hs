@@ -4,8 +4,8 @@ type Parser a = String -> [(a, String)]
 
 -- basic parsers
 
--- return parser: always succeeds by returning the result value v without
--- consuming the input
+-- return parser: always succeeds by returning the result value
+-- v without consuming the input
 ret :: a -> Parser a
 ret v = \ input -> [(v, input)]
 
@@ -19,8 +19,8 @@ failure = \ _ -> []
 -- *Parsers> failure "input"
 -- []
 
--- parser char: fails if the input is empty, otherwise, return the first item
--- consumed from the input string
+-- parser char: fails if the input is empty, otherwise,
+-- return the first item consumed from the input string
 
 item :: Parser Char
 item = \ input -> case input of
