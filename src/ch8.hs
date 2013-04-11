@@ -176,3 +176,21 @@ many1 p = do v  <- p
 -- [("123","abc1")]
 -- *Parsers> parse (many1 digit) "abc1"
 -- []
+
+-- lower-case letter followed by zero or more alphanumeric characters
+
+-- identifier variable
+ident :: Parser String
+ident = do v <- lower
+           vs <- many alphanum
+           return (v:vs)
+
+-- *Parsers> parse ident "a123454,"
+-- [("a123454",",")]
+-- *Parsers> parse ident "thisIsAnIdentifier"
+-- [("thisIsAnIdentifier","")]
+-- *Parsers> parse ident "thisIsAnIdentifier-,sajdfl"
+-- [("thisIsAnIdentifier","-,sajdfl")]
+
+-- natural numbers comprising one or more digits,
+-- and spacing comprising zero or more space, tab, and newline characters
