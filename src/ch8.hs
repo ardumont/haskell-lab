@@ -1,6 +1,7 @@
 module Parsers where
 
 import Control.Monad
+import Data.Char(isDigit)
 
 newtype Parser a              =  P (String -> [(a,String)])
 
@@ -83,3 +84,21 @@ only1and3Char = do x <- item
 -- [('a',"bcd")]
 -- *Parsers> parse (Parsers.fail +++ return 'd') "abcd"
 -- [('d',"abcd")]
+
+sat :: (Char -> Bool) -> Parser Char
+sat p = do x <- item; if p x then return x else Parsers.fail
+
+-- *Parsers> parse (sat isDigit) "abc"
+-- []
+-- *Parsers> parse (sat isDigit) "a1bc"
+-- []
+-- *Parsers> parse (sat isDigit) "11a1bc"
+-- [('1',"1a1bc")]
+
+digit :: Parser Char
+digit = sat isDigit
+
+-- *Parsers> parse digit "11a1bc"
+-- [('1',"1a1bc")]
+-- *Parsers> parse digit "abc"
+-- []
