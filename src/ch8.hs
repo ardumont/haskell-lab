@@ -217,3 +217,32 @@ space = do many (sat isSpace)
 
 -- *Parsers> parse space " \t\n     eab"
 -- [((),"eab")]
+
+token :: Parser a -> Parser a
+token p = do space
+             x <- p
+             space
+             return x
+
+-- *Parsers> parse (token ident) " \t\n     eab     \t\n   sdfsd"
+-- [("eab","sdfsd")]
+
+identifier :: Parser String
+identifier = token ident
+
+-- *Parsers> parse identifier " \t\n     eab     \t\n   sdfsd"
+-- [("eab","sdfsd")]
+
+natural :: Parser Int
+natural = token nat
+
+-- *Parsers> parse natural " \t\n     123     \t\n   sdfsd"
+-- [(123,"sdfsd")]
+
+symbol :: String -> Parser String
+symbol s = token (string s)
+
+-- *Parsers> parse (symbol "123") " \t\n     123     \t\n   sdfsd"
+-- [("123","sdfsd")]
+-- *Parsers> parse (symbol "123") " \t\n     1234     \t\n   sdfsd"
+-- [("123","4     \t\n   sdfsd")]
