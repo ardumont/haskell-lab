@@ -1,5 +1,7 @@
 module Parsers where
 
+import Control.Monad
+
 newtype Parser a              =  P (String -> [(a,String)])
 
 parse                         :: Parser a -> String -> [(a,String)]
@@ -15,6 +17,14 @@ instance Monad Parser where
                                                 []        -> []
                                                 [(v,out)] -> parse (f v) out)
 
+instance MonadPlus Parser where
+  -- fail
+    mzero                      =  P (\_ -> [])
+  -- choice
+    p `mplus` q                =  P (\inp -> case parse p inp of
+                                        []        -> parse q inp
+                                        [(v,out)] -> [(v,out)])
+
 -- basic parsers
 
 -- return
@@ -25,9 +35,9 @@ instance Monad Parser where
 
 -- failure parser: always fails whatever the input
 fail :: Parser a
-fail = P (\_ -> [])
+fail = mzero
 
--- *Parsers> fail "input"
+-- *Parsers> Parsers.fail "input"
 -- []
 
 -- parser char: fails if the input is empty, otherwise,
@@ -40,8 +50,7 @@ item = P (\ inp -> case inp of
 
 -- *Parsers> item  "input-string-without-consuming"
 -- [('i',"nput-string-without-consuming")]
-
--- *Parsers> parse (ret 1) "abc"
+-- *Parsers> parse (return 1) "abc"
 -- [(1,"abc")]
 -- *Parsers> parse item "abc"
 -- [('a',"bc")]
@@ -49,7 +58,7 @@ item = P (\ inp -> case inp of
 -- [('b',"c")]
 -- *Parsers> parse item ""
 -- []
--- *Parsers> parse failure "abc"
+-- *Parsers> parse Parsers.fail "abc"
 -- []
 
 only1and3Char :: Parser (Char, Char)
@@ -65,13 +74,12 @@ only1and3Char = do x <- item
 -- *Parsers> parse only1and3Char "ab"
 -- []
 
--- *Parsers> parse (item +++ ret 'd') "abcde"
--- [('a',"bcde")]
--- *Parsers> parse (item +++ ret 'd') ""
--- [('d',"")]
--- *Parsers> parse (fail +++ ret 'd') ""
--- [('d',"")]
--- *Parsers> parse (fail +++ ret 'd') "abcd"
+(+++) :: Parser a -> Parser a -> Parser a
+(+++) = mplus
+
+-- *Parsers> parse (item +++ Parsers.fail) "abcd"
+-- [('a',"bcd")]
+-- *Parsers> parse (Parsers.fail +++ item) "abcd"
+-- [('a',"bcd")]
+-- *Parsers> parse (Parsers.fail +++ return 'd') "abcd"
 -- [('d',"abcd")]
--- *Parsers> parse (fail +++ fail) "abcd"
--- []
