@@ -193,4 +193,14 @@ ident = do v <- lower
 -- [("thisIsAnIdentifier","-,sajdfl")]
 
 -- natural numbers comprising one or more digits,
--- and spacing comprising zero or more space, tab, and newline characters
+
+nat :: Parser Int
+nat = do xs <- many1 digit
+         return (read xs)
+
+-- *Parsers> parse nat "1234"
+-- [(1234,"")]
+-- *Parsers> parse nat "1234asbc"
+-- [(1234,"asbc")]
+
+-- spacing comprising zero or more space, tab, and newline characters
