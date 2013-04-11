@@ -155,3 +155,24 @@ string (x:xs) = do char x
 -- [("abc","def")]
 -- *Parsers> parse (string "abc") "def"
 -- []
+
+many :: Parser a -> Parser [a]
+many p = many1 p +++ return []
+
+many1 :: Parser a -> Parser [a]
+many1 p = do v  <- p
+             vs <- many p
+             return (v:vs)
+
+-- *Parsers> parse (many digit) "123abc"
+-- [("123","abc")]
+-- *Parsers> parse (many digit) "abc"
+-- [("","abc")]
+-- *Parsers> parse (many1 digit) "abc"
+-- []
+-- *Parsers> parse (many1 digit) "123abc"
+-- [("123","abc")]
+-- *Parsers> parse (many1 digit) "123abc1"
+-- [("123","abc1")]
+-- *Parsers> parse (many1 digit) "abc1"
+-- []
