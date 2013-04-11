@@ -1,7 +1,7 @@
 module Parsers where
 
 import Control.Monad
-import Data.Char(isDigit)
+import Data.Char(isDigit, isUpper, isLower, isAlpha, isAlphaNum)
 
 newtype Parser a              =  P (String -> [(a,String)])
 
@@ -102,3 +102,45 @@ digit = sat isDigit
 -- [('1',"1a1bc")]
 -- *Parsers> parse digit "abc"
 -- []
+
+upper :: Parser Char
+upper = sat isUpper
+
+-- *Parsers> parse upper "Abc"
+-- [('A',"bc")]
+-- *Parsers> parse upper "abc"
+-- []
+
+lower :: Parser Char
+lower = sat isLower
+
+-- *Parsers> parse lower "Abc"
+-- []
+-- *Parsers> parse lower "abc"
+-- [('a',"bc")]
+
+letter :: Parser Char
+letter = sat isAlpha
+
+-- *Parsers> parse letter "123abc"
+-- []
+-- *Parsers> parse letter "a1bc"
+-- [('a',"1bc")]
+
+alphanum :: Parser Char
+alphanum = sat isAlphaNum
+
+-- *Parsers> parse alphanum "a01bc213"
+-- [('a',"01bc213")]
+-- *Parsers> parse alphanum "01bc213"
+-- [('0',"1bc213")]
+-- *Parsers> parse alphanum "=,"
+-- []
+
+char :: Char -> Parser Char
+char x = sat (== x)
+
+-- *Parsers> parse (char 'a') "bca"
+-- []
+-- *Parsers> parse (char 'a') "abca"
+-- [('a',"bca")]
