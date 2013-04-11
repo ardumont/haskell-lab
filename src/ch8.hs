@@ -1,39 +1,45 @@
 module Parsers where
 
-type Parser a = String -> [(a, String)]
+newtype Parser a              =  P (String -> [(a,String)])
+
+parse                         :: Parser a -> String -> [(a,String)]
+parse (P p) inp               =  p inp
+
+instance Monad Parser where
+  -- return parser: always succeeds by returning the result value
+  -- v without consuming the input
+    return v                   =  P (\inp -> [(v,inp)])
+
+  -- bind
+    p >>= f                    =  P (\inp -> case parse p inp of
+                                                []        -> []
+                                                [(v,out)] -> parse (f v) out)
 
 -- basic parsers
 
--- return parser: always succeeds by returning the result value
--- v without consuming the input
-ret :: a -> Parser a
-ret v = \ input -> [(v, input)]
-
--- *Parsers> ret 1 "input-string-without-consuming"
+-- return
+-- *Parsers> return 1 "input-string-without-consuming"
 -- [(1,"input-string-without-consuming")]
 
--- failure parser: always fails whatever the input
-failure :: Parser a
-failure = \ _ -> []
+-- fail
 
--- *Parsers> failure "input"
+-- failure parser: always fails whatever the input
+fail :: Parser a
+fail = P (\_ -> [])
+
+-- *Parsers> fail "input"
 -- []
 
 -- parser char: fails if the input is empty, otherwise,
 -- return the first item consumed from the input string
 
 item :: Parser Char
-item = \ input -> case input of
+item = P (\ inp -> case inp of
                        []     -> []
-                       (x:xs) -> [(x, xs)]
+                       (x:xs) -> [(x, xs)])
 
 -- *Parsers> item  "input-string-without-consuming"
 -- [('i',"nput-string-without-consuming")]
-
--- abstract the application of parser using the parse function
-
-parse :: Parser a -> Parser a
-parse p input = p input
 
 -- *Parsers> parse (ret 1) "abc"
 -- [(1,"abc")]
@@ -46,27 +52,18 @@ parse p input = p input
 -- *Parsers> parse failure "abc"
 -- []
 
--- p :: Parser (Char, Char)
--- p = do
---     x <- item
---     item
---     y <- item
---     ret (x, y)
+only1and3Char :: Parser (Char, Char)
+only1and3Char = do x <- item
+                   item
+                   y <- item
+                   return (x, y)
 
--- (>>=) :: Parser a -> (a -> Parser b) -> Parser b
--- p >>= f = \ inp -> case parse p inp of
---   [] -> []
---   [(v , out)] -> parse (f v ) out
-
--- p = item >>= \ x ->
---     item >>= \ _ ->
---     item >>= \ y ->
---     ret (x, y)
-
-(+++) :: Parser a -> Parser a -> Parser a
-p +++ q = \ inp -> case parse p inp of
-  [ ] -> parse q inp
-  [(v , out)] -> [(v , out)]
+-- *Parsers> parse only1and3Char "agc"
+-- [(('a','c'),"")]
+-- *Parsers> parse only1and3Char "agcsldkfjsdk"
+-- [(('a','c'),"sldkfjsdk")]
+-- *Parsers> parse only1and3Char "ab"
+-- []
 
 -- *Parsers> parse (item +++ ret 'd') "abcde"
 -- [('a',"bcde")]
