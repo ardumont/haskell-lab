@@ -246,3 +246,26 @@ symbol s = token (string s)
 -- [("123","sdfsd")]
 -- *Parsers> parse (symbol "123") " \t\n     1234     \t\n   sdfsd"
 -- [("123","4     \t\n   sdfsd")]
+
+-- parser for a non-empty list of natural numbers that ignores spacing around tokens
+
+pa :: Parser [Int]
+pa = do symbol "["
+        n <- natural
+        ns <- many (do symbol ","
+                       natural)
+        symbol "]"
+        return (n:ns)
+
+-- *Parsers> parse pa "[1,2]"
+-- [([1,2],"")]
+-- *Parsers> parse pa "[1]"
+-- [([1],"")]
+-- *Parsers> parse pa "[1,2,3]"
+-- [([1,2,3],"")]
+-- *Parsers> parse pa "[1,2,3] skdjfsd"
+-- [([1,2,3],"skdjfsd")]
+-- *Parsers> parse pa "[11,2,3] skdjfsd"
+-- [([11,2,3],"skdjfsd")]
+-- *Parsers> parse pa "[1,2,3,] skdjfsd"
+-- []
