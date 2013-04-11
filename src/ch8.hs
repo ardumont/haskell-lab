@@ -144,3 +144,14 @@ char x = sat (== x)
 -- []
 -- *Parsers> parse (char 'a') "abca"
 -- [('a',"bca")]
+
+string :: String -> Parser String
+string [] = return []
+string (x:xs) = do char x
+                   string xs
+                   return (x:xs)
+
+-- *Parsers> parse (string "abc") "abcdef"
+-- [("abc","def")]
+-- *Parsers> parse (string "abc") "def"
+-- []
