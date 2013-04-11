@@ -1,7 +1,7 @@
 module Parsers where
 
 import Control.Monad
-import Data.Char(isDigit, isUpper, isLower, isAlpha, isAlphaNum)
+import Data.Char(isDigit, isUpper, isLower, isAlpha, isAlphaNum, isSpace)
 
 newtype Parser a              =  P (String -> [(a,String)])
 
@@ -204,3 +204,16 @@ nat = do xs <- many1 digit
 -- [(1234,"asbc")]
 
 -- spacing comprising zero or more space, tab, and newline characters
+
+sp :: Parser String
+sp = many (sat isSpace)
+
+-- *Parsers> parse sp " \t\n     eab"
+-- [(" \t\n     ","eab")]
+
+space :: Parser ()
+space = do many (sat isSpace)
+           return ()
+
+-- *Parsers> parse space " \t\n     eab"
+-- [((),"eab")]
