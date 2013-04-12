@@ -322,3 +322,32 @@ factor = do symbol "("
 -- [(9,"")]
 -- *Parsers> parse expr "(1+2)*3+12"
 -- [(21,"")]
+
+eval :: String -> Int
+eval s = case parse expr s of
+           [(n,[])] -> n
+           []       -> error "Invalid input"
+           [(_,_)]  -> error "Bad format - there remains input impossible to parse"
+
+-- *Parsers> eval ""
+-- *** Exception: Invalid input
+-- *Parsers> eval "a"
+-- *** Exception: Invalid input
+-- *Parsers> eval "1+"
+-- *** Exception: Bad format - there remains input impossible to parse
+-- *Parsers> eval "1+2"
+-- 3
+-- *Parsers> eval "1+2*3"
+-- 7
+-- *Parsers> eval "1+(2*3)"
+-- 7
+-- *Parsers> eval "10+1+(2*3)"
+-- 17
+-- *Parsers> eval "10*1+(2*3)"
+-- 16
+-- *Parsers> eval "(10*1)+(2*3)"
+-- 16
+-- *Parsers> eval " ( 10 * 1 ) + ( 2 * 3 ) "
+-- 16
+-- *Parsers> eval "(10*1)+(2*3)*"
+-- *** Exception: Bad format - there remains input impossible to parse
