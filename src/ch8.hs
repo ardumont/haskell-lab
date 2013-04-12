@@ -269,3 +269,56 @@ pa = do symbol "["
 -- [([11,2,3],"skdjfsd")]
 -- *Parsers> parse pa "[1,2,3,] skdjfsd"
 -- []
+
+--
+-- Parser for arithmetic expressions
+--
+
+-- naive: deal with no priorities, ambiguity (can have multiple parsing trees)
+-- expr ::= expr + expr | expr * expr | (expr) | nat
+-- nat  ::= 0 | 1 | ... |
+
+-- deal with priority but we still can have multiple tree for addition (e.g. a+b+c) and
+-- multiplication (e.g. a*b*c)
+-- expr   ::= expr + expr | term
+-- term   ::= term * term | factor
+-- factor ::= (expr) | nat
+-- nat    ::= 0 | 1 | ... |
+
+-- choosing association to the right for addition and multiplication
+-- expr   ::= term + expr | term
+-- term   ::= factor * term | factor
+-- factor ::= (expr) | nat
+-- nat    ::= 0 | 1 | ... |
+
+-- which can be simplify
+-- expr   ::= term (+ expr | empty)
+-- term   ::= factor (* term | empty)
+-- factor ::= (expr) | nat
+-- nat    ::= 0 | 1 | ... |
+
+expr :: Parser Int
+expr = do t <- term
+          do symbol "+"
+             e <- expr
+             return (t + e)
+             +++ return t
+
+term :: Parser Int
+term = do f <- factor
+          do symbol "*"
+             t <- term
+             return (t * f)
+             +++ return f
+
+factor :: Parser Int
+factor = do symbol "("
+            e <- expr
+            symbol ")"
+            return e
+         +++ natural
+
+-- *Parsers> parse expr "(1+2)*3"
+-- [(9,"")]
+-- *Parsers> parse expr "(1+2)*3+12"
+-- [(21,"")]
