@@ -292,8 +292,8 @@ pa = do symbol "["
 -- nat    ::= 0 | 1 | ... |
 
 -- which can be simplify
--- expr   ::= term (+ expr | empty)
--- term   ::= factor (* term | empty)
+-- expr   ::= term (+ expr | - expr | empty)
+-- term   ::= factor (* term | / term | empty)
 -- factor ::= (expr) | nat
 -- nat    ::= 0 | 1 | ... |
 
@@ -302,14 +302,20 @@ expr = do t <- term
           do symbol "+"
              e <- expr
              return (t + e)
-             +++ return t
+             +++ do symbol "-"
+                    e <- expr
+                    return (t - e)
+                 +++ return t
 
 term :: Parser Int
 term = do f <- factor
           do symbol "*"
              t <- term
              return (t * f)
-             +++ return f
+             +++ do symbol "/"
+                    t <- term
+                    return (t `div` f)
+                    +++ return f
 
 factor :: Parser Int
 factor = do symbol "("
@@ -322,6 +328,20 @@ factor = do symbol "("
 -- [(9,"")]
 -- *Parsers> parse expr "(1+2)*3+12"
 -- [(21,"")]
+-- *Parsers> parse expr "1+2/3"
+-- [(2,"")]
+-- *Parsers> parse expr "(1+2)/3"
+-- [(1,"")]
+-- *Parsers> parse expr "1+(2/3)"
+-- [(2,"")]
+-- *Parsers> parse expr "1+(2*3)"
+-- [(7,"")]
+-- *Parsers> parse expr "1+2*3"
+-- [(7,"")]
+-- *Parsers> parse expr "1+2*3-3"
+-- [(4,"")]
+-- *Parsers> parse expr "1+2/3-3"
+-- [(-1,"")]
 
 eval :: String -> Int
 eval s = case parse expr s of
