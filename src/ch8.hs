@@ -368,3 +368,18 @@ int = do symbol "-"
 -- [(101,"")]
 -- *Parsers> parse int " - 101"
 -- [(-101,"")]
+
+comment :: Parser ()
+comment = do symbol "--"
+             many (sat (/= '\n'))
+             char '\n'
+             return ()
+
+-- *Parsers> parse comment "--thisisacommentignoredtill\nnotignored"
+-- [((),"notignored")]
+-- *Parsers> parse comment "--this is a comment ignored till\nnotignored"
+-- [((),"notignored")]
+-- *Parsers> parse comment "--this is a  comment ignored till\nnotignored"
+-- [((),"notignored")]
+-- *Parsers> parse comment "--this is a  comment ignored 23 till\nnotignored"
+-- [((),"notignored")]
