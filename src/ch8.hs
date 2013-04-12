@@ -351,3 +351,20 @@ eval s = case parse expr s of
 -- 16
 -- *Parsers> eval "(10*1)+(2*3)*"
 -- *** Exception: Bad format - there remains input impossible to parse
+
+int :: Parser Int
+int = do symbol "-"
+         n <- natural
+         return (-n)
+         +++ natural
+
+-- *Parsers> parse int "-1"
+-- [(-1,"")]
+-- *Parsers> parse int "-10"
+-- [(-10,"")]
+-- *Parsers> parse int "-101"
+-- [(-101,"")]
+-- *Parsers> parse int "101"
+-- [(101,"")]
+-- *Parsers> parse int " - 101"
+-- [(-101,"")]
