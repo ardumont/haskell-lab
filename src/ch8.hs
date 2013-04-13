@@ -417,3 +417,13 @@ comment = do symbol "--"
 -- [((),"notignored")]
 -- *Parsers> parse comment "--this is a  comment ignored 23 till\nnotignored"
 -- [((),"notignored")]
+
+-- expr ::= expr - nat | nat
+-- nat  ::= 0 | 1 | ...
+
+xpr :: Parser Int
+xpr = do e <- xpr
+         symbol "-"
+         n <- natural
+         return (e - n)
+         +++ natural
