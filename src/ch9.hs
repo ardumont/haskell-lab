@@ -20,3 +20,8 @@ putS s = case s of
 putSLn :: String -> IO ()
 putSLn s = do putS s
               putChar '\n'
+
+strlen :: IO ()
+strlen = do putSLn "Give me some input, please:"
+            inp <- getL
+            putSLn ("Length: " ++ (show (length inp)) ++ " characters.")
