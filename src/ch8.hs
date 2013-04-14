@@ -427,3 +427,26 @@ xpr = do e <- xpr
          n <- natural
          return (e - n)
          +++ natural
+
+-- ((1 - 2) - 3)
+-- foldl (-) 1
+-- *Parsers> (foldl (-) 0) [1, 2, 3]
+-- -6
+
+-- expr ::= nat (expr - epsi | epsi)
+-- nat  ::= 0 | 1 | ...
+
+xpr2 :: Parser Int
+xpr2 = do n <- natural
+          ns <- many (do symbol "-"
+                         natural)
+          return (foldl (-) n ns)
+
+-- *Parsers> parse xpr2 "1-2"
+-- [(-1,"")]
+-- *Parsers> parse xpr2 "1-2-3"
+-- [(-4,"")]
+-- *Parsers> parse xpr2 "1-2-3-5"
+-- [(-9,"")]
+-- *Parsers> parse xpr2 "1-2-3-506"
+-- [(-510,"")]
