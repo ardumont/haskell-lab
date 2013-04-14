@@ -39,7 +39,7 @@ goto (x, y) = putS ("\ESC[" ++ show y ++ ";" ++ show x ++ "H")
 
 writeat :: Pos -> String -> IO ()
 writeat p s = do goto p
-                 putS s
+                 putSLn s
 
 seqn :: [IO a] -> IO ()
 seqn [] = return ()
