@@ -1,6 +1,6 @@
 module Parsers where
 
-ooimport Control.Monad
+import Control.Monad
 import Data.Char(isDigit, isUpper, isLower, isAlpha, isAlphaNum, isSpace)
 
 newtype Parser a              =  P (String -> [(a,String)])
