@@ -10,3 +10,9 @@ getL = do x <- getChar
             then return []
             else (do xs <- getL
                      return (x:xs))
+
+putS :: String -> IO ()
+putS s = case s of
+  []     -> return ()
+  (x:xs) -> (do putChar x
+                putS xs)
