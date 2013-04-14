@@ -16,3 +16,7 @@ putS s = case s of
   []     -> return ()
   (x:xs) -> (do putChar x
                 putS xs)
+
+putSLn :: String -> IO ()
+putSLn s = do putS s
+              putChar '\n'
