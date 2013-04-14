@@ -25,3 +25,9 @@ strlen :: IO ()
 strlen = do putSLn "Give me some input, please:"
             inp <- getL
             putSLn ("Length: " ++ (show (length inp)) ++ " characters.")
+
+beep :: IO ()
+beep = putStr "\BEL"
+
+cls :: IO ()
+cls = putStr "\ESC[2J"
