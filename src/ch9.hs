@@ -31,3 +31,20 @@ beep = putStr "\BEL"
 
 cls :: IO ()
 cls = putStr "\ESC[2J"
+
+type Pos = (Int, Int)
+
+goto :: Pos -> IO ()
+goto (x, y) = putS ("\ESC[" ++ show y ++ ";" ++ show x ++ "H")
+
+writeat :: Pos -> String -> IO ()
+writeat p s = do goto p
+                 putS s
+
+seqn :: [IO a] -> IO ()
+seqn [] = return ()
+seqn (a:as) = do a
+                 seqn as
+
+putS2 :: String -> IO ()
+putS2 s = seqn [ putChar x | x <- s ]
