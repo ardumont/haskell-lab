@@ -90,4 +90,4 @@ life b = do cls
             life (nxgen b)
 
 wait :: Int -> IO ()
-wait n = seqn [ return () | _ <- [1..n ]]
+wait n = seqn [ return () | _ <- [1..n]]
