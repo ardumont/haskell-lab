@@ -14,12 +14,10 @@ getL = do x <- getChar
 putS :: String -> IO ()
 putS s = case s of
   []     -> return ()
-  (x:xs) -> (do putChar x
-                putS xs)
+  (x:xs) -> putChar x >> putS xs
 
 putSLn :: String -> IO ()
-putSLn s = do putS s
-              putChar '\n'
+putSLn s = putS s >> putChar '\n'
 
 strlen :: IO ()
 strlen = do putSLn "Give me some input, please:"
