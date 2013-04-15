@@ -1,11 +1,24 @@
 module Monade where
 
+import System.IO
+
 -- getChar :: IO Char
 -- putChar :: Char -> IO ()
 -- return :: a -> IO a
 
+getCh :: IO Char
+getCh = do hSetEcho stdin False
+           c <- System.IO.getChar
+           hSetEcho stdin True
+           return c
+
+getChar :: IO Char
+getChar = do x <- getCh
+             putChar x
+             return x
+
 getL :: IO String
-getL = do x <- getChar
+getL = do x <- Monade.getChar
           if x == '\n'
             then return []
             else (do xs <- getL

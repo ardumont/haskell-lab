@@ -44,7 +44,7 @@ display s = do writeat (3, 2) "               "
 -- indicate an error and continue with the same string:
 calc :: String -> IO ()
 calc xs = do display xs
-             c <- getChar
+             c <- Monade.getChar
              if elem c buttons then
                process c xs
                else do beep
