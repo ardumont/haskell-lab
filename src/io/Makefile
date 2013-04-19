@@ -10,3 +10,6 @@ clean:
 
 run:
 	./$(FILE)
+
+runh:
+	runhaskell $(FILE).hs
