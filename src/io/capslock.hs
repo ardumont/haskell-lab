@@ -3,8 +3,7 @@ module Capslock where
 import GHC.Unicode (toUpper)
 
 main :: IO ()
-main = do x <- getContents
-          putStrLn (map toUpper x)
+main = interact $ map toUpper
 
 -- getContents :: IO String
 
