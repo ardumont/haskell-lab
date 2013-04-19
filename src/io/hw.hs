@@ -17,3 +17,11 @@ reverseWords = unwords . reverse . words
 
 -- *Main> reverseWords "this is to be reversed"
 -- "reversed be to is this"
+
+readL :: IO ()
+readL =
+  do x <- getChar
+     if x /= '\n'
+       then do putChar x
+               readL
+       else return ()
