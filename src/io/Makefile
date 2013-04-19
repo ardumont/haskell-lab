@@ -22,3 +22,6 @@ short:
 
 pal:
 	cat resources/palindromes | runhaskell palindrome
+
+open:
+	runhaskell openfile
