@@ -19,3 +19,6 @@ caps:
 
 short:
 	cat resources/quotes | runhaskell shortline
+
+pal:
+	cat resources/palindromes | runhaskell palindrome
