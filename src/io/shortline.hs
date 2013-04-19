@@ -1,11 +1,9 @@
 module Shortlines where
 
-main :: IO ()
-main = do x <- getContents
-          putStrLn $ shortLines x
+-- interact :: (String -> String) -> IO ()
 
-shortLines :: String -> String
-shortLines = (unlines . filter ((<10) . length) . lines)
+main :: IO ()
+main = interact (unlines . filter ((<10) . length) . lines)
 
 -- cat resources/quotes | runhaskell shortline
 -- I'm
