@@ -30,7 +30,5 @@ readL =
 -- some small sequencing using do
 
 sequenceRead :: IO ()
-sequenceRead = do x <- getLine
-                  y <- getLine
-                  z <- getLine
-                  print [x,y,z]
+sequenceRead = do rs <- sequence [getLine, getLine, getLine]
+                  print rs
