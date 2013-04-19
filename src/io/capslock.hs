@@ -5,6 +5,5 @@ import GHC.Unicode (toUpper)
 
 main :: IO ()
 main = forever
-            (do putStr "Give me some lovin': "
-                x <- getLine
+            (do x <- getLine
                 putStrLn (map toUpper x))
