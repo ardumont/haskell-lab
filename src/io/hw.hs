@@ -1,6 +1,6 @@
 module Main where
 
-import Control.Monad (when, forever)
+import Control.Monad (when, forever, forM)
 import GHC.Unicode (toUpper)
 
 main :: IO ()
@@ -62,3 +62,10 @@ readOnce = forever
                putStrLn (map toUpper x))
 
 -- forever :: Monad m => m a -> m b
+
+readFor :: IO ()
+readFor = do colors <- forM [1,2,3] (\i ->
+                                      do putStrLn ("color for " ++ (show i))
+                                         c <- getLine
+                                         return c)
+             mapM_ putStr colors
