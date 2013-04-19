@@ -32,3 +32,24 @@ readL =
 sequenceRead :: IO ()
 sequenceRead = do rs <- sequence [getLine, getLine, getLine]
                   print rs
+
+-- *Main> sequence (map print [1,2,3])
+-- 1
+-- 2
+-- 3
+-- [(),(),()]
+
+-- *Main> :t mapM
+-- mapM :: Monad m => (a -> m b) -> [a] -> m [b]
+-- *Main> mapM print [1,2,3]
+-- 1
+-- 2
+-- 3
+-- [(),(),()]
+
+-- *Main> mapM_ print [1,2,3]
+-- 1
+-- 2
+-- 3
+-- *main> :t mapM_
+-- mapM_ :: Monad m => (a -> m b) -> [a] -> m ()
