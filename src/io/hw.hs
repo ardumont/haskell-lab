@@ -26,3 +26,11 @@ readL =
      when (x /= '\n')
        (do putChar x
            readL)
+
+-- some small sequencing using do
+
+sequenceRead :: IO ()
+sequenceRead = do x <- getLine
+                  y <- getLine
+                  z <- getLine
+                  print [x,y,z]
