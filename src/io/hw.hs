@@ -1,7 +1,6 @@
 module Main where
 
-hello :: IO ()
-hello = putStrLn "Hello world!"
-
 main :: IO ()
-main = hello
+main = do putStrLn "Hello, what's your name?"
+          n <- getLine
+          putStrLn $ "Hello " ++ reverse n
