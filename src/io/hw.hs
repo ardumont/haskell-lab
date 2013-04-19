@@ -7,7 +7,7 @@ main = do putStrLn "Hello, what's your name?"
 
 infiniteRead :: IO ()
 infiniteRead = do line <- getLine
-                  if line == ""
+                  if null line
                     then return ()
                     else do putStrLn $ reverse line
                             infiniteRead
