@@ -13,3 +13,9 @@ run:
 
 runh:
 	runhaskell $(FILE).hs
+
+caps:
+	cat resources/quotes | runhaskell capslock
+
+short:
+	cat resources/quotes | runhaskell shortline
