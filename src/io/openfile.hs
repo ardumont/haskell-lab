@@ -1,6 +1,6 @@
 module Openfile where
 
-import System.IO (openFile, hGetContents, hClose, IOMode(ReadMode))
+import System.IO (withFile, hGetContents, IOMode(ReadMode))
 
 -- openFile :: FilePath -> IOMode -> IO Handle
 -- ReadMode :: IOMode
@@ -10,11 +10,14 @@ import System.IO (openFile, hGetContents, hClose, IOMode(ReadMode))
 -- possible constructor for IOMode
 -- data IOMode = ReadMode | WriteMode | AppendMode | ReadWriteMode
 
+-- withFile
+--   :: FilePath
+--      -> IOMode -> (GHC.IO.Handle.Types.Handle -> IO r) -> IO r
+
 main :: IO ()
-main = do handle <- openFile "./resources/life" ReadMode
-          contents <- hGetContents handle
-          putStr contents
-          hClose handle
+main = do withFile "./resources/life" ReadMode ( \handle ->
+                                                  do contents <- hGetContents handle
+                                                     putStr contents)
 
 -- *openfile> main
 -- I know *exactly* what you mean.
