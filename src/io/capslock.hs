@@ -1,6 +1,6 @@
 module Capslock where
 
-import GHC.Unicode (toUpper)
+import Data.Char (toUpper)
 
 main :: IO ()
 main = interact $ map toUpper

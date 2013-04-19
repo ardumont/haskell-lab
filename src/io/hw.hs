@@ -1,7 +1,7 @@
 module Main where
 
 import Control.Monad (when, forever, forM)
-import GHC.Unicode (toUpper)
+import Data.Char (toUpper)
 
 main :: IO ()
 main = do putStrLn "Hello, what's your name?"
