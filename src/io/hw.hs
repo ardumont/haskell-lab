@@ -1,5 +1,7 @@
 module Main where
 
+import Control.Monad (when)
+
 main :: IO ()
 main = do putStrLn "Hello, what's your name?"
           n <- getLine
@@ -21,7 +23,6 @@ reverseWords = unwords . reverse . words
 readL :: IO ()
 readL =
   do x <- getChar
-     if x /= '\n'
-       then do putChar x
-               readL
-       else return ()
+     when (x /= '\n')
+       (do putChar x
+           readL)
