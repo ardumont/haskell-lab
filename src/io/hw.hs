@@ -1,6 +1,7 @@
 module Main where
 
-import Control.Monad (when)
+import Control.Monad (when, forever)
+import GHC.Unicode (toUpper)
 
 main :: IO ()
 main = do putStrLn "Hello, what's your name?"
@@ -53,3 +54,11 @@ sequenceRead = do rs <- sequence [getLine, getLine, getLine]
 -- 3
 -- *main> :t mapM_
 -- mapM_ :: Monad m => (a -> m b) -> [a] -> m ()
+
+readOnce :: IO ()
+readOnce = forever
+           (do putStr "Give me some lovin': "
+               x <- getLine
+               putStrLn (map toUpper x))
+
+-- forever :: Monad m => m a -> m b
