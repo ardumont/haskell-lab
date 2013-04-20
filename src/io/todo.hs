@@ -46,10 +46,6 @@ add fileP todo = appendFile fileP $
                       map (orgify . capitalize) .
                       lines) todo
 
-addTodo :: FilePath -> IO ()
-addTodo fileP = do todo <- getContents
-                   add fileP todo
-
 deleteTodoTask :: FilePath -> IO ()
 deleteTodoTask file = do putStrLn "Todo list:"
                          view file
