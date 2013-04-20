@@ -86,13 +86,13 @@ newTodos h n = (unlines .
                 (delete (h !! n))) h
 
 todoDelete :: [String] -> IO ()
-todoDelete (file:index:[]) = del file (read index)
+todoDelete (file:index:_) = del file (read index)
 
 todoView :: [String] -> IO ()
-todoView (file:[]) = view file
+todoView (file:_) = view file
 
 todoAdd :: [String] -> IO ()
-todoAdd (file:todo:[]) = add file todo
+todoAdd (file:todo:_) = add file todo
 
 dispatch :: [(String, [String] -> IO ())]
 dispatch = [("del", todoDelete),
