@@ -42,18 +42,24 @@ deleteTodoTask :: FilePath -> IO ()
 deleteTodoTask file = do handle <- openFile file ReadMode
                          (tempPath, tempHandle) <- openTempFile "." "temp"
                          todosstr <- hGetContents handle
-                         let todos = (lines todosstr)
-                             htodos = zip ([0..] :: [Int]) todos in
+                         let htodos = todos todosstr in
                            do putStrLn "Todo list:"
-                              mapM_ putStrLn todos
-                              putStr ("Destroy todo list? (1," ++ ((show . length) todos) ++ ")?")
+                              mapM_ putStrLn (map (\(n,t) -> (show n) ++ t) htodos)
+                              putStr ("Destroy todo list? (0," ++ (range htodos) ++ ")? ")
                               numTodoToDel <- getLine
                               let numToDel = read numTodoToDel
-                                  newTodoItems = (unlines .
-                                                  (map (\(_, t) -> t)) .
-                                                  (delete (htodos !! numToDel))) htodos in
+                                  newTodoItems = newTodos htodos numToDel in
                                 do hPutStr tempHandle newTodoItems
                                    hClose handle
                                    hClose tempHandle
                                    removeFile file
                                    renameFile tempPath file
+
+todos :: String -> [(Int, String)]
+todos = zip ([0..] :: [Int]) . lines
+
+range :: [(Int, String)] -> String
+range = (show . (\ x -> x-1) . length)
+
+newTodos :: [(Int, String)] -> Int -> String
+newTodos h n = (unlines . (map (\(_, t) -> t)) . (delete (h !! n))) h
