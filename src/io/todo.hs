@@ -6,11 +6,8 @@ import Data.Char (toUpper)
 
 import Data.List (delete)
 
-import System.IO (openFile,
-                  hGetContents,
-                  hPutStr,
+import System.IO (hPutStr,
                   hClose,
-                  IOMode(ReadMode),
                   openTempFile)
 
 import System.Directory (removeFile,
@@ -92,13 +89,16 @@ dispatch :: IO ()
 dispatch = do args <- getArgs
               let file = (args !! 1) in
                 case (args !! 0) of
-                  "add" -> let todo = (args !! 2) in
+                  "add" ->
+                    let todo = (args !! 2) in
                     do (add file todo)
                        view file
-                  "see" -> view file
-                  "del" -> let numIndexToDel = read (args !! 3) in
+                  "del" ->
+                    let numIndexToDel = read (args !! 2) in
                     do (del file numIndexToDel)
                        view file
+                  _     ->
+                    view file
 
 main :: IO ()
 main = dispatch
