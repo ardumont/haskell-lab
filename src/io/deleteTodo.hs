@@ -44,7 +44,7 @@ deleteTodoTask file = do handle <- openFile file ReadMode
                          todosstr <- hGetContents handle
                          let htodos = todos todosstr in
                            do putStrLn "Todo list:"
-                              mapM_ putStrLn (map (\(n,t) -> (show n) ++ t) htodos)
+                              mapM_ putStrLn (map (\(n,t) -> (show n) ++ " " ++ t) htodos)
                               putStr ("Destroy todo list? (0," ++ (range htodos) ++ ")? ")
                               numTodoToDel <- getLine
                               let numToDel = read numTodoToDel
