@@ -1,7 +1,5 @@
 module Openfile where
 
-import System.IO (withFile, hGetContents, IOMode(ReadMode))
-
 -- openFile :: FilePath -> IOMode -> IO Handle
 -- ReadMode :: IOMode
 -- hGetContents :: Handle -> IO String
@@ -14,10 +12,11 @@ import System.IO (withFile, hGetContents, IOMode(ReadMode))
 --   :: FilePath
 --      -> IOMode -> (GHC.IO.Handle.Types.Handle -> IO r) -> IO r
 
+-- readFile :: FilePath -> IO String
+
 main :: IO ()
-main = do withFile "./resources/life" ReadMode ( \handle ->
-                                                  do contents <- hGetContents handle
-                                                     putStr contents)
+main = do contents <- readFile "./resources/life"
+          putStr contents
 
 -- *openfile> main
 -- I know *exactly* what you mean.
