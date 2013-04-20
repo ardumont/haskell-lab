@@ -15,8 +15,11 @@ module Openfile where
 -- readFile :: FilePath -> IO String
 
 main :: IO ()
-main = do contents <- readFile "./resources/life"
-          putStr contents
+main = displayContentOfFile "./resources/life"
+
+displayContentOfFile :: FilePath -> IO ()
+displayContentOfFile file = do contents <- readFile file
+                               putStr contents
 
 -- *openfile> main
 -- I know *exactly* what you mean.
