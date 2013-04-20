@@ -85,20 +85,21 @@ newTodos h n = (unlines .
                 (map (\(_, t) -> t)) .
                 (delete (h !! n))) h
 
-dispatch :: IO ()
-dispatch = do args <- getArgs
-              let file = (args !! 1) in
-                case (args !! 0) of
-                  "add" ->
-                    let todo = (args !! 2) in
-                    do (add file todo)
-                       view file
-                  "del" ->
-                    let numIndexToDel = read (args !! 2) in
-                    do (del file numIndexToDel)
-                       view file
-                  _     ->
-                    view file
+todoDelete :: [String] -> IO ()
+todoDelete (file:index:[]) = del file (read index)
+
+todoView :: [String] -> IO ()
+todoView (file:[]) = view file
+
+todoAdd :: [String] -> IO ()
+todoAdd (file:todo:[]) = add file todo
+
+dispatch :: [(String, [String] -> IO ())]
+dispatch = [("del", todoDelete),
+            ("see", todoView),
+            ("add", todoAdd)]
 
 main :: IO ()
-main = dispatch
+main = do (command:args) <- getArgs
+          let (Just action) = (lookup command dispatch) in
+            action args
