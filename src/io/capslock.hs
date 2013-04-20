@@ -2,6 +2,8 @@ module Capslock where
 
 import Data.Char (toUpper)
 
+-- interact :: (String -> String) -> IO ()
+
 main :: IO ()
 main = interact $ map toUpper
 
