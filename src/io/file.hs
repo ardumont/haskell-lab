@@ -1,4 +1,4 @@
-module Openfile where
+module File where
 
 import Data.Char (toUpper)
 
