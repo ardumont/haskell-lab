@@ -3,12 +3,12 @@ FILE=hw
 default: compile
 
 compile:
-	ghc --make $(FILE)
+	time ghc --make $(FILE)
 
 clean:
 	rm *.o *.hi $(FILE)
 
-run:
+run: compile
 	./$(FILE)
 
 runh:
