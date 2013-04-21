@@ -2,12 +2,16 @@ module Main where
 
 --import System.IO
 import System.Environment (getArgs)
-import System.Directory (doesFileExist)
+import Control.Exception (catch)
 
 main :: IO ()
-main = do (filename:_) <- getArgs
-          fileExists <- doesFileExist filename
-          if fileExists
-             then (do contents <- readFile filename
-                      putStrLn ((show . length . lines) contents))
-                  else putStrLn ("'" ++ filename ++ "' does not exists!")
+main = Control.Exception.catch countLines handlerExc
+
+handlerExc :: IOError -> IO ()
+handlerExc _ = putStrLn ("Oops! I did it again!")
+
+countLines :: IO ()
+countLines = do
+  (filename:_) <- getArgs
+  contents <- readFile filename
+  putStrLn ((show . length . lines) contents)
