@@ -1,4 +1,4 @@
-module Todo where
+module Main where
 
 import System.Environment
 
