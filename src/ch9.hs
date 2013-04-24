@@ -1,5 +1,7 @@
 module Ch9 where
 
+import Data.List (repeat)
+
 -- Nim is a game that is played on a board comprising five numbered rows of stars, which is initially set up as follows:
 -- 1:∗∗∗∗∗
 -- 2:∗∗∗∗
@@ -19,3 +21,9 @@ type Board = [Int]
 
 board :: Board
 board = [rows,(rows-1)..1]
+
+stars :: a -> Int -> [a]
+stars e n = take n $ repeat e
+
+-- *Ch9> stars '*' 10
+-- "**********"
