@@ -27,3 +27,9 @@ stars e n = take n $ repeat e
 
 -- *Ch9> stars '*' 10
 -- "**********"
+
+display :: Board -> [String]
+display b = map (stars '*') b
+
+-- *Ch9> display board
+-- ["*****","****","***","**","*"]
