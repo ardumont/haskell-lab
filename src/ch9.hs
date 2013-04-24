@@ -15,5 +15,7 @@ module Ch9 where
 rows :: Int
 rows = 5
 
-board :: [Int]
+type Board = [Int]
+
+board :: Board
 board = [rows,(rows-1)..1]
