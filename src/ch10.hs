@@ -17,3 +17,12 @@ occurs (Node l n r) m = (n == m) ||
 flatten :: Tree a -> [a]
 flatten (Leaf n)     = [n]
 flatten (Node l n r) = flatten l ++ [n] ++ flatten r
+
+-- for search trees (left nodes have inferior values, right nodes superior values)
+-- so we can rewrite occurs to be faster
+
+occursST :: (Eq a, Ord a) => Tree a -> a -> Bool
+occursST (Leaf n)     m = m == n
+occursST (Node l n r) m | m == n    = True
+                        | m < n     = occursST l m
+                        | otherwise = occursST r m
