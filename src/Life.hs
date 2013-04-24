@@ -1,6 +1,6 @@
 module Life where
 
-import Monade
+import IORoutine
 
 width :: Int
 width = 20

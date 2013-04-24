@@ -1,7 +1,7 @@
 module Calculator where
 
 import Parsers
-import Monade
+import IORoutine
 
 -- ############### Calculator
 
@@ -44,7 +44,7 @@ display s = do writeat (3, 2) "               "
 -- indicate an error and continue with the same string:
 calc :: String -> IO ()
 calc xs = do display xs
-             c <- Monade.getChar
+             c <- IORoutine.getChar
              if elem c buttons then
                process c xs
                else do beep

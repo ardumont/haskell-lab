@@ -1,4 +1,4 @@
-module Monade where
+module IORoutine where
 
 import System.IO
 
@@ -18,7 +18,7 @@ getChar = do x <- getCh
              return x
 
 getL :: IO String
-getL = do x <- Monade.getChar
+getL = do x <- IORoutine.getChar
           if x == '\n'
             then return []
             else (do xs <- getL
