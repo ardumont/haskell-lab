@@ -1,5 +1,6 @@
 module Ch9 where
 
+import IORoutine
 import Data.List (repeat)
 
 -- Nim is a game that is played on a board comprising five numbered rows of stars, which is initially set up as follows:
@@ -33,3 +34,9 @@ display b = map (stars '*') b
 
 -- *Ch9> display board
 -- ["*****","****","***","**","*"]
+
+-- write :: Pos -> String -> IO ()
+-- write (x,y) s = mapM_ (do
+
+-- showBoard :: Board -> IO ()
+-- showBoard = seqn [writeat p "O" | p <- b]
