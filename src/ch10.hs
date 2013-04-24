@@ -13,3 +13,7 @@ occurs (Node l n r) m = (n == m) ||
 
 -- *Ch10> map (occurs t) [0..8]
 -- [False,True,True,True,True,True,True,True,False]
+
+flatten :: Tree a -> [a]
+flatten (Leaf n)     = [n]
+flatten (Node l n r) = flatten l ++ [n] ++ flatten r
