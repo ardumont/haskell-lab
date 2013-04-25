@@ -62,3 +62,19 @@ p7 = Not p6
 
 p8 :: Prop
 p8 = Imply p6 p7
+
+-- *Ch10> find 1 [(1, 2), (3, 4)]
+-- 2
+-- *Ch10> find 3 [(1, 2), (3, 4)]
+-- 4
+-- *Ch10> find 5 [(1, 2), (3, 4)]
+-- *** Exception: Prelude.head: empty list
+
+type Subst = Assoc Char Bool
+
+eval :: Subst -> Prop -> Bool
+eval _ (Const b)   = b
+eval s (Var v)     = find v s
+eval s (Not b)     = not $ eval s b
+eval s (And a b)   = eval s a && eval s b
+eval s (Imply a b) = eval s a <= eval s b
