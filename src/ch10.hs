@@ -1,5 +1,7 @@
 module Ch10 where
 
+import Ch7_1 (Bit, int2bin)
+
 data Tree a = Leaf a | Node (Tree a) a (Tree a) deriving Show
 
 t :: Tree Int
@@ -95,10 +97,29 @@ vars (Imply a b) = vars a ++ vars b
 -- *Ch10> vars p4
 -- "AABB"
 
+bbools :: Int -> [[Bool]]
+bbools n = map (map convBool . make n . int2bin) [1..l]
+           where
+             l = (2 ^ n)
+             make :: Int -> [Bit] -> [Bit]
+             make m b = take m $ (b ++ repeat 0)
+             convBool :: Int -> Bool
+             convBool 0 = False
+             convBool 1 = True
+
+-- *Ch10> bbools 0
+-- [[]]
+-- *Ch10> bbools 1
+-- [[True],[True]]
+-- *Ch10> bbools 2
+-- [[True,False],[True,False],[True,True],[True,False]]
+-- *Ch10> bbools 3
+-- [[True,False,False],[True,False,False],[True,True,False],[True,False,False],[True,False,True],[True,True,False],[True,True,True],[True,False,False]]
+
 -- generate all substitutions boolean possible
 
 bools :: Int -> [[Bool]]
-bools 0 = []
+bools 0 = [[]]
 bools 1 = [[True], [False]]
 bools n = map (False:) bn ++ map (True:) bn
           where bn = bools (n-1)
