@@ -31,3 +31,34 @@ type Assoc k v = [(k, v)]
 
 find :: Eq a => a -> Assoc a b -> b
 find k t = head [ v | (k', v) <- t, k == k' ]
+
+-- Tautology: logical propositions that are always true
+
+data Prop = Const Bool
+          | Var Char
+          | Not Prop
+          | And Prop Prop
+          | Imply Prop Prop
+          deriving Show
+
+p1 :: Prop
+p1 = And (Var 'A') (Not (Var 'A'))
+
+p2 :: Prop
+p2 = Imply (And (Var 'A') (Var 'B')) (Var 'A')
+
+p3 :: Prop
+p3 = Imply (Var 'A') (And (Var 'A') (Var 'B'))
+
+p4 :: Prop
+p4 = Imply (And (Var 'A') (Imply
+      (Var 'A') (Var 'B'))) (Var 'B')
+
+p6 :: Prop
+p6 = And (Var 'a') (Var 'b')
+
+p7 :: Prop
+p7 = Not p6
+
+p8 :: Prop
+p8 = Imply p6 p7
