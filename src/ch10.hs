@@ -94,3 +94,20 @@ vars (Imply a b) = vars a ++ vars b
 -- "AAB"
 -- *Ch10> vars p4
 -- "AABB"
+
+-- generate all substitutions boolean possible
+
+bools :: Int -> [[Bool]]
+bools 0 = []
+bools 1 = [[True], [False]]
+bools n = map (False:) bn ++ map (True:) bn
+          where bn = bools (n-1)
+
+-- *Ch10> bools 0
+-- []
+-- *Ch10> bools 1
+-- [[True],[False]]
+-- *Ch10> bools 2
+-- [[False,True],[False,False],[True,True],[True,False]]
+-- *Ch10> bools 3
+-- [[False,False,True],[False,False,False],[False,True,True],[False,True,False],[True,False,True],[True,False,False],[True,True,True],[True,True,False]]
