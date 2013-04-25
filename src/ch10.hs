@@ -78,3 +78,19 @@ eval s (Var v)     = find v s
 eval s (Not b)     = not $ eval s b
 eval s (And a b)   = eval s a && eval s b
 eval s (Imply a b) = eval s a <= eval s b
+
+vars :: Prop -> [Char]
+vars (Const _)   = []
+vars (Var v)     = [v]
+vars (Not b)     = vars b
+vars (And a b)   = vars a ++ vars b
+vars (Imply a b) = vars a ++ vars b
+
+-- *Ch10> vars p1
+-- "AA"
+-- *Ch10> vars p2
+-- "ABA"
+-- *Ch10> vars p3
+-- "AAB"
+-- *Ch10> vars p4
+-- "AABB"
