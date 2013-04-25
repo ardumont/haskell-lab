@@ -26,3 +26,8 @@ occursST (Leaf n)     m = m == n
 occursST (Node l n r) m | m == n    = True
                         | m < n     = occursST l m
                         | otherwise = occursST r m
+
+type Assoc k v = [(k, v)]
+
+find :: Eq a => a -> Assoc a b -> b
+find k t = head [ v | (k', v) <- t, k == k' ]
