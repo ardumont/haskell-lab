@@ -8,6 +8,13 @@ type Assoc k v = [(k, v)]
 find :: Eq a => a -> Assoc a b -> b
 find k t = head [ v | (k', v) <- t, k == k' ]
 
+-- *Ch10> find 1 [(1, 2), (3, 4)]
+-- 2
+-- *Ch10> find 3 [(1, 2), (3, 4)]
+-- 4
+-- *Ch10> find 5 [(1, 2), (3, 4)]
+-- *** Exception: Prelude.head: empty list
+
 -- Tautology: logical propositions that are always true
 
 data Prop = Const Bool
@@ -45,13 +52,6 @@ p7 = Not p6
 
 p8 :: Prop
 p8 = Imply p6 p7
-
--- *Ch10> find 1 [(1, 2), (3, 4)]
--- 2
--- *Ch10> find 3 [(1, 2), (3, 4)]
--- 4
--- *Ch10> find 5 [(1, 2), (3, 4)]
--- *** Exception: Prelude.head: empty list
 
 type Subst = Assoc Char Bool
 
