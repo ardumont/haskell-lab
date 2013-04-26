@@ -23,6 +23,7 @@ data Prop = Const Bool
           | And Prop Prop
           | Imply Prop Prop
           | Or Prop Prop
+          | Equiv Prop Prop
           deriving Show
 
 p0 :: Prop
@@ -45,7 +46,7 @@ p5 :: Prop
 p5 = Or (Var 'A') (And (Var 'B') (Var 'C'))
 
 p6 :: Prop
-p6 = And (Var 'a') (Var 'b')
+p6 = Equiv (Var 'a') (Var 'b')
 
 p7 :: Prop
 p7 = Not p6
@@ -62,6 +63,7 @@ eval s (Not b)     = not $ eval s b
 eval s (And a b)   = eval s a && eval s b
 eval s (Or a b)    = eval s a || eval s b
 eval s (Imply a b) = eval s a <= eval s b
+eval s (Equiv a b) = eval s $ And (Imply a b) (Imply b a)
 
 vars :: Prop -> [Char]
 vars (Const _)   = []
@@ -70,6 +72,7 @@ vars (Not b)     = vars b
 vars (And a b)   = vars a ++ vars b
 vars (Or a b)    = vars a ++ vars b
 vars (Imply a b) = vars a ++ vars b
+vars (Equiv a b) = vars a ++ vars b
 
 -- *Ch10> vars p1
 -- "AA"
@@ -134,5 +137,5 @@ substs p = map (zip vs) (bools (length vs))
 isTaut :: Prop -> Bool
 isTaut p = and [ eval s p | s <- substs p ]
 
--- *Prop> map isTaut [p0,p1,p2,p3,p4,p5]
--- [False,False,True,False,True,False]
+-- *Prop> map isTaut [p0,p1,p2,p3,p4,p5,p6,p7,p8]
+-- [False,False,True,False,True,False,False,False,False]
