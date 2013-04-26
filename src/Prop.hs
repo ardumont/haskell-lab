@@ -15,7 +15,11 @@ data Prop = Const Bool
           | Not Prop
           | And Prop Prop
           | Imply Prop Prop
+          | Or Prop Prop
           deriving Show
+
+p0 :: Prop
+p0 = And (Var 'A') (Var 'B')
 
 p1 :: Prop
 p1 = And (Var 'A') (Not (Var 'A'))
@@ -29,6 +33,9 @@ p3 = Imply (Var 'A') (And (Var 'A') (Var 'B'))
 p4 :: Prop
 p4 = Imply (And (Var 'A') (Imply
       (Var 'A') (Var 'B'))) (Var 'B')
+
+p5 :: Prop
+p5 = Or (Var 'A') (And (Var 'B') (Var 'C'))
 
 p6 :: Prop
 p6 = And (Var 'a') (Var 'b')
@@ -53,6 +60,7 @@ eval _ (Const b)   = b
 eval s (Var v)     = find v s
 eval s (Not b)     = not $ eval s b
 eval s (And a b)   = eval s a && eval s b
+eval s (Or a b)    = eval s a || eval s b
 eval s (Imply a b) = eval s a <= eval s b
 
 vars :: Prop -> [Char]
@@ -60,6 +68,7 @@ vars (Const _)   = []
 vars (Var v)     = [v]
 vars (Not b)     = vars b
 vars (And a b)   = vars a ++ vars b
+vars (Or a b)    = vars a ++ vars b
 vars (Imply a b) = vars a ++ vars b
 
 -- *Ch10> vars p1
@@ -70,6 +79,8 @@ vars (Imply a b) = vars a ++ vars b
 -- "AAB"
 -- *Ch10> vars p4
 -- "AABB"
+-- *Prop> vars p5
+-- "ABC"
 
 bbools :: Int -> [[Bool]]
 bbools n = map (map convBool . make n . int2bin) [1..l]
@@ -123,5 +134,5 @@ substs p = map (zip vs) (bools (length vs))
 isTaut :: Prop -> Bool
 isTaut p = and [ eval s p | s <- substs p ]
 
--- *Prop> map isTaut [p1,p2,p3,p4]
--- [False,True,False,True]
+-- *Prop> map isTaut [p0,p1,p2,p3,p4,p5]
+-- [False,False,True,False,True,False]
