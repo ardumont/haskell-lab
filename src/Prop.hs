@@ -1,6 +1,7 @@
-module Ch10 where
+module Prop where
 
 import Ch7_1 (Bit, int2bin)
+import Life (rmdups)
 
 type Assoc k v = [(k, v)]
 
@@ -105,3 +106,10 @@ bools n = map (False:) bn ++ map (True:) bn
 -- [[False,True],[False,False],[True,True],[True,False]]
 -- *Ch10> bools 3
 -- [[False,False,True],[False,False,False],[False,True,True],[False,True,False],[True,False,True],[True,False,False],[True,True,True],[True,True,False]]
+
+substs :: Prop -> [Subst]
+substs p = map (zip vs) (bools (length vs))
+  where vs = rmdups (vars p)
+
+isTaut :: Prop -> Bool
+isTaut p = and [ eval s p | s <- substs p ]
