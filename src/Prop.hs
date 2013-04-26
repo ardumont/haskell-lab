@@ -111,5 +111,17 @@ substs :: Prop -> [Subst]
 substs p = map (zip vs) (bools (length vs))
   where vs = rmdups (vars p)
 
+-- *Prop> substs p1
+-- [[('A',True)],[('A',False)]]
+-- *Prop> substs p2
+-- [[('A',False),('B',True)],[('A',False),('B',False)],[('A',True),('B',True)],[('A',True),('B',False)]]
+-- *Prop> substs p3
+-- [[('A',False),('B',True)],[('A',False),('B',False)],[('A',True),('B',True)],[('A',True),('B',False)]]
+-- *Prop> substs p4
+-- [[('A',False),('B',True)],[('A',False),('B',False)],[('A',True),('B',True)],[('A',True),('B',False)]]
+
 isTaut :: Prop -> Bool
 isTaut p = and [ eval s p | s <- substs p ]
+
+-- *Prop> map isTaut [p1,p2,p3,p4]
+-- [False,True,False,True]
