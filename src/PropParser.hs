@@ -27,20 +27,18 @@ pconst s = case parse propConst s of
   [(b, _)] -> Just (Const b)
   _        -> Nothing
 
--- *PropParsers> parse const "Const true"
--- [("true","")]
--- *PropParsers> parse const "Const True"
--- [("True","")]
--- *PropParsers> parse const "Const False"
--- [("False","")]
--- *PropParsers> parse const "Const false"
--- [("false","")]
--- *PropParsers> parse const "Const nawak"
--- []
--- *PropParsers> parse const " nawak"
--- []
--- *PropParsers> parse const " True"
--- []
+-- *PropParsers> pconst "Const true"
+-- Just (Const True)
+-- *PropParsers> pconst "Const True"
+-- Just (Const True)
+-- *PropParsers> pconst "Const false"
+-- Just (Const False)
+-- *PropParsers> pconst "Const False"
+-- Just (Const False)
+-- *PropParsers> pconst "Const nawak False"
+-- Nothing
+-- *PropParsers> pconst " nawak "
+-- Nothing
 
 var :: Parser Char
 var = do symbol "Var"
@@ -52,6 +50,21 @@ var = do symbol "Var"
 -- [('b',"")]
 -- *PropParsers> parse var "Var c"
 -- [('c',"")]
+
+
+pvar :: String -> Maybe Prop
+pvar s = case parse var s of
+  [(v, _)] -> Just (Var v)
+  _        -> Nothing
+
+-- *PropParsers> pvar "Var a"
+-- Just (Var 'a')
+-- *PropParsers> pvar "Var alskdfj"
+-- Just (Var 'a')
+-- *PropParsers> pvar "Var nothing"
+-- Just (Var 'n')
+-- *PropParsers> pvar "nawak"
+-- Nothing
 
 -- prop :: Parser Prop
 -- prop = const +++ var
