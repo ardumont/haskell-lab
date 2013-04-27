@@ -15,7 +15,7 @@ import String (capitalize)
 --           deriving Show
 
 propConst :: Parser Prop
-propConst = do symbol "Const"
+propConst = do symbol "const"
                b <- symbol "true" +++
                     symbol "True" +++
                     symbol "False" +++
@@ -34,10 +34,10 @@ propConst = do symbol "Const"
 -- *PropParsers> parse propConst "Const True"
 -- [(Const True,"")]
 
-var :: Parser Prop
-var = do symbol "Var"
-         l <- letter
-         return $ Var l
+propVar :: Parser Prop
+propVar = do symbol "var"
+             l <- letter
+             return $ Var l
 
 -- *PropParsers> parse var "Var a"
 -- [(Var 'a',"")]
@@ -45,3 +45,23 @@ var = do symbol "Var"
 -- []
 -- *PropParsers> parse var "Var abc"
 -- [(Var 'a',"bc")]
+
+prop :: Parser Prop
+prop = propConst +++ propVar +++ propNot
+
+-- *PropParsers> parse prop "not var a"
+-- [(Not (Var 'a'),"")]
+-- *PropParsers> parse prop "const true"
+-- [(Const True,"")]
+-- *PropParsers> parse prop "var a"
+-- [(Var 'a',"")]
+
+propNot :: Parser Prop
+propNot = do symbol "not"
+             a <- prop
+             return (Not a)
+
+-- *PropParsers> parse propNot "var a"
+-- []
+-- *PropParsers> parse propNot "not var a"
+-- [(Not (Var 'a'),"")]
