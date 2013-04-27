@@ -19,17 +19,11 @@ type Board = [Int]
 makeBoard :: Int -> Board
 makeBoard n = [n, n-1..1]
 
--- *Ch9> makeBoard 5
+-- *Nim> makeBoard 5
 -- [5,4,3,2,1]
 
-stars :: a -> Int -> [a]
-stars e n = replicate n e
-
--- *Ch9> stars '*' 10
--- "**********"
-
 computeStars :: Board -> [(Int, String)]
-computeStars b = zip [0..(length b -1)] (map (stars '*') b)
+computeStars b = zip [0..(length b -1)] (map (flip replicate '*') b)
 
 -- *Ch9> computeStars (makeBoard 5)
 -- [(0,"*****"),(1,"****"),(2,"***"),(3,"**"),(4,"*")]
