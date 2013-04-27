@@ -32,3 +32,14 @@ const = do symbol "Const"
 -- []
 -- *PropParsers> parse const " True"
 -- []
+
+var :: Parser Char
+var = do symbol "Var"
+         letter
+
+-- *PropParsers> parse var "Var a"
+-- [('a',"")]
+-- *PropParsers> parse var "Var b"
+-- [('b',"")]
+-- *PropParsers> parse var "Var c"
+-- [('c',"")]
