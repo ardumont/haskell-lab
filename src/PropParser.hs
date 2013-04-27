@@ -84,9 +84,9 @@ askUser =
     do mapM_ putStrLn prompt
        p <- getLine
        let r = propEval p in
-         do case r of
-              Just v -> if isTaut v
-                        then putStrLn "tautology!"
-                        else putStrLn "Not a tautology!"
-              _    -> putStrLn "Invalid input!"
+         do putStrLn (case r of
+                         Just v -> (if isTaut v
+                                    then "tautology!"
+                                    else "Not a tautology!")
+                         _    ->  "Invalid input!")
             askUser
