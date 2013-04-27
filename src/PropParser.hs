@@ -3,8 +3,6 @@ module PropParsers where
 import Parsers
 import Prop
 
-import String (capitalize)
-
 -- To deal with priorities, change the order in this function
 prop :: Parser Prop
 prop = propConst +++
@@ -15,13 +13,14 @@ prop = propConst +++
          propImply +++
          propEquiv
 
+mapBool :: [(String, Bool)]
+mapBool = [("t", True), ("f", False)]
+
 propConst :: Parser Prop
-propConst = do b <- symbol "true" +++
-                    symbol "True" +++
-                    symbol "False" +++
-                    symbol "false"
-               let bool = read (capitalize b) :: Bool in
-                 return $ Const bool
+propConst = do b <- symbol "t" +++ symbol "f"
+               let bool = (lookup b mapBool) in
+                 case bool of
+                   Just v -> return $ Const v
 
 propVar :: Parser Prop
 propVar = do l <- token letter
