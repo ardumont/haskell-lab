@@ -47,7 +47,10 @@ propVar = do symbol "var"
 -- [(Var 'a',"bc")]
 
 prop :: Parser Prop
-prop = propConst +++ propVar +++ propNot
+prop = propConst +++
+         propVar +++
+         propNot +++
+         propAnd
 
 -- *PropParsers> parse prop "not var a"
 -- [(Not (Var 'a'),"")]
@@ -65,3 +68,16 @@ propNot = do symbol "not"
 -- []
 -- *PropParsers> parse propNot "not var a"
 -- [(Not (Var 'a'),"")]
+
+propAnd :: Parser Prop
+propAnd = do symbol "and"
+             a <- prop
+             b <- prop
+             return (And a b)
+
+-- *PropParsers> parse propAnd "and var a var b"
+-- [(And (Var 'a') (Var 'b'),"")]
+-- *PropParsers> parse propAnd "and var a var b"
+-- [(And (Var 'a') (Var 'b'),"")]
+-- *PropParsers> parse propAnd "null"
+-- []
