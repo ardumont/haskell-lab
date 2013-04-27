@@ -1,4 +1,4 @@
-module Ch9 where
+module Nim where
 
 import IORoutine
 
