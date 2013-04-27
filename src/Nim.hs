@@ -1,7 +1,5 @@
 module Nim where
 
-import IORoutine
-
 -- Nim is a game that is played on a board comprising five numbered rows of stars, which is initially set up as follows:
 -- 1:∗∗∗∗∗
 -- 2:∗∗∗∗
@@ -29,7 +27,7 @@ computeStars b = zip [0..(length b -1)] (map (flip replicate '*') b)
 -- [(0,"*****"),(1,"****"),(2,"***"),(3,"**"),(4,"*")]
 
 showBoard :: [(Int, String)] -> IO ()
-showBoard b = seqn [writeat (x, 0) (show x ++ ": " ++ s) | (x, s) <- b]
+showBoard b = mapM_ putStrLn [ show x ++ ": " ++ s | (x, s) <- b ]
 
 -- *Ch9> showBoard $ computeStars (makeBoard 5)
 -- 0: *****
