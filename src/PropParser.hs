@@ -93,3 +93,8 @@ propEquiv = do symbol "equiv"
                a <- prop
                b <- prop
                return (Equiv a b)
+
+propEval :: String -> (Maybe Prop)
+propEval s = case parse prop s of
+  [(p, "")] -> Just p
+  _         -> Nothing
