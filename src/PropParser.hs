@@ -5,15 +5,6 @@ import Prop
 
 import String (capitalize)
 
--- data Prop = Const Bool
---           | Var Char
---           | Not Prop
---           | And Prop Prop
---           | Imply Prop Prop
---           | Or Prop Prop
---           | Equiv Prop Prop
---           deriving Show
-
 propConst :: Parser Prop
 propConst = do symbol "const"
                b <- symbol "true" +++
@@ -50,7 +41,10 @@ prop :: Parser Prop
 prop = propConst +++
          propVar +++
          propNot +++
-         propAnd
+         propAnd +++
+         propOr  +++
+         propImply +++
+         propEquiv
 
 -- *PropParsers> parse prop "not var a"
 -- [(Not (Var 'a'),"")]
@@ -81,3 +75,21 @@ propAnd = do symbol "and"
 -- [(And (Var 'a') (Var 'b'),"")]
 -- *PropParsers> parse propAnd "null"
 -- []
+
+propOr :: Parser Prop
+propOr = do symbol "or"
+            a <- prop
+            b <- prop
+            return (Or a b)
+
+propImply :: Parser Prop
+propImply = do symbol "imply"
+               a <- prop
+               b <- prop
+               return (Imply a b)
+
+propEquiv :: Parser Prop
+propEquiv = do symbol "equiv"
+               a <- prop
+               b <- prop
+               return (Equiv a b)
