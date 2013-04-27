@@ -1,6 +1,9 @@
 module PropParsers where
 
 import Parsers
+import Prop
+
+import String (capitalize)
 
 -- data Prop = Const Bool
 --           | Var Char
@@ -11,12 +14,18 @@ import Parsers
 --           | Equiv Prop Prop
 --           deriving Show
 
-const :: Parser String
-const = do symbol "Const"
-           symbol "true" +++
-             symbol "True" +++
-             symbol "False" +++
-             symbol "false"
+propConst :: Parser Bool
+propConst = do symbol "Const"
+               b <- symbol "true" +++
+                    symbol "True" +++
+                    symbol "False" +++
+                    symbol "false"
+               return $ read (capitalize b)
+
+pconst :: String -> Maybe Prop
+pconst s = case parse propConst s of
+  [(b, _)] -> Just (Const b)
+  _        -> Nothing
 
 -- *PropParsers> parse const "Const true"
 -- [("true","")]
@@ -43,3 +52,10 @@ var = do symbol "Var"
 -- [('b',"")]
 -- *PropParsers> parse var "Var c"
 -- [('c',"")]
+
+-- prop :: Parser Prop
+-- prop = const +++ var
+
+-- not :: Parser Prop
+-- not = do symbol "Not"
+--          prop
