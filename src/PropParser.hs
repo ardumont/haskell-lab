@@ -90,3 +90,46 @@ askUser =
                                     else "Not a tautology!")
                          _    ->  "Invalid input!")
             askUser
+
+main :: IO ()
+main = askUser
+
+-- *PropParsers> main
+-- keywords: &, !, t, f, =>, <=>, and any other character
+-- Enter a Proposition:
+-- a
+-- Not a tautology!
+-- keywords: &, !, t, f, =>, <=>, and any other character
+-- Enter a Proposition:
+-- b
+-- Not a tautology!
+-- keywords: &, !, t, f, =>, <=>, and any other character
+-- Enter a Proposition:
+-- t
+-- tautology!
+-- keywords: &, !, t, f, =>, <=>, and any other character
+-- Enter a Proposition:
+-- f
+-- Not a tautology!
+-- keywords: &, !, t, f, =>, <=>, and any other character
+-- Enter a Proposition:
+-- ! f
+-- tautology!
+-- keywords: &, !, t, f, =>, <=>, and any other character
+-- Enter a Proposition:
+-- & t t
+-- tautology!
+-- keywords: &, !, t, f, =>, <=>, and any other character
+-- Enter a Proposition:
+-- & t ! f
+-- tautology!
+-- keywords: &, !, t, f, =>, <=>, and any other character
+-- Enter a Proposition:
+-- | a ! a
+-- tautology!
+-- keywords: &, !, t, f, =>, <=>, and any other character
+-- Enter a Proposition:
+-- | a ! b
+-- Not a tautology!
+-- keywords: &, !, t, f, =>, <=>, and any other character
+-- Enter a Proposition:
