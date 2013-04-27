@@ -5,6 +5,16 @@ import Prop
 
 import String (capitalize)
 
+-- To deal with priorities, change the order in this function
+prop :: Parser Prop
+prop = propConst +++
+         propVar +++
+         propNot +++
+         propAnd +++
+         propOr  +++
+         propImply +++
+         propEquiv
+
 propConst :: Parser Prop
 propConst = do b <- symbol "true" +++
                     symbol "True" +++
@@ -16,15 +26,6 @@ propConst = do b <- symbol "true" +++
 propVar :: Parser Prop
 propVar = do l <- token letter
              return $ Var l
-
-prop :: Parser Prop
-prop = propConst +++
-         propVar +++
-         propNot +++
-         propAnd +++
-         propOr  +++
-         propImply +++
-         propEquiv
 
 propNot :: Parser Prop
 propNot = do symbol "!"
