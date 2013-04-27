@@ -74,3 +74,19 @@ propEval s = case parse prop s of
 -- Just (And (Not (Var 'a')) (Const True))
 -- *PropParsers> propEval "& ! a <=> t f"
 -- Just (And (Not (Var 'a')) (Equiv (Const True) (Const False)))
+
+prompt :: [String]
+prompt = ["keywords: &, !, t, f, =>, <=>, and any other character",
+          "Enter a Proposition:"]
+
+askUser :: IO ()
+askUser =
+    do mapM_ putStrLn prompt
+       p <- getLine
+       let r = propEval p in
+         do case r of
+              Just v -> if isTaut v
+                        then putStrLn "tautology!"
+                        else putStrLn "Not a tautology!"
+              _    -> putStrLn "Invalid input!"
+            askUser
