@@ -14,16 +14,7 @@ import IORoutine
 
 -- _Hint:_ represent the board as a list comprising the number of stars remaining on each row, with the initial board being =[5, 4, 3, 2, 1]=.
 
-rows :: Int
-rows = 5
-
 type Board = [Int]
-
-board :: Board
-board = makeBoard rows
-
--- *Ch9> board
--- [5,4,3,2,1]
 
 makeBoard :: Int -> Board
 makeBoard n = [n, n-1..1]
@@ -34,20 +25,19 @@ makeBoard n = [n, n-1..1]
 stars :: a -> Int -> [a]
 stars e n = replicate n e
 
-
 -- *Ch9> stars '*' 10
 -- "**********"
 
 computeStars :: Board -> [(Int, String)]
 computeStars b = zip [0..(length b -1)] (map (stars '*') b)
 
--- *Ch9> computeStars board
+-- *Ch9> computeStars (makeBoard 5)
 -- [(0,"*****"),(1,"****"),(2,"***"),(3,"**"),(4,"*")]
 
 showBoard :: [(Int, String)] -> IO ()
 showBoard b = seqn [writeat (x, 0) (show x ++ ": " ++ s) | (x, s) <- b]
 
--- *Ch9> showBoard $ computeStars board
+-- *Ch9> showBoard $ computeStars (makeBoard 5)
 -- 0: *****
 -- 1: ****
 -- 2: ***
@@ -86,7 +76,6 @@ wrapStars r l | r < 0 = 0
 -- *Ch9> wrapStars (-1) 12
 -- 0
 
-
 win :: Board -> Bool
 win = (== 0) . sum
 
@@ -104,7 +93,6 @@ turn p b = do showBoard $ computeStars b
                    s <- getLine
                    let n = wrapStars (read s) (length b) in
                      return $ remove r n b
-
 
 -- *Ch9> turn 1 board
 -- *****
@@ -138,7 +126,6 @@ setupGame = do putStrLn "What size for the board?"
                     p <- getLine
                     let player = read p in
                       return (size, player)
-
 
 main :: IO ()
 main = do (size, player) <- setupGame
