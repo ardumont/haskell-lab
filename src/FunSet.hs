@@ -28,8 +28,13 @@ contains s e = s e
 -- *FunSet> contains (add newEmpty 1) 2
 -- False
 
+singleton :: Eq a => a -> Set a
+singleton a = \ e -> (a == e)
 
--- singleton :: Eq a => a ->Set a
+-- *FunSet> contains (singleton 1) 1
+-- True
+-- *FunSet> contains (singleton 1) 3
+-- False
 
 -- union :: Set a -> Set a -> Set a
 
