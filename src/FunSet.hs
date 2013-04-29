@@ -2,7 +2,13 @@ module FunSet where
 
 type Set a = a -> Bool
 
--- newEmpty :: Set a
+newEmpty :: Set a
+newEmpty = \_ -> False
+
+-- *FunSet> newEmpty []
+-- False
+-- *FunSet> newEmpty 1
+-- False
 
 -- add :: Eq a => Set a -> a -> Set a
 
