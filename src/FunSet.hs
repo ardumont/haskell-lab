@@ -54,7 +54,15 @@ intersect a b = \ e -> a e && b e
 -- *FunSet> (intersect (union (singleton 1) (singleton 2)) (singleton 1)) 1
 -- True
 
--- diff :: Set a -> Set a -> Set a
+diff :: Set a -> Set a -> Set a
+diff a b = \ e -> a e && not (b e)
+
+-- *FunSet> (diff (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3))) 1
+-- False
+-- *FunSet> (diff (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3))) 2
+-- True
+-- *FunSet> (diff (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3))) 3
+-- False
 
 -- filter' :: (a -> Bool) -> Set a -> Set a
 
