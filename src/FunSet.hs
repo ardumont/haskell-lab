@@ -93,7 +93,7 @@ remove e s = \ i -> (diff s (singleton e)) i
 
 set :: Eq a => [a] -> Set a
 set [x] = singleton x
-set (x:xs) = union (singleton x) (set xs)
+set (x:xs) = add (set xs) x
 
--- *FunSet> map (\ x -> (set [1,2,3]) x) [0..4]
+-- *FunSet> map (set [1,2,3]) [0..4]
 -- [False,True,True,True,False]
