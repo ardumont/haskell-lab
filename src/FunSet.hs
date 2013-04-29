@@ -18,7 +18,16 @@ add s e = \ i -> (e == i) || s i
 -- *FunSet> ((add newEmpty 1) 2)
 -- False
 
--- contains ::  Set a -> a -> Bool
+contains :: Set a -> a -> Bool
+contains s e = s e
+
+-- *FunSet> contains newEmpty 1
+-- False
+-- *FunSet> contains (add newEmpty 1) 1
+-- True
+-- *FunSet> contains (add newEmpty 1) 2
+-- False
+
 
 -- singleton :: Eq a => a ->Set a
 
