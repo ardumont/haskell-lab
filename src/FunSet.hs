@@ -64,6 +64,21 @@ diff a b = \ e -> a e && not (b e)
 -- *FunSet> (diff (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3))) 3
 -- False
 
--- filter' :: (a -> Bool) -> Set a -> Set a
+filter' :: (a -> Bool) -> Set a -> Set a
+--filter' p s = \ e -> p e && s e
+filter' = intersect
 
--- remove :: Eq a => a -> Set a -> Set a
+-- *FunSet> (filter' (== 2) (union (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3)))) 3
+-- False
+-- *FunSet> (filter' (== 3) (union (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3)))) 3
+-- True
+-- *FunSet> (filter' (>= 1) (union (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3)))) 3
+-- True
+-- *FunSet> (filter' (>= 1) (union (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3)))) 1
+-- True
+-- *FunSet> (filter' (>= 1) (union (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3)))) 2
+-- True
+-- *FunSet> (filter' (>= 1) (union (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3)))) 10
+-- False
+
+remove :: Eq a => a -> Set a -> Set a
