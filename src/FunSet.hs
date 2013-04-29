@@ -97,3 +97,8 @@ set (x:xs) = add (set xs) x
 
 -- *FunSet> map (set [1,2,3]) [0..4]
 -- [False,True,True,True,False]
+
+map' :: (Eq a, Eq b) => (a -> b) -> Set a -> Set b
+map' f s =
+
+-- (map' (+1) (set [1,2,3])) 4
