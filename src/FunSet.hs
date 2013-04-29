@@ -91,4 +91,9 @@ remove e s = \ i -> (diff s (singleton e)) i
 -- *FunSet> (remove 1 (union (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3)))) 3
 -- True
 
--- map' :: (Eq a, Eq b) => (a > b)> Set a -> Set b
+set :: Eq a => [a] -> Set a
+set [x] = singleton x
+set (x:xs) = union (singleton x) (set xs)
+
+-- *FunSet> map (\ x -> (set [1,2,3]) x) [0..4]
+-- [False,True,True,True,False]
