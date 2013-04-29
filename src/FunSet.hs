@@ -11,7 +11,7 @@ newEmpty = \_ -> False
 -- False
 
 add :: Eq a => Set a -> a -> Set a
-add s e = \ i -> (e == i) || s i
+add s e = \i -> (e == i) || s i
 
 -- *FunSet> ((add newEmpty 1) 1)
 -- True
@@ -29,7 +29,7 @@ contains s e = s e
 -- False
 
 singleton :: Eq a => a -> Set a
-singleton a = \ e -> (a == e)
+singleton a = \e -> (a == e)
 
 -- *FunSet> contains (singleton 1) 1
 -- True
@@ -37,7 +37,7 @@ singleton a = \ e -> (a == e)
 -- False
 
 union :: Set a -> Set a -> Set a
-union a b = \ e -> a e || b e
+union a b = \e -> a e || b e
 
 -- *FunSet> (union (singleton 1) (singleton 2)) 1
 -- True
@@ -47,7 +47,7 @@ union a b = \ e -> a e || b e
 -- False
 
 intersect :: Set a -> Set a -> Set a
-intersect a b = \ e -> a e && b e
+intersect a b = \e -> a e && b e
 
 -- *FunSet> (intersect (union (singleton 1) (singleton 2)) (singleton 1)) 2
 -- False
@@ -55,7 +55,7 @@ intersect a b = \ e -> a e && b e
 -- True
 
 diff :: Set a -> Set a -> Set a
-diff a b = \ e -> a e && not (b e)
+diff a b = \e -> a e && not (b e)
 
 -- *FunSet> (diff (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3))) 1
 -- False
@@ -65,7 +65,7 @@ diff a b = \ e -> a e && not (b e)
 -- False
 
 filter' :: (a -> Bool) -> Set a -> Set a
---filter' p s = \ e -> p e && s e
+--filter' p s = \e -> p e && s e
 filter' = intersect
 
 -- *FunSet> (filter' (== 2) (union (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3)))) 3
@@ -82,7 +82,7 @@ filter' = intersect
 -- False
 
 remove :: Eq a => a -> Set a -> Set a
-remove e s = \ i -> (diff s (singleton e)) i
+remove e s = \i -> (diff s (singleton e)) i
 
 -- *FunSet> (remove 1 (union (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3)))) 1
 -- False
