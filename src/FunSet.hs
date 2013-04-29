@@ -10,7 +10,13 @@ newEmpty = \_ -> False
 -- *FunSet> newEmpty 1
 -- False
 
--- add :: Eq a => Set a -> a -> Set a
+add :: Eq a => Set a -> a -> Set a
+add s e = \ i -> (e == i) || s i
+
+-- *FunSet> ((add newEmpty 1) 1)
+-- True
+-- *FunSet> ((add newEmpty 1) 2)
+-- False
 
 -- contains ::  Set a -> a -> Bool
 
