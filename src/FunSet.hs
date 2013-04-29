@@ -11,7 +11,7 @@ newEmpty = \_ -> False
 -- False
 
 add :: Eq a => Set a -> a -> Set a
-add s e = \i -> (e == i) || s i
+add s e = \i -> (e == i) || contains s i
 
 -- *FunSet> ((add newEmpty 1) 1)
 -- True
