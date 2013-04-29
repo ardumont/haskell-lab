@@ -81,4 +81,6 @@ filter' = intersect
 -- *FunSet> (filter' (>= 1) (union (union (singleton 1) (singleton 2)) (union (singleton 1) (singleton 3)))) 10
 -- False
 
-remove :: Eq a => a -> Set a -> Set a
+-- remove :: Eq a => a -> Set a -> Set a
+
+-- map' :: (Eq a, Eq b) => (a > b)> Set a -> Set b
