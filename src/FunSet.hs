@@ -36,7 +36,15 @@ singleton a = \ e -> (a == e)
 -- *FunSet> contains (singleton 1) 3
 -- False
 
--- union :: Set a -> Set a -> Set a
+union :: Set a -> Set a -> Set a
+union a b = \ e -> a e || b e
+
+-- *FunSet> (union (singleton 1) (singleton 2)) 1
+-- True
+-- *FunSet> (union (singleton 1) (singleton 2)) 2
+-- True
+-- *FunSet> (union (singleton 1) (singleton 2)) 3
+-- False
 
 -- intersect :: Set a -> Set a -> Set a
 
