@@ -46,7 +46,13 @@ union a b = \ e -> a e || b e
 -- *FunSet> (union (singleton 1) (singleton 2)) 3
 -- False
 
--- intersect :: Set a -> Set a -> Set a
+intersect :: Set a -> Set a -> Set a
+intersect a b = \ e -> a e && b e
+
+-- *FunSet> (intersect (union (singleton 1) (singleton 2)) (singleton 1)) 2
+-- False
+-- *FunSet> (intersect (union (singleton 1) (singleton 2)) (singleton 1)) 1
+-- True
 
 -- diff :: Set a -> Set a -> Set a
 
