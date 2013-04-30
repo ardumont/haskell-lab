@@ -98,10 +98,20 @@ set (x:xs) = add (set xs) x
 -- *FunSet> map (set [1,2,3]) [0..4]
 -- [False,True,True,True,False]
 
+-- range :: Enum a => a -> a -> [a]
+-- range x y = [x..y]
+
 -- map' :: (Eq a, Eq b) => (a -> b) -> Set a -> Set b
+-- map' f s = map (\e -> if f (s e)
+--                       then \ x -> singleton x
+--                       else newEmpty) $ range -1000 1000
 
--- is there an any element in Set a that satisfies the predicate  (a-> Bool)
--- exists' ::(Num a, Ord a) => Set a -> (a-> Bool) -> Bool
+-- map (map' (+1) (set [1,2,3])) [1..5]
+-- [False, True, True, True, False]
 
--- checkes if all Set a elements satisfy (a -> Bool) predicate
+-- is there any element in Set a that satisfies the predicate  (a-> Bool)
+exists' ::(Num a, Ord a) => Set a -> (a-> Bool) -> Bool
+exists' s p = (filter' p s)
+
+-- checks if all Set a elements satisfy (a -> Bool) predicate
 -- all' ::(Num a,Ord a) => Set a -> (a -> Bool)-> Bool
