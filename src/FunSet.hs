@@ -98,20 +98,24 @@ set (x:xs) = add (set xs) x
 -- *FunSet> map (set [1,2,3]) [0..4]
 -- [False,True,True,True,False]
 
--- range :: Enum a => a -> a -> [a]
--- range x y = [x..y]
+map' :: (Enum a, Num a, Eq a, Eq b) => (a -> b) -> Set a -> Set b
+map' f s =
+  rmap (\e -> (e, f e)) [-1000..1000]
+  where
+    rmap _ [] = newEmpty
+    rmap g (x:xs) =
+      let (o, v) = g x in
+      if s o then add (rmap g xs) v else rmap g xs
 
--- map' :: (Eq a, Eq b) => (a -> b) -> Set a -> Set b
--- map' f s = map (\e -> if f (s e)
---                       then \ x -> singleton x
---                       else newEmpty) $ range -1000 1000
-
--- map (map' (+1) (set [1,2,3])) [1..5]
--- [False, True, True, True, False]
+-- *FunSet> map (set [1,2,3]) [0..4]
+-- [False,True,True,True,False]
+-- *FunSet> map (map' (+1) (set [1,2,3])) [0..4]
+-- [False,False,True,True,True]
 
 -- is there any element in Set a that satisfies the predicate  (a-> Bool)
-exists' ::(Num a, Ord a) => Set a -> (a-> Bool) -> Bool
-exists' s p = (filter' p s)
+-- exists' ::(Num a, Ord a) => Set a -> (a-> Bool) -> Bool
+-- exists' s p = (filter' p s)
 
 -- checks if all Set a elements satisfy (a -> Bool) predicate
 -- all' ::(Num a,Ord a) => Set a -> (a -> Bool)-> Bool
+-- all' s p = and $ map' p s
