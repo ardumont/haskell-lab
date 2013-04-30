@@ -98,7 +98,10 @@ set (x:xs) = add (set xs) x
 -- *FunSet> map (set [1,2,3]) [0..4]
 -- [False,True,True,True,False]
 
-map' :: (Eq a, Eq b) => (a -> b) -> Set a -> Set b
-map' f s =
+-- map' :: (Eq a, Eq b) => (a -> b) -> Set a -> Set b
 
--- (map' (+1) (set [1,2,3])) 4
+-- is there an any element in Set a that satisfies the predicate  (a-> Bool)
+-- exists' ::(Num a, Ord a) => Set a -> (a-> Bool) -> Bool
+
+-- checkes if all Set a elements satisfy (a -> Bool) predicate
+-- all' ::(Num a,Ord a) => Set a -> (a -> Bool)-> Bool
