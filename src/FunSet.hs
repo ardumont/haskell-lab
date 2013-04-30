@@ -112,10 +112,10 @@ map' f s =
 -- *FunSet> map (map' (+1) (set [1,2,3])) [0..4]
 -- [False,False,True,True,True]
 
--- is there any element in Set a that satisfies the predicate  (a-> Bool)
--- exists' ::(Num a, Ord a) => Set a -> (a-> Bool) -> Bool
--- exists' s p = (filter' p s)
+-- is there any element in Set a that satisfies the predicate (a-> Bool)
+--exists' :: (Enum a, Num a, Ord a) => Set a -> (a-> Bool) -> Bool
+--exists' s p = \ y -> s x && y == p x
 
 -- checks if all Set a elements satisfy (a -> Bool) predicate
--- all' ::(Num a,Ord a) => Set a -> (a -> Bool)-> Bool
--- all' s p = and $ map' p s
+--all' ::(Enum a, Num a, Ord a) => Set a -> (a -> Bool) -> Bool
+--all' s p = (map (filter' p s) [-1000..1000]) == (map s [-1000..1000])
