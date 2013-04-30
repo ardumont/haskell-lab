@@ -92,7 +92,7 @@ remove e s = \i -> (diff s (singleton e)) i
 -- True
 
 set :: Eq a => [a] -> Set a
-set [x] = singleton x
+set [] = newEmpty
 set (x:xs) = add (set xs) x
 
 -- *FunSet> map (set [1,2,3]) [0..4]
