@@ -164,7 +164,8 @@ rightSon (Node _ _ r) = r
 
 -- Returns the left son of the given Tree
 leftSon :: Tree a -> Tree a
-leftSon = undefined
+leftSon (Leaf x)     = (Leaf x)
+leftSon (Node _ l _) = l
 
 {--
   Insert an new ordred value into the tree.
