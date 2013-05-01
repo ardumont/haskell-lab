@@ -104,7 +104,12 @@ greatValue (Node _ _ r)     = greatValue r
 -- *BinarySearchTree> greatValue Empty == Nothing
 -- True
 
-{-- Returns The mirror of the given Tree. for example
+{-- Returns The mirror of the given Tree. for example:
+  t2 = Node 20 (Node 15 (Node 8 (leaf 7) (leaf 11)) (leaf 18))
+               (Node 118
+                       (Node 35 (leaf 33) (Node 49 Empty (leaf 60)))
+                       (leaf 166))
+
  mirror t2 must return :
   Node 17 (Node 115 (Node 163 Empty Empty)
                     (Node 32 (Node 46 (Node 57 Empty Empty)
@@ -114,7 +119,17 @@ greatValue (Node _ _ r)     = greatValue r
                    (Node 5 (Node 8 Empty Empty) Empty))
 --}
 mirror :: Tree a -> Tree a
-mirror = undefined
+mirror Empty = Empty
+mirror (Node x l r) = Node x (mirror r) (mirror l)
+
+-- *BinarySearchTree> t1
+-- Node 4 (Node 3 Empty Empty) (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty))
+-- *BinarySearchTree> mirror t1
+-- Node 4 (Node 7 (Node 10 Empty Empty) (Node 5 Empty Empty)) (Node 3 Empty Empty)
+-- *BinarySearchTree> t2
+-- Node 20 (Node 15 (Node 8 (Node 7 Empty Empty) (Node 11 Empty Empty)) (Node 18 Empty Empty)) (Node 118 (Node 35 (Node 33 Empty Empty) (Node 49 Empty (Node 60 Empty Empty))) (Node 166 Empty Empty))
+-- *BinarySearchTree> mirror t2
+-- Node 20 (Node 118 (Node 166 Empty Empty) (Node 35 (Node 49 (Node 60 Empty Empty) Empty) (Node 33 Empty Empty))) (Node 15 (Node 18 Empty Empty) (Node 8 (Node 11 Empty Empty) (Node 7 Empty Empty)))
 
 -- Returns whether the given Tree is empty or not
 empty :: Tree a -> Bool
