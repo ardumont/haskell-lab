@@ -221,3 +221,9 @@ isBSearchTree (Node x l r) =
 -- True
 -- *BinarySearchTree> isBSearchTree (insert (insert t2 1) 100)
 -- True
+
+deleteMax :: Tree a -> (Maybe a, Tree a)
+deleteMax Empty            = (Nothing, Empty)
+deleteMax (Node x _ Empty) = (Just x, Empty)
+deleteMax (Node x l r) = let (y, t) = deleteMax r in
+                             (y, (Node x l t))
