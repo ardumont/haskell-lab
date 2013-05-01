@@ -79,8 +79,17 @@ toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
 -- [7,8,11,15,18,20,33,35,49,60,118,166]
 
 -- Returns the smallest value in the given Tree
-smallValue :: Tree a -> a
-smallValue = undefined
+smallValue :: Tree a -> Maybe a
+smallValue Empty = Nothing
+smallValue (Node x Empty _) = Just x
+smallValue (Node _ l _) = smallValue l
+
+-- *BinarySearchTree> smallValue t1 == Just (head (toSortedList t1))
+-- True
+-- *BinarySearchTree> smallValue t2 == Just (head (toSortedList t2))
+-- True
+-- *BinarySearchTree> smallValue Empty == Nothing
+-- True
 
 -- Returns the greatest value in the the given Tree
 greatValue :: Tree a -> a
