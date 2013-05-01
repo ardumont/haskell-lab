@@ -225,5 +225,5 @@ isBSearchTree (Node x l r) =
 deleteMax :: Tree a -> (Maybe a, Tree a)
 deleteMax Empty            = (Nothing, Empty)
 deleteMax (Node x _ Empty) = (Just x, Empty)
-deleteMax (Node x l r) = let (y, t) = deleteMax r in
+deleteMax (Node x l r)     = let (y, t) = deleteMax r in
                              (y, (Node x l t))
