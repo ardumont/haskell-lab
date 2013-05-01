@@ -28,7 +28,7 @@ t2 = Node 20 (Node 15 (Node 8 (Leaf 7) (Leaf 11)) (Leaf 18))
 -- The size of the tree is taken to be the number n of internal nodes
 --(those with two children)
 size :: Num a => Tree b -> a
-size (Leaf _) = 1
+size (Leaf _)     = 1
 size (Node _ l r) = 1 + size l + size r
 
 -- *BinarySearchTree> size t1
@@ -39,7 +39,7 @@ size (Node _ l r) = 1 + size l + size r
 -- Returns an unsorted list of all values in the given Tree
 -- (we need to be able to rebuild the tree from the list)
 toList :: Tree a -> [a]
-toList (Leaf x) = [x]
+toList (Leaf x)     = [x]
 toList (Node x l r) = [x] ++ (toList l) ++ (toList r)
 
 -- *BinarySearchTree> toList t1
@@ -66,7 +66,7 @@ fromList (x:xs) = Node x (fromList lefts) (fromList rights)
 -- Returns a sorted list of all elements of the given Tree.
 -- Note that we can't go back to the origin Tree
 toSortedList :: Tree a -> [a]
-toSortedList (Leaf x) = [x]
+toSortedList (Leaf x)     = [x]
 toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
 
 -- *BinarySearchTree> toSortedList t1
@@ -77,7 +77,7 @@ toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
 -- Returns the smallest value in the given Tree
 smallValue :: Tree a ->  a
 smallValue (Node _ (Leaf x) _) = x
-smallValue (Node _ l _)     = smallValue l
+smallValue (Node _ l _)        = smallValue l
 
 -- *BinarySearchTree> smallValue t1 == Just (head (toSortedList t1))
 -- True
@@ -88,8 +88,8 @@ smallValue (Node _ l _)     = smallValue l
 
 -- Returns the greatest value in the the given Tree
 greatValue :: Tree a -> a
-greatValue (Leaf x) = x
-greatValue (Node _ _ r)     = greatValue r
+greatValue (Leaf x)     = x
+greatValue (Node _ _ r) = greatValue r
 
 -- *BinarySearchTree> greatValue t1 == Just (last (toSortedList t1))
 -- True
@@ -113,7 +113,7 @@ greatValue (Node _ _ r)     = greatValue r
                    (Node 5 (Node 8 Empty Empty) Empty))
 --}
 mirror :: Tree a -> Tree a
-mirror (Leaf x) = (Leaf x)
+mirror (Leaf x)     = (Leaf x)
 mirror (Node x l r) = Node x (mirror r) (mirror l)
 
 -- *BinarySearchTree> t1
