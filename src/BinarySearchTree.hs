@@ -171,19 +171,26 @@ rightSon (Node _ _ r) = r
 
 -- Returns the left son of the given Tree
 leftSon :: Tree a -> Tree a
+leftSon Empty        = Empty
 leftSon (Leaf x)     = (Leaf x)
 leftSon (Node _ l _) = l
 
 {--
-  Insert an new ordred value into the tree.
-  Note that it preserves the Binary Search Tree propertie,
-  but not the balanced propertie of an AVL for example.
-  for the first implementation do not bother yourself about the
-  balanced propertie.
+  Insert a new ordered value into the tree.
+  Note that it preserves the Binary Search Tree properties,
+  but not the balanced properties of an AVL for example.
+  For the first implementation do not bother yourself about the
+  balanced properties.
 --}
 
 insert :: (Ord a) => Tree a -> a -> Tree a
-insert = undefined
+insert (Leaf x) y = case compare x y of
+  GT -> Node x (Leaf y) Empty
+  _  -> Node y (Leaf x) Empty
+insert (Node x l r) y = case compare y x of
+  GT -> Node x l (insert r y)
+  _  -> Node x (insert l y) r
+
 
 isBSearchTree :: (Ord a) => Tree a -> Bool
 isBSearchTree  = undefined
