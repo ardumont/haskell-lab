@@ -51,6 +51,22 @@ toList (Node x l r) = [x] ++ (toList l) ++ (toList r)
 -- *BinarySearchTree> toList t2
 -- [20,15,8,7,11,18,118,35,33,49,60,166]
 
+fromList :: Ord a => [a] -> Tree a
+fromList [] = Empty
+fromList (x:xs) = Node x (fromList lefts) (fromList rights)
+                  where p      = (<= x)
+                        lefts  = takeWhile p xs
+                        rights = dropWhile p xs
+
+-- *BinarySearchTree> (fromList . toList)  t1 == t1
+-- True
+-- *BinarySearchTree> (fromList . toList)  t1 == (leaf 1)
+-- False
+-- *BinarySearchTree> (fromList . toList) t2 == t2
+-- True
+-- *BinarySearchTree> (fromList . toList) t2 == (leaf 1)
+-- False
+
 -- Returns a sorted list of all elements of the given Tree.
 -- Note that we can't go back to the origin Tree
 toSortedList :: Tree a -> [a]
