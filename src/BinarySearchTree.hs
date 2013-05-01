@@ -12,24 +12,26 @@ but it is not the right option.
 To enforce the property of Binary Search Trees, functions that insert elements in the
 given Tree must be implemeted in such a way that the invariant of a binary search tree always hold.
 --}
-data Tree a = Empty | Leaf a | Node a (Tree a) (Tree a) deriving (Eq, Show)
+data Tree a = Empty | Node a (Tree a) (Tree a) deriving (Eq, Show)
 
 -- Example of Binary Search Trees that may be used to test your implementation
 
+leaf :: a -> Tree a
+leaf x = Node x Empty Empty
+
 t1 :: Tree Int
-t1 = Node 4 (Leaf 3) (Node 7 (Leaf 5) (Leaf 10))
+t1 = Node 4 (leaf 3) (Node 7 (leaf 5) (leaf 10))
 
 t2 :: Tree Int
-t2 = Node 20 (Node 15 (Node 8 (Leaf 7) (Leaf 11)) (Leaf 18))
+t2 = Node 20 (Node 15 (Node 8 (leaf 7) (leaf 11)) (leaf 18))
              (Node 118
-                     (Node 35 (Leaf 33) (Node 49 (Leaf 48) (Leaf 60)))
-                     (Leaf 166))
+                     (Node 35 (leaf 33) (Node 49 Empty (leaf 60)))
+                     (leaf 166))
 
 -- The size of the tree is taken to be the number n of internal nodes
 --(those with two children)
 size :: Num a => Tree b -> a
 size Empty        = 0
-size (Leaf _)     = 1
 size (Node _ l r) = 1 + size l + size r
 
 -- *BinarySearchTree> size t1
@@ -41,7 +43,6 @@ size (Node _ l r) = 1 + size l + size r
 -- (we need to be able to rebuild the tree from the list)
 toList :: Tree a -> [a]
 toList Empty        = []
-toList (Leaf x)     = [x]
 toList (Node x l r) = [x] ++ (toList l) ++ (toList r)
 
 -- *BinarySearchTree> toList t1
@@ -50,16 +51,15 @@ toList (Node x l r) = [x] ++ (toList l) ++ (toList r)
 -- [20,15,8,7,11,18,118,35,33,49,60,166]
 
 fromList :: Ord a => [a] -> Tree a
-fromList []  = Empty
-fromList [x] = Leaf x
+fromList []     = Empty
 fromList (x:xs) = Node x (fromList lefts) (fromList rights)
                   where p      = (<= x)
                         lefts  = takeWhile p xs
                         rights = dropWhile p xs
 
--- *BinarySearchTree> (fromList . toList)  t1 == t1
+-- *BinarySearchTree> (fromList . toList) t1 == t1
 -- True
--- *BinarySearchTree> (fromList . toList)  t1 == (leaf 1)
+-- *BinarySearchTree> (fromList . toList) t1 == (leaf 1)
 -- False
 -- *BinarySearchTree> (fromList . toList) t2 == t2
 -- True
@@ -70,7 +70,6 @@ fromList (x:xs) = Node x (fromList lefts) (fromList rights)
 -- Note that we can't go back to the origin Tree
 toSortedList :: Tree a -> [a]
 toSortedList Empty        = []
-toSortedList (Leaf x)     = [x]
 toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
 
 -- *BinarySearchTree> toSortedList t1
@@ -79,9 +78,10 @@ toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
 -- [7,8,11,15,18,20,33,35,49,60,118,166]
 
 -- Returns the smallest value in the given Tree
-smallValue :: Tree a ->  a
-smallValue (Node _ (Leaf x) _) = x
-smallValue (Node _ l _)        = smallValue l
+smallValue :: Tree a ->  Maybe a
+smallValue Empty            = Nothing
+smallValue (Node x Empty _) = Just x
+smallValue (Node _ l _)     = smallValue l
 
 -- *BinarySearchTree> smallValue t1 == Just (head (toSortedList t1))
 -- True
@@ -91,9 +91,10 @@ smallValue (Node _ l _)        = smallValue l
 -- True
 
 -- Returns the greatest value in the the given Tree
-greatValue :: Tree a -> a
-greatValue (Leaf x)     = x
-greatValue (Node _ _ r) = greatValue r
+greatValue :: Tree a -> Maybe a
+greatValue Empty            = Nothing
+greatValue (Node x _ Empty) = Just x
+greatValue (Node _ _ r)     = greatValue r
 
 -- *BinarySearchTree> greatValue t1 == Just (last (toSortedList t1))
 -- True
@@ -118,7 +119,6 @@ greatValue (Node _ _ r) = greatValue r
 --}
 mirror :: Tree a -> Tree a
 mirror Empty        = Empty
-mirror (Leaf x)     = (Leaf x)
 mirror (Node x l r) = Node x (mirror r) (mirror l)
 
 -- *BinarySearchTree> t1
@@ -133,7 +133,6 @@ mirror (Node x l r) = Node x (mirror r) (mirror l)
 -- Returns whether the given Tree contains the given element or not
 contains :: Ord a => Tree a -> a -> Bool
 contains Empty _        = False
-contains (Leaf x) y     = x == y
 contains (Node x l r) y = case compare y x of
   EQ -> True
   LT -> contains l y
@@ -157,7 +156,6 @@ contains (Node x l r) y = case compare y x of
 -- Returns the right son of the given Tree
 rightSon :: Tree a -> Tree a
 rightSon Empty        = Empty
-rightSon (Leaf x)     = (Leaf x)
 rightSon (Node _ _ r) = r
 
 -- *BinarySearchTree> t1
@@ -172,7 +170,6 @@ rightSon (Node _ _ r) = r
 -- Returns the left son of the given Tree
 leftSon :: Tree a -> Tree a
 leftSon Empty        = Empty
-leftSon (Leaf x)     = (Leaf x)
 leftSon (Node _ l _) = l
 
 {--
@@ -184,9 +181,7 @@ leftSon (Node _ l _) = l
 --}
 
 insert :: (Ord a) => Tree a -> a -> Tree a
-insert (Leaf x) y = case compare x y of
-  GT -> Node x (Leaf y) Empty
-  _  -> Node y (Leaf x) Empty
+insert Empty x = leaf x
 insert (Node x l r) y = case compare y x of
   GT -> Node x l (insert r y)
   _  -> Node x (insert l y) r
@@ -198,7 +193,6 @@ insert (Node x l r) y = case compare y x of
 
 value :: Tree a -> Maybe a
 value Empty        = Nothing
-value (Leaf x)     = Just x
 value (Node x _ _) = Just x
 
 -- *BinarySearchTree> value (Node 10 Empty Empty)
@@ -210,7 +204,6 @@ value (Node x _ _) = Just x
 
 isBSearchTree :: (Ord a) => Tree a -> Bool
 isBSearchTree Empty = True
-isBSearchTree (Leaf _) = True
 isBSearchTree (Node x l r) =
   case [value l, value r] of
     [Nothing, Nothing] -> True
@@ -223,4 +216,8 @@ isBSearchTree (Node x l r) =
 -- *BinarySearchTree> isBSearchTree t1
 -- True
 -- *BinarySearchTree> isBSearchTree t2
+-- True
+-- *BinarySearchTree> isBSearchTree (insert t2 1)
+-- True
+-- *BinarySearchTree> isBSearchTree (insert (insert t2 1) 100)
 -- True
