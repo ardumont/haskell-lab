@@ -40,11 +40,13 @@ size (Node _ l r) = 1 + size l + size r
 -- *BinarySearchTree> size t2
 -- 12
 
--- Returns an unsorted list of all values in the given Tree, but we can go back to the origin Tree from this list
+-- Returns an unsorted list of all values in the given Tree
+-- (we need to be able to rebuild the tree from the list)
 toList :: Tree a -> [a]
 toList  = undefined
 
--- Returns a sorted list of all elements of the given Tree. Note that we can't go back to the origin Tree
+-- Returns a sorted list of all elements of the given Tree.
+-- Note that we can't go back to the origin Tree
 toSortedList :: Tree a -> [a]
 toSortedList  = undefined
 
