@@ -98,24 +98,30 @@ set (x:xs) = add (set xs) x
 -- *FunSet> map (set [1,2,3]) [0..4]
 -- [False,True,True,True,False]
 
-map' :: (Enum a, Num a, Eq a, Eq b) => (a -> b) -> Set a -> Set b
-map' f s =
-  rmap (\e -> (e, f e)) [-1000..1000]
-  where
-    rmap _ [] = newEmpty
-    rmap g (x:xs) =
-      let (o, v) = g x in
-      if s o then add (rmap g xs) v else rmap g xs
+-- is there any element in Set a that satisfies the predicate (a -> Bool)
+exists' :: (Enum a, Num a, Ord a) => Set a -> (a -> Bool) -> Bool
+exists' s p = or $ map ( \x -> contains s x && p x ) [-1000..1000]
+
+-- *FunSet> exists' (set [1..3]) (== 1)
+-- True
+-- *FunSet> exists' (set [1..3]) (== 0)
+-- False
+
+map' :: (Enum a, Num a, Ord a, Eq a, Eq b) => (a -> b) -> Set a -> Set b
+map' f s = \y -> exists' s (\x -> f x == y)
 
 -- *FunSet> map (set [1,2,3]) [0..4]
 -- [False,True,True,True,False]
 -- *FunSet> map (map' (+1) (set [1,2,3])) [0..4]
 -- [False,False,True,True,True]
 
--- is there any element in Set a that satisfies the predicate (a-> Bool)
---exists' :: (Enum a, Num a, Ord a) => Set a -> (a-> Bool) -> Bool
---exists' s p = \ y -> s x && y == p x
-
 -- checks if all Set a elements satisfy (a -> Bool) predicate
---all' ::(Enum a, Num a, Ord a) => Set a -> (a -> Bool) -> Bool
---all' s p = (map (filter' p s) [-1000..1000]) == (map s [-1000..1000])
+all' :: (Enum a, Num a, Ord a) => Set a -> (a -> Bool)-> Bool
+all' s p = and $ map p (filter s [-1000..1000])
+
+-- *FunSet> all' (set [1..3]) (<= 4)
+-- True
+-- *FunSet> all' (set [1..3]) (<= 3)
+-- True
+-- *FunSet> all' (set [1..3]) (<= 2)
+-- False
