@@ -43,7 +43,13 @@ size (Node _ l r) = 1 + size l + size r
 -- Returns an unsorted list of all values in the given Tree
 -- (we need to be able to rebuild the tree from the list)
 toList :: Tree a -> [a]
-toList  = undefined
+toList Empty = []
+toList (Node x l r) = [x] ++ (toList l) ++ (toList r)
+
+-- *BinarySearchTree> toList t1
+-- [4,3,7,5,10]
+-- *BinarySearchTree> toList t2
+-- [20,15,8,7,11,18,118,35,33,49,60,166]
 
 -- Returns a sorted list of all elements of the given Tree.
 -- Note that we can't go back to the origin Tree
