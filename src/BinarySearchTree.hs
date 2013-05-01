@@ -191,6 +191,11 @@ insert (Node x l r) y = case compare y x of
   GT -> Node x l (insert r y)
   _  -> Node x (insert l y) r
 
+-- *BinarySearchTree> insert t1 10
+-- Node 4 (Leaf 3) (Node 7 (Leaf 5) (Node 10 (Leaf 10) Empty))
+-- *BinarySearchTree> insert t2 200
+-- Node 20 (Node 15 (Node 8 (Leaf 7) (Leaf 11)) (Leaf 18)) (Node 118 (Node 35 (Leaf 33) (Node 49 (Leaf 48) (Leaf 60))) (Node 200 (Leaf 166) Empty))
+
 value :: Tree a -> Maybe a
 value Empty        = Nothing
 value (Leaf x)     = Just x
