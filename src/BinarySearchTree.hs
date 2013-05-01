@@ -12,7 +12,7 @@ but it is not the right option.
 To enforce the property of Binary Search Trees, functions that insert elements in the
 given Tree must be implemeted in such a way that the invariant of a binary search tree always hold.
 --}
-data Tree a = Leaf a | Node a (Tree a) (Tree a) deriving (Eq,Show)
+data Tree a = Empty | Leaf a | Node a (Tree a) (Tree a) deriving (Eq, Show)
 
 -- Example of Binary Search Trees that may be used to test your implementation
 
@@ -28,6 +28,7 @@ t2 = Node 20 (Node 15 (Node 8 (Leaf 7) (Leaf 11)) (Leaf 18))
 -- The size of the tree is taken to be the number n of internal nodes
 --(those with two children)
 size :: Num a => Tree b -> a
+size Empty        = 0
 size (Leaf _)     = 1
 size (Node _ l r) = 1 + size l + size r
 
@@ -39,6 +40,7 @@ size (Node _ l r) = 1 + size l + size r
 -- Returns an unsorted list of all values in the given Tree
 -- (we need to be able to rebuild the tree from the list)
 toList :: Tree a -> [a]
+toList Empty        = []
 toList (Leaf x)     = [x]
 toList (Node x l r) = [x] ++ (toList l) ++ (toList r)
 
@@ -48,6 +50,7 @@ toList (Node x l r) = [x] ++ (toList l) ++ (toList r)
 -- [20,15,8,7,11,18,118,35,33,49,60,166]
 
 fromList :: Ord a => [a] -> Tree a
+fromList []  = Empty
 fromList [x] = Leaf x
 fromList (x:xs) = Node x (fromList lefts) (fromList rights)
                   where p      = (<= x)
@@ -66,6 +69,7 @@ fromList (x:xs) = Node x (fromList lefts) (fromList rights)
 -- Returns a sorted list of all elements of the given Tree.
 -- Note that we can't go back to the origin Tree
 toSortedList :: Tree a -> [a]
+toSortedList Empty        = []
 toSortedList (Leaf x)     = [x]
 toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
 
@@ -113,6 +117,7 @@ greatValue (Node _ _ r) = greatValue r
                    (Node 5 (Node 8 Empty Empty) Empty))
 --}
 mirror :: Tree a -> Tree a
+mirror Empty        = Empty
 mirror (Leaf x)     = (Leaf x)
 mirror (Node x l r) = Node x (mirror r) (mirror l)
 
@@ -127,6 +132,7 @@ mirror (Node x l r) = Node x (mirror r) (mirror l)
 
 -- Returns whether the given Tree contains the given element or not
 contains :: Ord a => Tree a -> a -> Bool
+contains Empty _        = False
 contains (Leaf x) y     = x == y
 contains (Node x l r) y = case compare y x of
   EQ -> True
@@ -150,6 +156,7 @@ contains (Node x l r) y = case compare y x of
 
 -- Returns the right son of the given Tree
 rightSon :: Tree a -> Tree a
+rightSon Empty        = Empty
 rightSon (Leaf x)     = (Leaf x)
 rightSon (Node _ _ r) = r
 
