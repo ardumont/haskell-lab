@@ -19,16 +19,26 @@ leaf :: a -> Tree a
 leaf x = Node x Empty Empty
 
 -- Example of Binary Search Trees that may be used to test your implementation
--- t1 = Node 4 (leaf 3) (Node 7 (leaf 5) (leaf 10))
--- t2 = Node 20 (Node 15 (Node 8 (leaf 7) (leaf 11)) (leaf 18))
---              (Node 118
---                      (Node 35 (leaf 33) (Node 49 Empty (leaf 60)))
---                      (leaf 166))
 
--- The following functions must be implemented
+t1 :: Tree Int
+t1 = Node 4 (leaf 3) (Node 7 (leaf 5) (leaf 10))
 
+t2 :: Tree Int
+t2 = Node 20 (Node 15 (Node 8 (leaf 7) (leaf 11)) (leaf 18))
+             (Node 118
+                     (Node 35 (leaf 33) (Node 49 Empty (leaf 60)))
+                     (leaf 166))
+
+-- The size of the tree is taken to be the number n of internal nodes
+--(those with two children)
 size :: Num a => Tree b -> a
-size = undefined
+size Empty = 0
+size (Node _ l r) = 1 + size l + size r
+
+-- *BinarySearchTree> size t1
+-- 5
+-- *BinarySearchTree> size t2
+-- 12
 
 -- Returns an unsorted list of all values in the given Tree, but we can go back to the origin Tree from this list
 toList :: Tree a -> [a]
