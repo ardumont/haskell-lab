@@ -125,10 +125,6 @@ mirror (Node x l r) = Node x (mirror r) (mirror l)
 -- *BinarySearchTree> mirror t2
 -- Node 20 (Node 118 (Node 166 Empty Empty) (Node 35 (Node 49 (Node 60 Empty Empty) Empty) (Node 33 Empty Empty))) (Node 15 (Node 18 Empty Empty) (Node 8 (Node 11 Empty Empty) (Node 7 Empty Empty)))
 
--- Returns whether the given Tree is empty or not
-empty :: Tree a -> Bool
-empty = undefined
-
 -- Returns whether the given Tree contains the given element or not
 contains :: Ord a =>  Tree a -> a -> Bool
 contains = undefined
