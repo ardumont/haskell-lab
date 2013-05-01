@@ -70,7 +70,13 @@ fromList (x:xs) = Node x (fromList lefts) (fromList rights)
 -- Returns a sorted list of all elements of the given Tree.
 -- Note that we can't go back to the origin Tree
 toSortedList :: Tree a -> [a]
-toSortedList  = undefined
+toSortedList Empty = []
+toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
+
+-- *BinarySearchTree> toSortedList t1
+-- [3,4,5,7,10]
+-- *BinarySearchTree> toSortedList t2
+-- [7,8,11,15,18,20,33,35,49,60,118,166]
 
 -- Returns the smallest value in the given Tree
 smallValue :: Tree a -> a
