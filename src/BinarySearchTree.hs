@@ -238,7 +238,7 @@ deleteMax (Node x l r)     = let (y, t) = deleteMax r in
 -- (Just 166,Node 20 (Node 15 (Node 8 (Node 7 Empty Empty) (Node 11 Empty Empty)) (Node 18 Empty Empty)) (Node 118 (Node 35 (Node 33 Empty Empty) (Node 49 Empty (Node 60 Empty Empty))) Empty))
 
 remove :: Ord a => Tree a -> a -> Tree a
-remove Empty _ = Empty
+remove Empty _        = Empty
 remove (Node x l r) y = case compare y x of
   LT -> (Node x (remove l y) r)
   GT -> (Node x l (remove r y))
