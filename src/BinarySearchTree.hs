@@ -191,6 +191,31 @@ insert (Node x l r) y = case compare y x of
   GT -> Node x l (insert r y)
   _  -> Node x (insert l y) r
 
+value :: Tree a -> Maybe a
+value Empty        = Nothing
+value (Leaf x)     = Just x
+value (Node x _ _) = Just x
+
+-- *BinarySearchTree> value (Node 10 Empty Empty)
+-- Just 10
+-- *BinarySearchTree> value (Leaf 10)
+-- Just 10
+-- *BinarySearchTree> value Empty
+-- Nothing
 
 isBSearchTree :: (Ord a) => Tree a -> Bool
-isBSearchTree  = undefined
+isBSearchTree Empty = True
+isBSearchTree (Leaf _) = True
+isBSearchTree (Node x l r) =
+  case [value l, value r] of
+    [Nothing, Nothing] -> True
+    [Nothing, Just z]  -> and [x < z, isBSearchTree l, isBSearchTree r]
+    [Just y, Nothing]  -> and [y <= x, isBSearchTree l, isBSearchTree r]
+    [Just y, Just z]   -> and [y <= x, x < z, isBSearchTree l, isBSearchTree r]
+
+-- *BinarySearchTree> isBSearchTree (Node 10 t2 t1)
+-- False
+-- *BinarySearchTree> isBSearchTree t1
+-- True
+-- *BinarySearchTree> isBSearchTree t2
+-- True
