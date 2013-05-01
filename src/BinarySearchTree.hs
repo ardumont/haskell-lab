@@ -92,8 +92,17 @@ smallValue (Node _ l _)     = smallValue l
 -- True
 
 -- Returns the greatest value in the the given Tree
-greatValue :: Tree a -> a
-greatValue  = undefined
+greatValue :: Tree a -> Maybe a
+greatValue Empty            = Nothing
+greatValue (Node x _ Empty) = Just x
+greatValue (Node _ _ r)     = greatValue r
+
+-- *BinarySearchTree> greatValue t1 == Just (last (toSortedList t1))
+-- True
+-- *BinarySearchTree> greatValue t2 == Just (last (toSortedList t2))
+-- True
+-- *BinarySearchTree> greatValue Empty == Nothing
+-- True
 
 {-- Returns The mirror of the given Tree. for example
  mirror t2 must return :
