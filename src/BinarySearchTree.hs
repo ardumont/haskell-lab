@@ -80,9 +80,9 @@ toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
 
 -- Returns the smallest value in the given Tree
 smallValue :: Tree a -> Maybe a
-smallValue Empty = Nothing
+smallValue Empty            = Nothing
 smallValue (Node x Empty _) = Just x
-smallValue (Node _ l _) = smallValue l
+smallValue (Node _ l _)     = smallValue l
 
 -- *BinarySearchTree> smallValue t1 == Just (head (toSortedList t1))
 -- True
