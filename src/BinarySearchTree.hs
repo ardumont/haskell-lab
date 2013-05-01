@@ -126,8 +126,27 @@ mirror (Node x l r) = Node x (mirror r) (mirror l)
 -- Node 20 (Node 118 (Node 166 Empty Empty) (Node 35 (Node 49 (Node 60 Empty Empty) Empty) (Node 33 Empty Empty))) (Node 15 (Node 18 Empty Empty) (Node 8 (Node 11 Empty Empty) (Node 7 Empty Empty)))
 
 -- Returns whether the given Tree contains the given element or not
-contains :: Ord a =>  Tree a -> a -> Bool
-contains = undefined
+contains :: Ord a => Tree a -> a -> Bool
+contains (Leaf x) y     = x == y
+contains (Node x l r) y = case compare y x of
+  EQ -> True
+  LT -> contains l y
+  GT -> contains r y
+
+-- *BinarySearchTree> contains t1 3
+-- True
+-- *BinarySearchTree> contains t1 4
+-- True
+-- *BinarySearchTree> contains t1 7
+-- True
+-- *BinarySearchTree> contains t1 5
+-- True
+-- *BinarySearchTree> contains t1 10
+-- True
+-- *BinarySearchTree> contains t1 11
+-- False
+-- *BinarySearchTree> contains t1 1
+-- False
 
 -- Returns the right son of the given Tree
 rightSon :: Tree a -> Tree a
