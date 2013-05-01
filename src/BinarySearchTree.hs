@@ -251,3 +251,23 @@ deleteMin (Node x l r)     = let (y, t) = deleteMin l in
 -- Node 20 (Node 15 (Node 8 (Node 7 Empty Empty) (Node 11 Empty Empty)) (Node 18 Empty Empty)) (Node 118 (Node 35 (Node 33 Empty Empty) (Node 49 Empty (Node 60 Empty Empty))) (Node 166 Empty Empty))
 -- *BinarySearchTree> deleteMin t2
 -- (Just 7,Node 20 (Node 15 (Node 8 Empty (Node 11 Empty Empty)) (Node 18 Empty Empty)) (Node 118 (Node 35 (Node 33 Empty Empty) (Node 49 Empty (Node 60 Empty Empty))) (Node 166 Empty Empty)))
+
+remove :: Ord a => Tree a -> a -> Tree a
+remove Empty _        = Empty
+remove (Node x l r) y = case compare y x of
+  LT -> Node x (remove l y) r
+  GT -> Node x l (remove r y)
+  EQ -> case deleteMax l of
+    (Just z, t) -> Node z t r
+    (Nothing, _) -> case deleteMin r of
+      (Just w, s) -> Node w l s
+      (Nothing, _) -> Empty
+
+-- *BinarySearchTree> t1
+-- Node 4 (Node 3 Empty Empty) (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty))
+-- *BinarySearchTree> remove t1 4
+-- Node 3 Empty (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty))
+-- *BinarySearchTree> remove t1 10
+-- Node 4 (Node 3 Empty Empty) (Node 7 (Node 5 Empty Empty) Empty)
+-- *BinarySearchTree> remove t1 7
+-- Node 4 (Node 3 Empty Empty) (Node 5 Empty (Node 10 Empty Empty))
