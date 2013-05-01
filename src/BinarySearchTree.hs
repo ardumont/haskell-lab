@@ -150,7 +150,17 @@ contains (Node x l r) y = case compare y x of
 
 -- Returns the right son of the given Tree
 rightSon :: Tree a -> Tree a
-rightSon  = undefined
+rightSon (Leaf x)     = (Leaf x)
+rightSon (Node _ _ r) = r
+
+-- *BinarySearchTree> t1
+-- Node 4 (Leaf 3) (Node 7 (Leaf 5) (Leaf 10))
+-- *BinarySearchTree> rightSon t1
+-- Node 7 (Leaf 5) (Leaf 10)
+-- *BinarySearchTree> t2
+-- Node 20 (Node 15 (Node 8 (Leaf 7) (Leaf 11)) (Leaf 18)) (Node 118 (Node 35 (Leaf 33) (Node 49 (Leaf 48) (Leaf 60))) (Leaf 166))
+-- *BinarySearchTree> rightSon t2
+-- Node 118 (Node 35 (Leaf 33) (Node 49 (Leaf 48) (Leaf 60))) (Leaf 166)
 
 -- Returns the left son of the given Tree
 leftSon :: Tree a -> Tree a
