@@ -178,9 +178,8 @@ isAVL t = isBSearchTree t && hBalanced t
 
 rotateLeft :: Tree a -> Tree a
 rotateLeft Empty        = Empty
-rotateLeft (Node v lv rt) = case lv of
-  Empty              -> (Node v lv rt)
-  (Node x lflf lfrt) -> (Node x lflf (Node v lfrt rt))
+rotateLeft (Node v (Node x lflf lfrt) rt) =
+  (Node x lflf (Node v lfrt rt))
 
 -- *AVL> t1
 -- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
@@ -189,9 +188,8 @@ rotateLeft (Node v lv rt) = case lv of
 
 rotateRight :: Tree a -> Tree a
 rotateRight Empty          = Empty
-rotateRight (Node v lf rv) = case rv of
-  Empty              -> (Node v lf rv)
-  (Node x rtlf rtrt) -> (Node x (Node v lf rtlf) rtrt)
+rotateRight (Node v lf (Node x rtlf rtrt)) =
+  (Node x (Node v lf rtlf) rtrt)
 
 -- *AVL> rotateRight t1
 -- Node 15 (Node 10 (Node 8 Empty Empty) Empty) Empty
@@ -214,7 +212,6 @@ rebalance Empty = Empty
 insert :: (Ord a) => Tree a -> a -> Tree a
 insert Empty x = leaf x
 insert (Node x l r) y = undefined
-
 
 -- insertBS :: (Ord a) => Tree a -> a -> Tree a
 -- insertBS Empty x = leaf x
