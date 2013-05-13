@@ -1,27 +1,20 @@
 module AVL where
 
-import BinarySearchTree as BST (insert)
-
-data Tree a = Empty | Node a (Tree a) (Tree a) deriving (Eq, Show)
-
-leaf :: a -> Tree a
-leaf x = Node x Empty Empty
+import BinarySearchTree as BST
 
 -- Some examples of structure in code
-t1 :: Tree Int
-t1 = Node 10 (leaf 8) (leaf 15)
+t3 :: Tree Int
+t3 = Node 10 (leaf 8) (leaf 15)
 
-t2 :: Tree Int
-t2 = Node 17 (Node 12 (Node 5 (leaf 4) (leaf 8)) (leaf 15))
+t4 :: Tree Int
+t4 = Node 17 (Node 12 (Node 5 (leaf 4) (leaf 8))
+                      (leaf 15))
              (Node 115
-                     (Node 32 (leaf 30) (Node 46 (leaf 43) (leaf 57)))
-                              (Node 163 (leaf 161) Empty))
-
--- The size of the tree is taken to be the number n of internal nodes
---(those with two children)
-size :: Num a => Tree b -> a
-size Empty        = 0
-size (Node _ l r) = 1 + size l + size r
+                     (Node 32 (leaf 30)
+                              (Node 46 (leaf 43)
+                                       (leaf 57)))
+                     (Node 163 (leaf 161)
+                               Empty))
 
 -- *AVL> size t1
 -- 3
@@ -40,42 +33,6 @@ height (Node _ l r)     = 1 + max (height l) (height r)
 -- *AVL> height t2
 -- 5
 
--- Returns an unsorted list of all values in the given Tree
--- (we need to be able to rebuild the tree from the list)
-toList :: Tree a -> [a]
-toList Empty        = []
-toList (Node x l r) = [x] ++ (toList l) ++ (toList r)
-
--- *BinarySearchTree> toList t1
--- [4,3,7,5,10]
--- *BinarySearchTree> toList t2
--- [20,15,8,7,11,18,118,35,33,49,60,166]
-
-{--
- Helper fonction that creates a AVL tree from a given list of ordered values
---}
-fromList :: Ord a => [a] -> Tree a
-fromList []     = Empty
-fromList (x:xs) = Node x (fromList lefts) (fromList rights)
-                  where p      = (<= x)
-                        lefts  = takeWhile p xs
-                        rights = dropWhile p xs
-
--- *BinarySearchTree> (fromList . toList) t1 == t1
--- True
--- *BinarySearchTree> (fromList . toList) t1 == (leaf 1)
--- False
--- *BinarySearchTree> (fromList . toList) t2 == t2
--- True
--- *BinarySearchTree> (fromList . toList) t2 == (leaf 1)
--- False
-
--- Returns a sorted list of all elements of the given Tree.
--- Note that we can't go back to the origin Tree
-toSortedList :: Tree a -> [a]
-toSortedList Empty        = []
-toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
-
 empty :: Tree a -> Bool
 empty Empty        = True
 empty (Node _ _ _) = False
@@ -86,25 +43,6 @@ empty (Node _ _ _) = False
 -- True
 -- *AVL> empty $ leaf 10
 -- False
-
--- Returns whether the given Tree contains the given element or not
-contains :: Ord a => Tree a -> a -> Bool
-contains Empty _        = False
-contains (Node x l r) y = case compare y x of
-  EQ -> True
-  LT -> contains l y
-  GT -> contains r y
-
--- *AVL> t1
--- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
--- *AVL> contains t1 1
--- False
--- *AVL> contains t1 10
--- True
--- *AVL> contains t1 8
--- True
--- *AVL> contains t1 15
--- True
 
 {--
  Given a tree, compute its height factor (-1, 0 or 1, the tree is well balanced)
@@ -135,33 +73,6 @@ hBalanced (Node x l r) = abs (heightFactor (Node x l r)) <= 1 && hBalanced l && 
 -- Node 17 (Node 12 (Node 5 (Node 4 Empty Empty) (Node 8 Empty Empty)) (Node 15 Empty Empty)) (Node 115 (Node 32 (Node 30 Empty Empty) (Node 46 (Node 43 Empty Empty) (Node 57 Empty Empty))) (Node 163 (Node 161 Empty Empty) Empty))
 -- *AVL> hBalanced t2
 -- False
-
-{--
- returns whether the given tree is a binary search tree or not
---}
-isBSearchTree :: (Ord a) => Tree a -> Bool
-isBSearchTree Empty        = True
-isBSearchTree (Node x l r) =
-  case map value [l, r] of
-    [Nothing, Nothing] -> True
-    [Nothing, Just z]  -> and [x < z, isBSearchTree l, isBSearchTree r]
-    [Just y, Nothing]  -> and [y <= x, isBSearchTree l, isBSearchTree r]
-    [Just y, Just z]   -> and [y <= x, x < z, isBSearchTree l, isBSearchTree r]
-  where
-    value :: Tree a -> Maybe a
-    value Empty        = Nothing
-    value (Node v _ _) = Just v
-
--- *BinarySearchTree> isBSearchTree (Node 10 t2 t1)
--- False
--- *BinarySearchTree> isBSearchTree t1
--- True
--- *BinarySearchTree> isBSearchTree t2
--- True
--- *BinarySearchTree> isBSearchTree (insert t2 1)
--- True
--- *BinarySearchTree> isBSearchTree (insert (insert t2 1) 100)
--- True
 
 {--
  Tells whether the given tree is an AVL or not.
@@ -198,7 +109,7 @@ rotateRight (Node v lf (Node x rtl rtr)) = (Node x (Node v lf rtl) rtr)
 -- *AVL> (rotateRight . rotateLeft) t1 == t1
 -- True
 
--- Given an unbalanced avl, compute the rebalanced avl
+-- Given an unbalanced avl, compute the rebalanced avl at the given level
 rebalance :: Tree a -> Tree a
 rebalance n =
   let hf = heightFactor n in
@@ -226,14 +137,8 @@ rebalance n =
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
 --}
 insert :: (Ord a) => Tree a -> a -> Tree a
-insert Empty x = leaf x
-insert (Node x l r) y = undefined
-
--- insertBS :: (Ord a) => Tree a -> a -> Tree a
--- insertBS Empty x = leaf x
--- insertBS (Node x l r) y = case compare y x of
---   GT -> Node x l (insertBS r y)
---   _  -> Node x (insertBS l y) r
+insert = undefined
+--insert t v = rebalance $ BST.insert t v
 
 {--
   Remove a node from the tree.
