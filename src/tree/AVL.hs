@@ -105,11 +105,24 @@ contains (Node x l r) y = case compare y x of
 -- True
 
 {--
+ Given a tree, compute its height factor (-1, 0 or 1, the tree is well balanced)
+--}
+heightFactor :: Tree a -> Int
+heightFactor Empty = 0
+heightFactor (Node _ l r) = (height l) - (height r)
+
+-- *AVL> heightFactor t1
+-- 0
+-- *AVL> heightFactor t2
+-- -1
+
+
+{--
  returns whether the given tree is h-balanced or not
 --}
 hBalanced :: Tree a -> Bool
 hBalanced Empty        = True
-hBalanced (Node _ l r) = abs ((height l) - (height r)) <= 1 && hBalanced l && hBalanced r
+hBalanced (Node x l r) = abs (heightFactor (Node x l r)) <= 1 && hBalanced l && hBalanced r
 
 -- *AVL> hBalanced Empty
 -- True
@@ -168,7 +181,7 @@ isAVL t = isBSearchTree t && hBalanced t
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
 --}
 insert :: (Ord a) => Tree a -> a -> Tree a
-insert = undefined
+insert Empty x = leaf x
 
 {--
   Remove a node from the tree.
