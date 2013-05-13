@@ -26,8 +26,15 @@ size (Node _ l r) = 1 + size l + size r
 
 -- maximum distance from any node to the root
 height :: (Ord a, Num a) => Tree t -> a
-height Empty = undefined
-height (Node _ l r) =
+height Empty            = -1
+height (Node _ _ Empty) = 1
+height (Node _ Empty _) = 1
+height (Node _ l r)     = 1 + max (height l) (height r)
+
+-- *AVL> height t1
+-- 2
+-- *AVL> height t2
+-- 5
 
 -- Return a unsorted list, but we can go back to the origin Tree from this list
 toList :: Tree a -> [a]
