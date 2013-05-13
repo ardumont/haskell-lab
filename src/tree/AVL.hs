@@ -177,9 +177,9 @@ isAVL t = isBSearchTree t && hBalanced t
 -- False
 
 rotateLeft :: Tree a -> Tree a
-rotateLeft Empty        = Empty
-rotateLeft (Node v (Node x lflf lfrt) rt) =
-  (Node x lflf (Node v lfrt rt))
+rotateLeft Empty                       = Empty
+rotateLeft (Node v Empty r)            = (Node v Empty r)
+rotateLeft (Node v (Node x lfl lfr) r) = (Node x lfl (Node v lfr r))
 
 -- *AVL> t1
 -- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
@@ -187,9 +187,9 @@ rotateLeft (Node v (Node x lflf lfrt) rt) =
 -- Node 8 Empty (Node 10 Empty (Node 15 Empty Empty))
 
 rotateRight :: Tree a -> Tree a
-rotateRight Empty          = Empty
-rotateRight (Node v lf (Node x rtlf rtrt)) =
-  (Node x (Node v lf rtlf) rtrt)
+rotateRight Empty                        = Empty
+rotateRight (Node v lf Empty)            = (Node v lf Empty)
+rotateRight (Node v lf (Node x rtl rtr)) = (Node x (Node v lf rtl) rtr)
 
 -- *AVL> rotateRight t1
 -- Node 15 (Node 10 (Node 8 Empty Empty) Empty) Empty
