@@ -116,7 +116,6 @@ heightFactor (Node _ l r) = (height l) - (height r)
 -- *AVL> heightFactor t2
 -- -1
 
-
 {--
  returns whether the given tree is h-balanced or not
 --}
@@ -176,12 +175,33 @@ isAVL t = isBSearchTree t && hBalanced t
 -- *AVL> isAVL $ Node 10 t1 Empty
 -- False
 
+rebalance :: Tree a -> Tree a
+rebalance Empty = Empty
+rebalance (Node x l r) = let hf = heightFactor (Node x l r) in
+  if hf < -1
+  then Node x (rotateLeft l) r
+  else Node x l (rotateRight r)
+
+rotateLeft :: Tree a -> Tree a
+rotateLeft = undefined
+
+rotateRight :: Tree a -> Tree a
+rotateRight = undefined
+
 {--
   Insert an new ordered value into the tree.
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
 --}
 insert :: (Ord a) => Tree a -> a -> Tree a
 insert Empty x = leaf x
+insert (Node x l r) y = undefined
+
+
+-- insertBS :: (Ord a) => Tree a -> a -> Tree a
+-- insertBS Empty x = leaf x
+-- insertBS (Node x l r) y = case compare y x of
+--   GT -> Node x l (insertBS r y)
+--   _  -> Node x (insertBS l y) r
 
 {--
   Remove a node from the tree.
