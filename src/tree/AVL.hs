@@ -75,7 +75,15 @@ toSortedList Empty        = []
 toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
 
 empty :: Tree a -> Bool
-empty Empty  = undefined
+empty Empty        = True
+empty (Node _ _ _) = False
+
+-- *AVL> leaf 10
+-- Node 10 Empty Empty
+-- *AVL> empty Empty
+-- True
+-- *AVL> empty $ leaf 10
+-- False
 
 contains :: Ord a =>  Tree a -> a -> Bool
 contains  = undefined
