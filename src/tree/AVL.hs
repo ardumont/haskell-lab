@@ -38,16 +38,44 @@ height (Node _ l r)     = 1 + max (height l) (height r)
 -- *AVL> height t2
 -- 5
 
--- Return a unsorted list, but we can go back to the origin Tree from this list
+-- Returns an unsorted list of all values in the given Tree
+-- (we need to be able to rebuild the tree from the list)
 toList :: Tree a -> [a]
-toList = undefined
+toList Empty        = []
+toList (Node x l r) = [x] ++ (toList l) ++ (toList r)
 
--- Returns a sorted list of all elements of the given Tree. Note that we can't go back to the origin Tree
+-- *BinarySearchTree> toList t1
+-- [4,3,7,5,10]
+-- *BinarySearchTree> toList t2
+-- [20,15,8,7,11,18,118,35,33,49,60,166]
+
+{--
+ Helper fonction that creates a AVL tree from a given list of ordered values
+--}
+fromList :: Ord a => [a] -> Tree a
+fromList []     = Empty
+fromList (x:xs) = Node x (fromList lefts) (fromList rights)
+                  where p      = (<= x)
+                        lefts  = takeWhile p xs
+                        rights = dropWhile p xs
+
+-- *BinarySearchTree> (fromList . toList) t1 == t1
+-- True
+-- *BinarySearchTree> (fromList . toList) t1 == (leaf 1)
+-- False
+-- *BinarySearchTree> (fromList . toList) t2 == t2
+-- True
+-- *BinarySearchTree> (fromList . toList) t2 == (leaf 1)
+-- False
+
+-- Returns a sorted list of all elements of the given Tree.
+-- Note that we can't go back to the origin Tree
 toSortedList :: Tree a -> [a]
-toSortedList  = undefined
+toSortedList Empty        = []
+toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
 
 empty :: Tree a -> Bool
-empty  = undefined
+empty Empty  = undefined
 
 contains :: Ord a =>  Tree a -> a -> Bool
 contains  = undefined
@@ -81,12 +109,6 @@ isBSearchTree  = undefined
 --}
 isAVL :: Tree a -> Bool
 isAVL = undefined
-
-{--
- Helper fonction that creates a AVL tree from a given list of ordered values
---}
-fromList :: (Ord a) => [a] -> Tree a
-fromList = undefined
 
 {--
  Breadth first traversal
