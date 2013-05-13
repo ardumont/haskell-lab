@@ -1,5 +1,7 @@
 module AVL where
 
+import BinarySearchTree as BST (insert)
+
 data Tree a = Empty | Node a (Tree a) (Tree a) deriving (Eq, Show)
 
 leaf :: a -> Tree a
@@ -150,7 +152,6 @@ isBSearchTree (Node x l r) =
     value Empty        = Nothing
     value (Node v _ _) = Just v
 
-
 -- *BinarySearchTree> isBSearchTree (Node 10 t2 t1)
 -- False
 -- *BinarySearchTree> isBSearchTree t1
@@ -175,18 +176,36 @@ isAVL t = isBSearchTree t && hBalanced t
 -- *AVL> isAVL $ Node 10 t1 Empty
 -- False
 
-rebalance :: Tree a -> Tree a
-rebalance Empty = Empty
-rebalance (Node x l r) = let hf = heightFactor (Node x l r) in
-  if hf < -1
-  then Node x (rotateLeft l) r
-  else Node x l (rotateRight r)
-
 rotateLeft :: Tree a -> Tree a
-rotateLeft = undefined
+rotateLeft Empty        = Empty
+rotateLeft (Node v lv rt) = case lv of
+  Empty              -> (Node v lv rt)
+  (Node x lflf lfrt) -> (Node x lflf (Node v lfrt rt))
+
+-- *AVL> t1
+-- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
+-- *AVL> rotateLeft t1
+-- Node 8 Empty (Node 10 Empty (Node 15 Empty Empty))
 
 rotateRight :: Tree a -> Tree a
-rotateRight = undefined
+rotateRight Empty          = Empty
+rotateRight (Node v lf rv) = case rv of
+  Empty              -> (Node v lf rv)
+  (Node x rtlf rtrt) -> (Node x (Node v lf rtlf) rtrt)
+
+-- *AVL> rotateRight t1
+-- Node 15 (Node 10 (Node 8 Empty Empty) Empty) Empty
+-- *AVL> (rotateLeft . rotateRight) t1 == t1
+-- True
+-- *AVL> (rotateRight . rotateLeft) t1 == t1
+-- True
+
+rebalance :: Tree a -> Tree a
+rebalance Empty = Empty
+-- rebalance (Node x l r) = let hf = heightFactor (Node x l r) in
+--   if hf < -1
+--   then Node x (rotateLeft l) r
+--   else Node x l (rotateRight r)
 
 {--
   Insert an new ordered value into the tree.
