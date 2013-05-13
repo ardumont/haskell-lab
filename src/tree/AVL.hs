@@ -13,6 +13,16 @@ t2 = Node 17 (Node 12 (Node 5 (leaf 4) (leaf 8)) (leaf 15))
                      (Node 32 (leaf 30) (Node 46 (leaf 43) (leaf 57)))
                               (Node 163 (leaf 161) Empty))
 
+-- The size of the tree is taken to be the number n of internal nodes
+--(those with two children)
+size :: Num a => Tree b -> a
+size Empty        = 0
+size (Node _ l r) = 1 + size l + size r
+
+-- *AVL> size t1
+-- 3
+-- *AVL> size t2
+-- 14
 
 -- maximum distance from any node to the root
 height :: (Ord a, Num a) => Tree t -> a
