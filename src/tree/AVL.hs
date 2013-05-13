@@ -6,8 +6,10 @@ leaf :: a -> Tree a
 leaf x = Node x Empty Empty
 
 -- Some examples of structure in code
+t1 :: Tree Int
 t1 = Node 10 (leaf 8) (leaf 15)
 
+t2 :: Tree Int
 t2 = Node 17 (Node 12 (Node 5 (leaf 4) (leaf 8)) (leaf 15))
              (Node 115
                      (Node 32 (leaf 30) (Node 46 (leaf 43) (leaf 57)))
