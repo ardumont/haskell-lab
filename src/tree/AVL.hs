@@ -1,6 +1,6 @@
 module AVL where
 
-data Tree a = Empty | Node a (Tree a) (Tree a) deriving (Eq,Show)
+data Tree a = Empty | Node a (Tree a) (Tree a) deriving (Eq, Show)
 
 leaf :: a -> Tree a
 leaf x = Node x Empty Empty
@@ -105,6 +105,65 @@ contains (Node x l r) y = case compare y x of
 -- True
 
 {--
+ returns whether the given tree is h-balanced or not
+--}
+hBalanced :: Tree a -> Bool
+hBalanced Empty        = True
+hBalanced (Node _ l r) = abs ((height l) - (height r)) <= 1 && hBalanced l && hBalanced r
+
+-- *AVL> hBalanced Empty
+-- True
+-- *AVL> t1
+-- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
+-- *AVL> hBalanced t1
+-- True
+-- *AVL> t2
+-- Node 17 (Node 12 (Node 5 (Node 4 Empty Empty) (Node 8 Empty Empty)) (Node 15 Empty Empty)) (Node 115 (Node 32 (Node 30 Empty Empty) (Node 46 (Node 43 Empty Empty) (Node 57 Empty Empty))) (Node 163 (Node 161 Empty Empty) Empty))
+-- *AVL> hBalanced t2
+-- False
+
+{--
+ returns whether the given tree is a binary search tree or not
+--}
+isBSearchTree :: (Ord a) => Tree a -> Bool
+isBSearchTree Empty        = True
+isBSearchTree (Node x l r) =
+  case map value [l, r] of
+    [Nothing, Nothing] -> True
+    [Nothing, Just z]  -> and [x < z, isBSearchTree l, isBSearchTree r]
+    [Just y, Nothing]  -> and [y <= x, isBSearchTree l, isBSearchTree r]
+    [Just y, Just z]   -> and [y <= x, x < z, isBSearchTree l, isBSearchTree r]
+  where
+    value :: Tree a -> Maybe a
+    value Empty        = Nothing
+    value (Node v _ _) = Just v
+
+
+-- *BinarySearchTree> isBSearchTree (Node 10 t2 t1)
+-- False
+-- *BinarySearchTree> isBSearchTree t1
+-- True
+-- *BinarySearchTree> isBSearchTree t2
+-- True
+-- *BinarySearchTree> isBSearchTree (insert t2 1)
+-- True
+-- *BinarySearchTree> isBSearchTree (insert (insert t2 1) 100)
+-- True
+
+{--
+ Tells whether the given tree is an AVL or not.
+--}
+isAVL :: Ord a => Tree a -> Bool
+isAVL t = isBSearchTree t && hBalanced t
+
+-- *AVL> isAVL t1
+-- True
+-- *AVL> isAVL t2
+-- True
+-- *AVL> isAVL $ Node 10 t1 Empty
+-- False
+
+{--
   Insert an new ordered value into the tree.
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
 --}
@@ -124,18 +183,6 @@ remove  = undefined
 --}
 deleteMax :: Tree a -> (a, Tree a)
 deleteMax = undefined
-
-{--
- returns whether the given tree is a binary search tree or not
---}
-isBSearchTree :: (Ord a) => Tree a -> Bool
-isBSearchTree  = undefined
-
-{--
- Tells whether the given tree is an AVL or not.
---}
-isAVL :: Tree a -> Bool
-isAVL = undefined
 
 {--
  Breadth first traversal
