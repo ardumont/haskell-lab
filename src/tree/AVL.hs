@@ -198,12 +198,28 @@ rotateRight (Node v lf (Node x rtl rtr)) = (Node x (Node v lf rtl) rtr)
 -- *AVL> (rotateRight . rotateLeft) t1 == t1
 -- True
 
+-- Given an unbalanced avl, compute the rebalanced avl
 rebalance :: Tree a -> Tree a
-rebalance Empty = Empty
--- rebalance (Node x l r) = let hf = heightFactor (Node x l r) in
---   if hf < -1
---   then Node x (rotateLeft l) r
---   else Node x l (rotateRight r)
+rebalance n =
+  let hf = heightFactor n in
+  if abs hf <= 1
+  then n
+  else if hf < -1
+  then rebalance $ (rotateRight n)
+  else rebalance $ (rotateLeft n)
+
+-- *AVL> t1
+-- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
+-- *AVL> rebalance $ rotateLeft t1
+-- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
+-- *AVL> rebalance $ rotateRight t1
+-- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
+-- *AVL> rotateLeft t2
+-- Node 12 (Node 5 (Node 4 Empty Empty) (Node 8 Empty Empty)) (Node 17 (Node 15 Empty Empty) (Node 115 (Node 32 (Node 30 Empty Empty) (Node 46 (Node 43 Empty Empty) (Node 57 Empty Empty))) (Node 163 (Node 161 Empty Empty) Empty)))
+-- *AVL> heightFactor $ rotateLeft t2
+-- -3
+-- *AVL> heightFactor $ rebalance $ rotateLeft t2
+-- -1
 
 {--
   Insert an new ordered value into the tree.
