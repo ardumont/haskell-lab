@@ -105,13 +105,16 @@ contains (Node x l r) y = case compare y x of
 -- True
 
 {--
-  Insert an new ordred value into the tree.
-  Note that it preserves the Binary Search tree propertie,
-  and the H-balanced propertie of an AVL.
+  Insert an new ordered value into the tree.
+  Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
 --}
 insert :: (Ord a) => Tree a -> a -> Tree a
 insert = undefined
 
+{--
+  Remove a node from the tree.
+  Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
+--}
 remove :: (Ord a) => Tree a -> a -> Tree a
 remove  = undefined
 
