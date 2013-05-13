@@ -85,8 +85,24 @@ empty (Node _ _ _) = False
 -- *AVL> empty $ leaf 10
 -- False
 
-contains :: Ord a =>  Tree a -> a -> Bool
-contains  = undefined
+-- Returns whether the given Tree contains the given element or not
+contains :: Ord a => Tree a -> a -> Bool
+contains Empty _        = False
+contains (Node x l r) y = case compare y x of
+  EQ -> True
+  LT -> contains l y
+  GT -> contains r y
+
+-- *AVL> t1
+-- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
+-- *AVL> contains t1 1
+-- False
+-- *AVL> contains t1 10
+-- True
+-- *AVL> contains t1 8
+-- True
+-- *AVL> contains t1 15
+-- True
 
 {--
   Insert an new ordred value into the tree.
