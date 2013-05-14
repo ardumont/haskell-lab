@@ -24,8 +24,6 @@ t4 = Node 17 (Node 12 (Node 5 (leaf 4) (leaf 8))
 -- maximum distance from any node to the root
 height :: (Ord a, Num a) => Tree t -> a
 height Empty            = -1
-height (Node _ _ Empty) = 1
-height (Node _ Empty _) = 1
 height (Node _ l r)     = 1 + max (height l) (height r)
 
 -- *AVL> height t1
