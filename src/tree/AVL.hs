@@ -172,7 +172,6 @@ rebalance n =
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
 --}
 ins :: (Ord a) => Tree a -> a -> Tree a
---insert t v = rebalance $ BST.insert t v
 ins Empty v = leaf v
 ins (Node x l r) y
   | x < y      = rebalance $ Node x l (ins r y)
