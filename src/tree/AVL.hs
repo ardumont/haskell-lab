@@ -168,9 +168,31 @@ rebalance n =
   Insert an new ordered value into the tree.
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
 --}
-insert :: (Ord a) => Tree a -> a -> Tree a
-insert = undefined
+ins :: (Ord a) => Tree a -> a -> Tree a
 --insert t v = rebalance $ BST.insert t v
+ins Empty v = leaf v
+ins (Node x l r) y
+  | x < y      = rebalance $ Node x l (ins r y)
+  | otherwise  = rebalance $ Node x (ins l y) r
+
+-- *AVL> isAVL $ ins t1 3
+-- True
+-- *AVL> isAVL $ ins t1 2
+-- True
+-- *AVL> isAVL $ ins t1 10
+-- True
+-- *AVL> isAVL $ ins t1 1100
+-- True
+-- *AVL> isAVL $ ins (ins t1 1100) 1200
+-- True
+-- *AVL> isAVL $ ins (ins (ins t1 1100) 1200) 1300
+-- True
+-- *AVL> ins (ins (ins t1 1100) 1200) 1300
+-- Node 7 (Node 4 (Node 3 Empty Empty) (Node 5 Empty Empty)) (Node 1100 (Node 10 Empty Empty) (Node 1200 Empty (Node 1300 Empty Empty)))
+-- *AVL> ins (ins (ins (ins t1 1100) 1200) 1300) 1400
+-- Node 7 (Node 4 (Node 3 Empty Empty) (Node 5 Empty Empty)) (Node 1100 (Node 10 Empty Empty) (Node 1300 (Node 1200 Empty Empty) (Node 1400 Empty Empty)))
+-- *AVL> isAVL (ins (ins (ins (ins t1 1100) 1200) 1300) 1400)
+-- True
 
 {--
   Remove a node from the tree.
