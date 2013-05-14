@@ -1,5 +1,8 @@
 module AVL where
 
+-- import Test.QuickCheck
+-- import Test.QuickCheck.All
+
 import BinarySearchTree as BST
 
 -- Some examples of structure in code
@@ -175,6 +178,12 @@ ins (Node x l r) y
   | x < y      = rebalance $ Node x l (ins r y)
   | otherwise  = rebalance $ Node x (ins l y) r
 
+--prop_avl = (\ t -> abs (heightFactor t) <= 1)
+
+-- adding
+--main = do
+-- verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_avl
+
 -- *AVL> isAVL $ ins t1 3
 -- True
 -- *AVL> isAVL $ ins t1 2
@@ -215,8 +224,15 @@ remove (Node x l r) y
 {--
  Breadth first traversal
 --}
-breadth :: [Tree a] -> [a]
-breadth = undefined
+breadth :: Tree a -> [a]
+breadth = toList
+
+-- *AVL> t1
+-- Node 4 (Node 3 Empty Empty) (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty))
+-- *AVL> breadth t1
+-- [4,3,7,5,10]
+-- *AVL> breadth (ins (ins (ins (ins t1 1100) 1200) 1300) 1400)
+-- [7,4,3,5,1100,10,1300,1200,1400]
 
 {--
   breadth first traversal based filtering.
