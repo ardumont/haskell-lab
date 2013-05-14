@@ -239,7 +239,16 @@ breadth = toList
   returns the list of all elements satisfying the given predicate
 --}
 filterT :: (a -> Bool) -> Tree a -> [a]
-filterT = undefined
+filterT p = (filter p) . breadth
+
+-- *AVL> filterT (<= 3) t1
+-- [3]
+-- *AVL> filterT (<= 1000) t1
+-- [4,3,7,5,10]
+-- *AVL> filterT (<= 1000) $ (ins (ins (ins (ins t1 1100) 1200) 1300) 1400)
+-- [7,4,3,5,10]
+-- *AVL> filterT (<= 1100) $ (ins (ins (ins (ins t1 1100) 1200) 1300) 1400)
+-- [7,4,3,5,1100,10]
 
 {--
  Breadth first traversal based implementation of exist
