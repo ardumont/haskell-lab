@@ -220,24 +220,36 @@ remove (Node x l r) y
 -- *AVL> isAVL (AVL.remove (ins (ins (ins (ins t1 1100) 1200) 1300) 1400) 1100)
 -- True
 
+val :: Tree a -> [a]
+val Empty        = []
+val (Node x _ _) = [x]
+
+children :: Tree a -> [a]
+children Empty = []
+children (Node _ l r) = concatMap val [l, r]
+
 {--
  Breadth first traversal
 --}
 breadth :: Tree a -> [a]
 breadth t =
-  bf [t] []
+  reverse $ bf [t] []
   where
     bf :: [Tree a] -> [a] -> [a]
     bf [] q                  = q
-    bf (Empty : ns)        q = bf ns q                   -- drop the empty nodes
-    bf ((Node x l r) : ns) q = bf (l : r : ns) (q ++ [x])
+    bf (Empty : ns)        q = bf ns q
+    bf ((Node x l r) : ns) q = bf (ns ++ [l,r]) (x : q)
 
 -- *AVL> t1
 -- Node 4 (Node 3 Empty Empty) (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty))
 -- *AVL> breadth t1
 -- [4,3,7,5,10]
--- *AVL> breadth (ins (ins (ins (ins t1 1100) 1200) 1300) 1400)
--- [7,4,3,5,1100,10,1300,1200,1400]
+-- *AVL> breadth (Node 1 (Node 2 (Node 4 Empty Empty) (Node 5 Empty Empty)) (Node 3 (Node 6 Empty Empty) (Node 7 Empty Empty)))
+-- [1,2,3,4,5,6,7]
+-- *AVL> t2
+-- Node 20 (Node 15 (Node 8 (Node 7 Empty Empty) (Node 11 Empty Empty)) (Node 18 Empty Empty)) (Node 118 (Node 35 (Node 33 Empty Empty) (Node 49 Empty (Node 60 Empty Empty))) (Node 166 Empty Empty))
+-- *AVL> breadth t2
+-- [20,15,118,8,18,35,166,7,11,33,49,60]
 
 {--
   breadth first traversal based filtering.
