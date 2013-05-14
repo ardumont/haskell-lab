@@ -143,9 +143,13 @@ rebalance n =
   let hf = heightFactor n in
   if abs hf <= 1
   then n
-  else if hf < -1
-  then rebalance $ (rotateRight n)
-  else rebalance $ (rotateLeft n)
+  else if hf < -2
+  then (rotateLeft . rotateRight) n
+       else if hf < -1
+            then rotateRight n
+            else if hf > 2
+                 then (rotateRight . rotateLeft) n
+                 else (rotateLeft n)
 
 -- *AVL> t1
 -- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
