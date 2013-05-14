@@ -43,7 +43,7 @@ size (Node _ l r) = 1 + size l + size r
 -- (we need to be able to rebuild the tree from the list)
 toList :: Tree a -> [a]
 toList Empty        = []
-toList (Node x l r) = [x] ++ (toList l) ++ (toList r)
+toList (Node x l r) = x : (toList l) ++ (toList r)
 
 -- *BinarySearchTree> toList t1
 -- [4,3,7,5,10]
@@ -70,7 +70,7 @@ fromList (x:xs) = Node x (fromList lefts) (fromList rights)
 -- Note that we can't go back to the origin Tree
 toSortedList :: Tree a -> [a]
 toSortedList Empty        = []
-toSortedList (Node x l r) = toSortedList l ++ [x] ++ toSortedList r
+toSortedList (Node x l r) = toSortedList l ++ x : toSortedList r
 
 -- *BinarySearchTree> toSortedList t1
 -- [3,4,5,7,10]
