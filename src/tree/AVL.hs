@@ -78,6 +78,14 @@ hBalanced (Node x l r) = abs (heightFactor (Node x l r)) <= 1 && hBalanced l && 
 isAVL :: Ord a => Tree a -> Bool
 isAVL t = isBSearchTree t && hBalanced t
 
+left :: Tree a -> Tree a
+left Empty = Empty
+left (Node _ l _) = l
+
+right :: Tree a -> Tree a
+right Empty = Empty
+right (Node _ _ r) = r
+
 -- *AVL> isAVL t1
 -- True
 -- *AVL> isAVL t2
