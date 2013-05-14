@@ -225,7 +225,13 @@ remove (Node x l r) y
  Breadth first traversal
 --}
 breadth :: Tree a -> [a]
-breadth = toList
+breadth t =
+  bf [t] []
+  where
+    bf :: [Tree a] -> [a] -> [a]
+    bf [] q                  = q
+    bf (Empty : ns)        q = bf ns q                   -- drop the empty nodes
+    bf ((Node x l r) : ns) q = bf (l : r : ns) (q ++ [x])
 
 -- *AVL> t1
 -- Node 4 (Node 3 Empty Empty) (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty))
