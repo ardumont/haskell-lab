@@ -131,6 +131,31 @@ t6 = Node 3 (Node 2
                (leaf 4)
                (leaf 7))
 
+rotateLeftRight :: Tree a -> Tree a
+rotateLeftRight Empty = Empty
+rotateLeftRight (Node v
+                 (Node lfv lflf
+                  (Node lfrtv
+                   lfrtlf
+                   lfrtrt))
+                  rt) =
+  Node lfrtv
+  (Node lfv lflf   lfrtlf)
+  (Node v   lfrtrt rt)
+
+rotateRightLeft :: Tree a -> Tree a
+rotateRightLeft Empty = Empty
+rotateRightLeft (Node v
+                 lf
+                 (Node rtv
+                   (Node rtlfv
+                    rtlflf
+                    rtlfrt)
+                   rtrt)) =
+  Node rtlfv
+  (Node v   lf     rtlflf)
+  (Node rtv rtlfrt rtrt)
+
 -- *AVL> rotateRight t1
 -- Node 15 (Node 10 (Node 8 Empty Empty) Empty) Empty
 -- *AVL> (rotateLeft . rotateRight) t1 == t1
@@ -153,6 +178,9 @@ rebalance n =
             else if hf > 2
                  then (rotateRight . rotateLeft) n
                  else (rotateLeft n)
+
+t7 :: Tree Int
+t7 = Node 6 (Node 3 (Node 2 Empty Empty) (Node 4 Empty (Node 5 Empty Empty))) (Node 7 Empty Empty)
 
 -- *AVL> t1
 -- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
@@ -250,6 +278,19 @@ breadth t =
 -- Node 20 (Node 15 (Node 8 (Node 7 Empty Empty) (Node 11 Empty Empty)) (Node 18 Empty Empty)) (Node 118 (Node 35 (Node 33 Empty Empty) (Node 49 Empty (Node 60 Empty Empty))) (Node 166 Empty Empty))
 -- *AVL> breadth t2
 -- [20,15,118,8,18,35,166,7,11,33,49,60]
+
+-- massyl
+-- breadth :: [Tree a] -> [a]
+-- breadth [] = []
+-- breadth ts = concatMap (value []) ts ++ breadth (concatMap childs ts)
+
+-- childs :: Tree a -> [Tree a]
+-- childs Empty = []
+-- childs (Node _ l r) = [l,r]
+
+-- value :: [a] -> Tree a -> [a]
+-- value acc Empty = acc
+-- value xs (Node x _ _) = xs++[x]
 
 {--
   breadth first traversal based filtering.
