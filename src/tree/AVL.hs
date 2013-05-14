@@ -254,4 +254,11 @@ filterT p = (filter p) . breadth
  Breadth first traversal based implementation of exist
 --}
 exist:: Eq a => a -> Tree a -> Bool
-exist = undefined
+exist x = not . null . filterT (== x)
+
+-- *AVL> t1
+-- Node 4 (Node 3 Empty Empty) (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty))
+-- *AVL> exist 1 t1
+-- False
+-- *AVL> exist 3 t1
+-- True
