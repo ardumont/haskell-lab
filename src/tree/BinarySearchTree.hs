@@ -261,7 +261,7 @@ remove (Node x l r) y
   | y < x     = Node x (remove l y) r
   | y > x     = Node x l (remove r y)
   | otherwise = case deleteMax l of
-    (Just z, t) -> Node z t r
+    (Just z, t)  -> Node z t r
     (Nothing, _) -> Empty
 
 -- *BinarySearchTree> t1

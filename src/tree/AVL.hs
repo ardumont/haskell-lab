@@ -199,14 +199,18 @@ ins (Node x l r) y
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
 --}
 remove :: (Ord a) => Tree a -> a -> Tree a
-remove  = undefined
+remove Empty _ = Empty
+remove (Node x l r) y
+  | x < y     = AVL.remove r y
+  | x > y     = AVL.remove l y
+  | otherwise = case deleteMax l of
+    (Just z, t)  -> rebalance $ Node z t r
+    (Nothing, _) -> Empty
 
-{--
- Deletes the maximum element in a given Tree.
- Note that this implementation works only on non Empty Trees
---}
-deleteMax :: Tree a -> (a, Tree a)
-deleteMax = undefined
+-- *AVL> isAVL (BST.remove (ins (ins (ins (ins t1 1100) 1200) 1300) 1400) 1100)
+-- False
+-- *AVL> isAVL (AVL.remove (ins (ins (ins (ins t1 1100) 1200) 1300) 1400) 1100)
+-- True
 
 {--
  Breadth first traversal
@@ -215,7 +219,7 @@ breadth :: [Tree a] -> [a]
 breadth = undefined
 
 {--
-  breadth first traversal based filtring.
+  breadth first traversal based filtering.
   returns the list of all elements satisfying the given predicate
 --}
 filterT :: (a -> Bool) -> Tree a -> [a]
