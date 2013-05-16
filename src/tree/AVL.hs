@@ -99,24 +99,25 @@ right (Node _ _ r) = r
 -- *AVL> isAVL $ Node 10 t1 Empty
 -- False
 
-rotateL :: Tree a -> Tree a
-rotateL Empty                       = Empty
-rotateL n@(Node _ Empty _)          = n
-rotateL (Node v (Node x ll lr) r) = (Node x ll (Node v lr r))
+rotateR :: Tree a -> Tree a
+rotateR Empty                     = Empty
+rotateR n@(Node _ Empty _)        = n
+rotateR (Node v (Node x ll lr) r) = (Node x ll (Node v lr r))
 
 -- *AVL> t1
--- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
--- *AVL> rotateL t1
--- Node 8 Empty (Node 10 Empty (Node 15 Empty Empty))
--- *AVL> rotateL t5
--- Node 3 (Node 2 (Node 1 Empty Empty) Empty) (Node 6 (Node 4 Empty Empty) (Node 7 Empty Empty))
--- *AVL> rotateL t5 == t6
--- True
+-- Node 4 (Node 3 Empty Empty) (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty))
+-- *AVL> rotateR t1
+-- Node 3 Empty (Node 4 Empty (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty)))
 
-rotateR :: Tree a -> Tree a
-rotateR Empty                        = Empty
-rotateR n@(Node _ _ Empty)           = n
-rotateR (Node v l (Node x rl rr)) = (Node x (Node v l rl) rr)
+rotateL :: Tree a -> Tree a
+rotateL Empty                     = Empty
+rotateL n@(Node _ _ Empty)        = n
+rotateL (Node v l (Node x rl rr)) = (Node x (Node v l rl) rr)
+
+-- *AVL> t1
+-- Node 4 (Node 3 Empty Empty) (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty))
+-- *AVL> rotateL t1
+-- Node 7 (Node 4 (Node 3 Empty Empty) (Node 5 Empty Empty)) (Node 10 Empty Empty)
 
 t5 :: Tree Int
 t5 = Node 6 (Node 3
@@ -140,7 +141,37 @@ t6 = Node 3 (Node 2
 -- True
 -- *AVL> (rotateR . rotateL) t1 == t1
 -- True
--- *AVL> rotateR t6 == t5
+-- *AVL> pp t5
+-- --6
+--   |--3
+--   |  |--2
+--   |  |  |--1
+--   |  |  |  |-- /-
+--   |  |  |  `-- /-
+--   |  |  `-- /-
+--   |  `--4
+--   |     |-- /-
+--   |     `-- /-
+--   `--7
+--      |-- /-
+--      `-- /-
+-- *AVL> pp t6
+-- --3
+--   |--2
+--   |  |--1
+--   |  |  |-- /-
+--   |  |  `-- /-
+--   |  `-- /-
+--   `--6
+--      |--4
+--      |  |-- /-
+--      |  `-- /-
+--      `--7
+--         |-- /-
+--         `-- /-
+-- *AVL> rotateL t6 == t5
+-- True
+-- *AVL> rotateR t5 == t6
 -- True
 
 t8 :: Tree Int
@@ -183,15 +214,15 @@ rebalance :: Ord a => Tree a -> Tree a
 rebalance Empty                            = Empty
 rebalance n@(Node _ Empty Empty)           = n
 rebalance n@(Node _ _ Empty) | hBalanced n = n
-                             | otherwise   = rotateL n
-rebalance n@(Node _ Empty _) | hBalanced n = n
                              | otherwise   = rotateR n
+rebalance n@(Node _ Empty _) | hBalanced n = n
+                             | otherwise   = rotateL n
 rebalance n@(Node x
              l@(Node y ll lr)
              r@(Node z rl rr))
   | (hBalanced n)          = n
-  | (heightFactor n == 2)  = if (hFactor ll lr) >= 0 then (rotateL n)  else rotateR (Node x (Node y (rotateL ll) lr) r)
-  | (heightFactor n == -2) = if (hFactor rl rr) < 0  then (rotateR n) else rotateL (Node x l (Node z rl (rotateR rr)))
+  | (heightFactor n == 2)  = if (hFactor ll lr) >= 0 then (rotateR n)  else rotateL (Node x (Node y (rotateR ll) lr) r)
+  | (heightFactor n == -2) = if (hFactor rl rr) < 0  then (rotateL n) else rotateR (Node x l (Node z rl (rotateL rr)))
 
 -- *AVL> pp $ build [1..10]
 -- --4
@@ -218,6 +249,8 @@ rebalance n@(Node x
 -- *AVL> isAVL $ build [1..10]
 -- True
 -- *AVL> isAVL $ build [1..100]
+-- True
+-- *AVL> isAVL $ build [1..1000]
 -- True
 
 t10 :: Tree Int
@@ -247,25 +280,6 @@ build = foldl ins Empty
 --main = do
 -- verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_avl
 
--- *AVL> isAVL $ ins t1 3
--- True
--- *AVL> isAVL $ ins t1 2
--- True
--- *AVL> isAVL $ ins t1 10
--- True
--- *AVL> isAVL $ ins t1 1100
--- True
--- *AVL> isAVL $ ins (ins t1 1100) 1200
--- True
--- *AVL> isAVL $ ins (ins (ins t1 1100) 1200) 1300
--- True
--- *AVL> ins (ins (ins t1 1100) 1200) 1300
--- Node 7 (Node 4 (Node 3 Empty Empty) (Node 5 Empty Empty)) (Node 1100 (Node 10 Empty Empty) (Node 1200 Empty (Node 1300 Empty Empty)))
--- *AVL> ins (ins (ins (ins t1 1100) 1200) 1300) 1400
--- Node 7 (Node 4 (Node 3 Empty Empty) (Node 5 Empty Empty)) (Node 1100 (Node 10 Empty Empty) (Node 1300 (Node 1200 Empty Empty) (Node 1400 Empty Empty)))
--- *AVL> isAVL (ins (ins (ins (ins t1 1100) 1200) 1300) 1400)
--- True
-
 {--
   Remove a node from the tree.
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
@@ -283,6 +297,28 @@ remove (Node x l r) y
 -- False
 -- *AVL> isAVL (AVL.remove (ins (ins (ins (ins t1 1100) 1200) 1300) 1400) 1100)
 -- True
+-- *AVL> pp $ AVL.remove (build [1..10]) 8
+-- --4
+--   |--2
+--   |  |--1
+--   |  |  |-- /-
+--   |  |  `-- /-
+--   |  `--3
+--   |     |-- /-
+--   |     `-- /-
+--   `--7
+--      |--6
+--      |  |--5
+--      |  |  |-- /-
+--      |  |  `-- /-
+--      |  `-- /-
+--      `--9
+--         |-- /-
+--         `--10
+--            |-- /-
+--            `-- /-
+-- *AVL> isAVL $ AVL.remove (build [1..10]) 8
+-- True
 
 {--
  Breadth first traversal
@@ -296,16 +332,30 @@ breadth t =
     bf (Empty : ns)        q = bf ns q
     bf ((Node x l r) : ns) q = bf (ns ++ [l,r]) (x : q)
 
--- *AVL> t1
--- Node 4 (Node 3 Empty Empty) (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty))
--- *AVL> breadth t1
--- [4,3,7,5,10]
--- *AVL> breadth (Node 1 (Node 2 (Node 4 Empty Empty) (Node 5 Empty Empty)) (Node 3 (Node 6 Empty Empty) (Node 7 Empty Empty)))
--- [1,2,3,4,5,6,7]
--- *AVL> t2
--- Node 20 (Node 15 (Node 8 (Node 7 Empty Empty) (Node 11 Empty Empty)) (Node 18 Empty Empty)) (Node 118 (Node 35 (Node 33 Empty Empty) (Node 49 Empty (Node 60 Empty Empty))) (Node 166 Empty Empty))
--- *AVL> breadth t2
--- [20,15,118,8,18,35,166,7,11,33,49,60]
+-- *AVL> pp (build [1..10])
+-- --4
+--   |--2
+--   |  |--1
+--   |  |  |-- /-
+--   |  |  `-- /-
+--   |  `--3
+--   |     |-- /-
+--   |     `-- /-
+--   `--8
+--      |--6
+--      |  |--5
+--      |  |  |-- /-
+--      |  |  `-- /-
+--      |  `--7
+--      |     |-- /-
+--      |     `-- /-
+--      `--9
+--         |-- /-
+--         `--10
+--            |-- /-
+--            `-- /-
+-- *AVL> breadth (build [1..10])
+-- [4,2,8,1,3,6,9,5,7,10]
 
 -- massyl
 -- breadth :: [Tree a] -> [a]
