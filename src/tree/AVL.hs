@@ -210,13 +210,27 @@ ins :: (Ord a) => Tree a -> a -> Tree a
 ins Empty v = leaf v
 ins n@(Node x l r) y
   | x == y     = n
-  | x < y      = rebalance $ Node x l (ins r y)
-  | otherwise  = rebalance $ Node x (ins l y) r
+  | x < y      = let (Just rv) = (value r)
+                     nt = ins r y
+                     hf = heightFactor n in
+                 if hf == -1
+                 then if y <= rv
+                      then rotateRight (Node x l (rotateLeft nt))
+                      else rotateRight (Node x l nt)
+                 else Node x l nt
+  | otherwise  = let (Just lv) = (value l)
+                     nt = ins l y
+                     hf = heightFactor n in
+                 if hf == 1
+                 then if lv < y
+                      then rotateLeft (Node x (rotateRight nt) r)
+                      else rotateLeft (Node x nt r)
+                 else Node x nt r
 
---prop_avl = (\ t -> abs (heightFactor t) <= 1)
 t10 :: Tree Int
 t10 = Node 6 (Node 3 (leaf 2) (Node 4 Empty Empty)) (leaf 7)
 
+--prop_avl = (\ t -> abs (heightFactor t) <= 1)
 -- adding
 --main = do
 -- verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_avl
