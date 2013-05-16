@@ -186,18 +186,6 @@ t9 = Node 4 (Node 3 (leaf 2) Empty) (Node 6 (leaf 5) (leaf 7))
 t7 :: Tree Int
 t7 = Node 6 (Node 3 (Node 2 Empty Empty) (Node 4 Empty (Node 5 Empty Empty))) (Node 7 Empty Empty)
 
-pp :: Show a => Tree a -> IO ()
-pp = (mapM_ putStrLn) . treeIndent
-  where
-    treeIndent Empty          = ["-- /-"]
-    treeIndent (Node v lb rb) =
-      ["--" ++ (show v)] ++
-      map ("  |" ++) ls ++
-      ("  `" ++ r) : map ("   " ++) rs
-      where
-        (r:rs) = treeIndent $ rb
-        ls     = treeIndent $ lb
-
 {--
   Insert a new ordered value into the tree.
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.

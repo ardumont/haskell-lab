@@ -28,6 +28,18 @@ t2 = Node 20 (Node 15 (Node 8 (leaf 7) (leaf 11)) (leaf 18))
                      (Node 35 (leaf 33) (Node 49 Empty (leaf 60)))
                      (leaf 166))
 
+pp :: Show a => Tree a -> IO ()
+pp = (mapM_ putStrLn) . treeIndent
+  where
+    treeIndent Empty          = ["-- /-"]
+    treeIndent (Node v lb rb) =
+      ["--" ++ (show v)] ++
+      map ("  |" ++) ls ++
+      ("  `" ++ r) : map ("   " ++) rs
+      where
+        (r:rs) = treeIndent $ rb
+        ls     = treeIndent $ lb
+
 -- The size of the tree is taken to be the number n of internal nodes
 --(those with two children)
 size :: Num a => Tree b -> a
