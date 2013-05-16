@@ -218,11 +218,11 @@ rebalance n@(Node _ _ Empty) | hBalanced n = n
 rebalance n@(Node _ Empty _) | hBalanced n = n
                              | otherwise   = rotateL n
 rebalance n@(Node x
-             l@(Node y ll lr)
-             r@(Node z rl rr))
+             l@(Node _ ll lr)
+             r@(Node _ rl rr))
   | (hBalanced n)          = n
-  | (heightFactor n == 2)  = if (hFactor ll lr) >= 0 then (rotateR n)  else rotateL (Node x (Node y (rotateR ll) lr) r)
-  | (heightFactor n == -2) = if (hFactor rl rr) < 0  then (rotateL n) else rotateR (Node x l (Node z rl (rotateL rr)))
+  | (heightFactor n == 2)  = if (hFactor ll lr) >= 0 then (rotateR n) else rotateL (Node x (rotateR l) r)
+  | (heightFactor n == -2) = if (hFactor rl rr) <= 0  then (rotateL n) else rotateR (Node x l (rotateL r))
 
 -- *AVL> pp $ build [1..10]
 -- --4
@@ -285,6 +285,7 @@ build = foldl ins Empty
 --}
 remove :: (Ord a) => Tree a -> a -> Tree a
 remove Empty _ = Empty
+
 remove (Node x l r) y
   | x < y      = rebalance $ Node x l                (AVL.remove r y)
   | y < x      = rebalance $ Node x (AVL.remove l y) r
@@ -317,6 +318,44 @@ remove (Node x l r) y
 --            |-- /-
 --            `-- /-
 -- *AVL> isAVL $ AVL.remove (build [1..10]) 8
+-- True
+-- *AVL> isAVL $ (AVL.remove (AVL.remove (build [1..10]) 2) 3)
+-- True
+-- *AVL> pp $ (AVL.remove (AVL.remove (build [1..10]) 2) 3)
+-- --8
+--   |--4
+--   |  |--1
+--   |  |  |-- /-
+--   |  |  `-- /-
+--   |  `--6
+--   |     |--5
+--   |     |  |-- /-
+--   |     |  `-- /-
+--   |     `--7
+--   |        |-- /-
+--   |        `-- /-
+--   `--9
+--      |-- /-
+--      `--10
+--         |-- /-
+--         `-- /-
+-- *AVL> pp $ (AVL.remove (AVL.remove (AVL.remove (build [1..10]) 2) 3) 1)
+-- --8
+--   |--6
+--   |  |--4
+--   |  |  |-- /-
+--   |  |  `--5
+--   |  |     |-- /-
+--   |  |     `-- /-
+--   |  `--7
+--   |     |-- /-
+--   |     `-- /-
+--   `--9
+--      |-- /-
+--      `--10
+--         |-- /-
+--         `-- /-
+-- *AVL> isAVL $ (AVL.remove (AVL.remove (AVL.remove (build [1..10]) 2) 3) 1)
 -- True
 
 {--
