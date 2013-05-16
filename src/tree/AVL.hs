@@ -165,6 +165,29 @@ rotateRightLeft (Node v
 -- *AVL> rotateRight t6 == t5
 -- True
 
+rotateRightLeft :: Tree a -> Tree a
+rotateRightLeft Empty = Empty
+rotateRightLeft (Node v l (Node rv (Node rlv rll rlr) rl)) =
+  (Node rlv
+   (Node v l rll)
+   (Node rv rlr rl))
+
+rotateLeftRight :: Tree a -> Tree a
+rotateLeftRight Empty = Empty
+rotateLeftRight (Node v (Node lv ll (Node lrv lrl lrr)) r) =
+  (Node lrv
+   (Node lv ll  lrl)
+   (Node v  lrr r))
+
+t8 :: Tree Int
+t8 = Node 6 (Node 3 (leaf 2) (Node 4 Empty (leaf 5))) (leaf 7)
+
+t9 :: Tree Int
+t9 = Node 4 (Node 3 (leaf 2) Empty) (Node 6 (leaf 5) (leaf 7))
+
+-- *AVL> rotateLeftRight t8 == t9
+-- True
+
 -- Given an unbalanced avl, compute the rebalanced avl at the given level
 rebalance :: Tree a -> Tree a
 rebalance n =
@@ -172,12 +195,12 @@ rebalance n =
   if abs hf <= 1
   then n
   else if hf < -2
-  then (rotateLeft . rotateRight) n
+  then rotateLeftRight n
        else if hf < -1
             then rotateRight n
             else if hf > 2
-                 then (rotateRight . rotateLeft) n
-                 else (rotateLeft n)
+                 then rotateRightLeft n
+                 else rotateLeft n
 
 t7 :: Tree Int
 t7 = Node 6 (Node 3 (Node 2 Empty Empty) (Node 4 Empty (Node 5 Empty Empty))) (Node 7 Empty Empty)
