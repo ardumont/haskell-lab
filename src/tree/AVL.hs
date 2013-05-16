@@ -281,15 +281,14 @@ build = foldl ins Empty
 -- verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_avl
 
 {--
-  Remove a node from the tree.
-  Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
+  Remove a node from the tree. Note that it preserves the AVL properties.
 --}
 remove :: (Ord a) => Tree a -> a -> Tree a
 remove Empty _ = Empty
 remove (Node x l r) y
-  | x < y     = rebalance $ Node x l (AVL.remove r y)
-  | x > y     = rebalance $ Node x (AVL.remove l y) r
-  | otherwise = case deleteMax l of
+  | x < y      = rebalance $ Node x l                (AVL.remove r y)
+  | x > y      = rebalance $ Node x (AVL.remove l y) r
+  | otherwise  = case deleteMax l of
     (Just z, t)  -> rebalance $ Node z t r
     (Nothing, _) -> Empty
 
