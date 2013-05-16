@@ -273,10 +273,10 @@ build = foldl ins Empty
 remove :: (Ord a) => Tree a -> a -> Tree a
 remove Empty _ = Empty
 remove (Node x l r) y
-  | x < y     = Node x l (AVL.remove r y)
-  | x > y     = Node x (AVL.remove l y) r
+  | x < y     = rebalance $ Node x l (AVL.remove r y)
+  | x > y     = rebalance $ Node x (AVL.remove l y) r
   | otherwise = case deleteMax l of
-    (Just z, t)  -> (ins t z)
+    (Just z, t)  -> rebalance $ Node z t r
     (Nothing, _) -> Empty
 
 -- *AVL> isAVL (BST.remove (ins (ins (ins (ins t1 1100) 1200) 1300) 1400) 1100)
