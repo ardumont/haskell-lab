@@ -191,16 +191,12 @@ t9 = Node 4 (Node 3 (leaf 2) Empty) (Node 6 (leaf 5) (leaf 7))
 -- Given an unbalanced avl, compute the rebalanced avl at the given level
 rebalance :: Tree a -> Tree a
 rebalance n =
-  let hf = heightFactor n in
-  if abs hf <= 1
-  then n
-  else if hf < -2
-  then rotateLeftRight n
-       else if hf < -1
-            then rotateRight n
-            else if hf > 2
-                 then rotateRightLeft n
-                 else rotateLeft n
+  case heightFactor n of
+  0  -> n
+  -2 -> rotateRightLeft n
+  -1 -> rotateRight n
+  2  -> rotateLeftRight n
+  1  -> rotateLeft n
 
 t7 :: Tree Int
 t7 = Node 6 (Node 3 (Node 2 Empty Empty) (Node 4 Empty (Node 5 Empty Empty))) (Node 7 Empty Empty)
@@ -227,22 +223,12 @@ ins :: (Ord a) => Tree a -> a -> Tree a
 ins Empty v = leaf v
 ins n@(Node x l r) y
   | x == y     = n
-  | x < y      = let nt = Node x l (ins r y)
-                     hf = heightFactor nt in
-                 if hf == 1
-                 then rotateLeft nt
-                 else rotateLeftRight nt
-  | otherwise  = let nt = Node x (ins l y) r
-                     hf = heightFactor nt in
-                 if hf == -1
-                 then rotateRight nt
-                 else rotateRightLeft nt
+  | x < y      = rebalance $ Node x l (ins r y)
+  | otherwise  = rebalance $ Node x (ins l y) r
 
 --prop_avl = (\ t -> abs (heightFactor t) <= 1)
 t10 :: Tree Int
 t10 = Node 6 (Node 3 (leaf 2) (Node 4 Empty Empty)) (leaf 7)
-
-
 
 -- adding
 --main = do
