@@ -221,14 +221,28 @@ t7 = Node 6 (Node 3 (Node 2 Empty Empty) (Node 4 Empty (Node 5 Empty Empty))) (N
 {--
   Insert an new ordered value into the tree.
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
+  Node: If an entry is already present, return directly the same tree
 --}
 ins :: (Ord a) => Tree a -> a -> Tree a
 ins Empty v = leaf v
-ins (Node x l r) y
-  | x < y      = rebalance $ Node x l (ins r y)
-  | otherwise  = rebalance $ Node x (ins l y) r
+ins n@(Node x l r) y
+  | x == y     = n
+  | x < y      = let nt = Node x l (ins r y)
+                     hf = heightFactor nt in
+                 if hf == 1
+                 then rotateLeft nt
+                 else rotateLeftRight nt
+  | otherwise  = let nt = Node x (ins l y) r
+                     hf = heightFactor nt in
+                 if hf == -1
+                 then rotateRight nt
+                 else rotateRightLeft nt
 
 --prop_avl = (\ t -> abs (heightFactor t) <= 1)
+t10 :: Tree Int
+t10 = Node 6 (Node 3 (leaf 2) (Node 4 Empty Empty)) (leaf 7)
+
+
 
 -- adding
 --main = do
