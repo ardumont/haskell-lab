@@ -165,13 +165,13 @@ t9 = Node 4 (Node 3 (leaf 2) Empty) (Node 6 (leaf 5) (leaf 7))
 
 -- Given an unbalanced avl, compute the rebalanced avl at the given level
 rebalance :: Tree a -> Tree a
-rebalance n =
-  case heightFactor n of
-  0  -> n
-  -2 -> rotateRightLeft n
-  -1 -> rotateRight n
-  2  -> rotateLeftRight n
-  1  -> rotateLeft n
+rebalance t =
+  case heightFactor t of
+  0  -> t
+  -2 -> rotateRightLeft t
+  -1 -> rotateRight t
+  2  -> rotateLeftRight t
+  1  -> rotateLeft t
 
 t7 :: Tree Int
 t7 = Node 6 (Node 3 (Node 2 Empty Empty) (Node 4 Empty (Node 5 Empty Empty))) (Node 7 Empty Empty)
@@ -229,6 +229,15 @@ ins n@(Node x l r) y
 
 t10 :: Tree Int
 t10 = Node 6 (Node 3 (leaf 2) (Node 4 Empty Empty)) (leaf 7)
+
+-- build an AVL from a list
+build :: Ord a => [a] -> Tree a
+build [] = Empty
+build l = b Empty l
+  where
+    b :: Ord a => Tree a -> [a] -> Tree a
+    b t []     = t
+    b t (x:xs) = b (ins t x) xs
 
 --prop_avl = (\ t -> abs (heightFactor t) <= 1)
 -- adding
