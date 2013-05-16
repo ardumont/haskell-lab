@@ -232,12 +232,7 @@ t10 = Node 6 (Node 3 (leaf 2) (Node 4 Empty Empty)) (leaf 7)
 
 -- build an AVL from a list
 build :: Ord a => [a] -> Tree a
-build [] = Empty
-build l = b Empty l
-  where
-    b :: Ord a => Tree a -> [a] -> Tree a
-    b t []     = t
-    b t (x:xs) = b (ins t x) xs
+build = foldl ins Empty
 
 --prop_avl = (\ t -> abs (heightFactor t) <= 1)
 -- adding
