@@ -348,3 +348,16 @@ exist x = not . null . filterT (== x)
 -- False
 -- *AVL> exist 3 t1
 -- True
+
+mapT :: (a -> b) -> Tree a -> Tree b
+mapT _ Empty = Empty
+mapT f (Node x l r) = Node (f x) (mapT f l) (mapT f r)
+
+-- *AVL> mapT show t1
+-- Node "4" (Node "3" Empty Empty) (Node "7" (Node "5" Empty Empty) (Node "10" Empty Empty))
+
+instance Functor Tree where
+  fmap = mapT
+
+-- *AVL> fmap show t1
+-- Node "4" (Node "3" Empty Empty) (Node "7" (Node "5" Empty Empty) (Node "10" Empty Empty))
