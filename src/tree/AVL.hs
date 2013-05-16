@@ -131,31 +131,6 @@ t6 = Node 3 (Node 2
                (leaf 4)
                (leaf 7))
 
-rotateLeftRight :: Tree a -> Tree a
-rotateLeftRight Empty = Empty
-rotateLeftRight (Node v
-                 (Node lfv lflf
-                  (Node lfrtv
-                   lfrtlf
-                   lfrtrt))
-                  rt) =
-  Node lfrtv
-  (Node lfv lflf   lfrtlf)
-  (Node v   lfrtrt rt)
-
-rotateRightLeft :: Tree a -> Tree a
-rotateRightLeft Empty = Empty
-rotateRightLeft (Node v
-                 lf
-                 (Node rtv
-                   (Node rtlfv
-                    rtlflf
-                    rtlfrt)
-                   rtrt)) =
-  Node rtlfv
-  (Node v   lf     rtlflf)
-  (Node rtv rtlfrt rtrt)
-
 -- *AVL> rotateRight t1
 -- Node 15 (Node 10 (Node 8 Empty Empty) Empty) Empty
 -- *AVL> (rotateLeft . rotateRight) t1 == t1
@@ -214,8 +189,20 @@ t7 = Node 6 (Node 3 (Node 2 Empty Empty) (Node 4 Empty (Node 5 Empty Empty))) (N
 -- *AVL> heightFactor $ rebalance $ rotateLeft t2
 -- -1
 
+pp :: Show a => Tree a -> IO ()
+pp = (mapM_ putStrLn) . treeIndent
+  where
+    treeIndent Empty          = ["-- /-"]
+    treeIndent (Node v lb rb) =
+      ["--" ++ (show v)] ++
+      map ("  |" ++) ls ++
+      ("  `" ++ r) : map ("   " ++) rs
+      where
+        (r:rs) = treeIndent $ rb
+        ls     = treeIndent $ lb
+
 {--
-  Insert an new ordered value into the tree.
+  Insert a new ordered value into the tree.
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
   Node: If an entry is already present, return directly the same tree
 --}
