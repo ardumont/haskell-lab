@@ -163,31 +163,8 @@ t9 = Node 4 (Node 3 (leaf 2) Empty) (Node 6 (leaf 5) (leaf 7))
 -- *AVL> rotateLeftRight t8 == t9
 -- True
 
--- Given an unbalanced avl, compute the rebalanced avl at the given level
-rebalance :: Tree a -> Tree a
-rebalance t =
-  case heightFactor t of
-  0  -> t
-  -2 -> rotateRightLeft t
-  -1 -> rotateRight t
-  2  -> rotateLeftRight t
-  1  -> rotateLeft t
-
 t7 :: Tree Int
 t7 = Node 6 (Node 3 (Node 2 Empty Empty) (Node 4 Empty (Node 5 Empty Empty))) (Node 7 Empty Empty)
-
--- *AVL> t1
--- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
--- *AVL> rebalance $ rotateLeft t1
--- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
--- *AVL> rebalance $ rotateRight t1
--- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
--- *AVL> rotateLeft t2
--- Node 12 (Node 5 (Node 4 Empty Empty) (Node 8 Empty Empty)) (Node 17 (Node 15 Empty Empty) (Node 115 (Node 32 (Node 30 Empty Empty) (Node 46 (Node 43 Empty Empty) (Node 57 Empty Empty))) (Node 163 (Node 161 Empty Empty) Empty)))
--- *AVL> heightFactor $ rotateLeft t2
--- -3
--- *AVL> heightFactor $ rebalance $ rotateLeft t2
--- -1
 
 pp :: Show a => Tree a -> IO ()
 pp = (mapM_ putStrLn) . treeIndent
@@ -265,10 +242,10 @@ build = foldl ins Empty
 remove :: (Ord a) => Tree a -> a -> Tree a
 remove Empty _ = Empty
 remove (Node x l r) y
-  | x < y     = AVL.remove r y
-  | x > y     = AVL.remove l y
+  | x < y     = Node x l (AVL.remove r y)
+  | x > y     = Node x (AVL.remove l y) r
   | otherwise = case deleteMax l of
-    (Just z, t)  -> rebalance $ Node z t r
+    (Just z, t)  -> (ins t z)
     (Nothing, _) -> Empty
 
 -- *AVL> isAVL (BST.remove (ins (ins (ins (ins t1 1100) 1200) 1300) 1400) 1100)
