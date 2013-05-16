@@ -45,12 +45,15 @@ empty (Node _ _ _) = False
 -- *AVL> empty $ leaf 10
 -- False
 
+hFactor :: Tree a -> Tree a -> Int
+hFactor l r = (height l) - (height r)
+
 {--
  Given a tree, compute its height factor (-1, 0 or 1, the tree is well balanced)
 --}
 heightFactor :: Tree a -> Int
 heightFactor Empty = 0
-heightFactor (Node _ l r) = (height l) - (height r)
+heightFactor (Node _ l r) = hFactor l r
 
 -- *AVL> heightFactor t1
 -- 0
@@ -62,7 +65,7 @@ heightFactor (Node _ l r) = (height l) - (height r)
 --}
 hBalanced :: Tree a -> Bool
 hBalanced Empty        = True
-hBalanced (Node x l r) = abs (heightFactor (Node x l r)) <= 1 && hBalanced l && hBalanced r
+hBalanced n@(Node _ l r) = abs (heightFactor n) <= 1 && hBalanced l && hBalanced r
 
 -- *AVL> hBalanced Empty
 -- True
@@ -96,24 +99,24 @@ right (Node _ _ r) = r
 -- *AVL> isAVL $ Node 10 t1 Empty
 -- False
 
-rotateLeft :: Tree a -> Tree a
-rotateLeft Empty                       = Empty
-rotateLeft (Node v Empty r)            = (Node v Empty r)
-rotateLeft (Node v (Node x lfl lfr) r) = (Node x lfl (Node v lfr r))
+rotateL :: Tree a -> Tree a
+rotateL Empty                       = Empty
+rotateL n@(Node _ Empty _)          = n
+rotateL (Node v (Node x ll lr) r) = (Node x ll (Node v lr r))
 
 -- *AVL> t1
 -- Node 10 (Node 8 Empty Empty) (Node 15 Empty Empty)
--- *AVL> rotateLeft t1
+-- *AVL> rotateL t1
 -- Node 8 Empty (Node 10 Empty (Node 15 Empty Empty))
--- *AVL> rotateLeft t5
+-- *AVL> rotateL t5
 -- Node 3 (Node 2 (Node 1 Empty Empty) Empty) (Node 6 (Node 4 Empty Empty) (Node 7 Empty Empty))
--- *AVL> rotateLeft t5 == t6
+-- *AVL> rotateL t5 == t6
 -- True
 
-rotateRight :: Tree a -> Tree a
-rotateRight Empty                        = Empty
-rotateRight (Node v lf Empty)            = (Node v lf Empty)
-rotateRight (Node v lf (Node x rtl rtr)) = (Node x (Node v lf rtl) rtr)
+rotateR :: Tree a -> Tree a
+rotateR Empty                        = Empty
+rotateR n@(Node _ _ Empty)           = n
+rotateR (Node v l (Node x rl rr)) = (Node x (Node v l rl) rr)
 
 t5 :: Tree Int
 t5 = Node 6 (Node 3
@@ -131,28 +134,14 @@ t6 = Node 3 (Node 2
                (leaf 4)
                (leaf 7))
 
--- *AVL> rotateRight t1
+-- *AVL> rotateR t1
 -- Node 15 (Node 10 (Node 8 Empty Empty) Empty) Empty
--- *AVL> (rotateLeft . rotateRight) t1 == t1
+-- *AVL> (rotateL . rotateR) t1 == t1
 -- True
--- *AVL> (rotateRight . rotateLeft) t1 == t1
+-- *AVL> (rotateR . rotateL) t1 == t1
 -- True
--- *AVL> rotateRight t6 == t5
+-- *AVL> rotateR t6 == t5
 -- True
-
-rotateRightLeft :: Tree a -> Tree a
-rotateRightLeft Empty = Empty
-rotateRightLeft (Node v l (Node rv (Node rlv rll rlr) rl)) =
-  (Node rlv
-   (Node v l rll)
-   (Node rv rlr rl))
-
-rotateLeftRight :: Tree a -> Tree a
-rotateLeftRight Empty = Empty
-rotateLeftRight (Node v (Node lv ll (Node lrv lrl lrr)) r) =
-  (Node lrv
-   (Node lv ll  lrl)
-   (Node v  lrr r))
 
 t8 :: Tree Int
 t8 = Node 6 (Node 3 (leaf 2) (Node 4 Empty (leaf 5))) (leaf 7)
@@ -160,7 +149,7 @@ t8 = Node 6 (Node 3 (leaf 2) (Node 4 Empty (leaf 5))) (leaf 7)
 t9 :: Tree Int
 t9 = Node 4 (Node 3 (leaf 2) Empty) (Node 6 (leaf 5) (leaf 7))
 
--- *AVL> rotateLeftRight t8 == t9
+-- *AVL> rotateLRight t8 == t9
 -- True
 
 t7 :: Tree Int
@@ -183,32 +172,74 @@ pp = (mapM_ putStrLn) . treeIndent
   Note that it preserves the Binary Search tree and the H-balanced properties of an AVL.
   Node: If an entry is already present, return directly the same tree
 --}
-ins :: (Ord a) => Tree a -> a -> Tree a
-ins Empty v = leaf v
+ins :: Ord a => Tree a -> a -> Tree a
+ins Empty v    = leaf v
 ins n@(Node x l r) y
   | x == y     = n
-  | x < y      = let (Just rv) = (value r)
-                     nt = ins r y
-                     hf = heightFactor n in
-                 if hf == -1
-                 then if y <= rv
-                      then rotateRight (Node x l (rotateLeft nt))
-                      else rotateRight (Node x l nt)
-                 else Node x l nt
-  | otherwise  = let (Just lv) = (value l)
-                     nt = ins l y
-                     hf = heightFactor n in
-                 if hf == 1
-                 then if lv < y
-                      then rotateLeft (Node x (rotateRight nt) r)
-                      else rotateLeft (Node x nt r)
-                 else Node x nt r
+  | x < y      = rebalance $ Node x l (ins r y)
+  | otherwise  = rebalance $ Node x (ins l y) r
+
+rebalance :: Ord a => Tree a -> Tree a
+rebalance Empty                            = Empty
+rebalance n@(Node _ Empty Empty)           = n
+rebalance n@(Node _ _ Empty) | hBalanced n = n
+                             | otherwise   = rotateL n
+rebalance n@(Node _ Empty _) | hBalanced n = n
+                             | otherwise   = rotateR n
+rebalance n@(Node x
+             l@(Node y ll lr)
+             r@(Node z rl rr))
+  | (hBalanced n)          = n
+  | (heightFactor n == 2)  = if (hFactor ll lr) >= 0 then (rotateL n)  else rotateR (Node x (Node y (rotateL ll) lr) r)
+  | (heightFactor n == -2) = if (hFactor rl rr) < 0  then (rotateR n) else rotateL (Node x l (Node z rl (rotateR rr)))
+
+-- *AVL> pp $ build [1..10]
+-- --4
+--   |--2
+--   |  |--1
+--   |  |  |-- /-
+--   |  |  `-- /-
+--   |  `--3
+--   |     |-- /-
+--   |     `-- /-
+--   `--8
+--      |--6
+--      |  |--5
+--      |  |  |-- /-
+--      |  |  `-- /-
+--      |  `--7
+--      |     |-- /-
+--      |     `-- /-
+--      `--9
+--         |-- /-
+--         `--10
+--            |-- /-
+--            `-- /-
+-- *AVL> isAVL $ build [1..10]
+-- True
+-- *AVL> isAVL $ build [1..100]
+-- True
 
 t10 :: Tree Int
 t10 = Node 6 (Node 3 (leaf 2) (Node 4 Empty Empty)) (leaf 7)
 
+-- *AVL> pp $ ins t10 100
+-- --6
+--   |--3
+--   |  |--2
+--   |  |  |-- /-
+--   |  |  `-- /-
+--   |  `--4
+--   |     |-- /-
+--   |     `-- /-
+--   `--7
+--      |-- /-
+--      `--100
+--         |-- /-
+--         `-- /-
+
 -- build an AVL from a list
-build :: Ord a => [a] -> Tree a
+build :: (Num a, Ord a) => [a] -> Tree a
 build = foldl ins Empty
 
 --prop_avl = (\ t -> abs (heightFactor t) <= 1)
@@ -252,14 +283,6 @@ remove (Node x l r) y
 -- False
 -- *AVL> isAVL (AVL.remove (ins (ins (ins (ins t1 1100) 1200) 1300) 1400) 1100)
 -- True
-
-val :: Tree a -> [a]
-val Empty        = []
-val (Node x _ _) = [x]
-
-children :: Tree a -> [a]
-children Empty = []
-children (Node _ l r) = concatMap val [l, r]
 
 {--
  Breadth first traversal
