@@ -1,6 +1,12 @@
 module FunSet where
 
+-- import Test.QuickCheck
+
 type Set a = a -> Bool
+
+-- instance Arbitrary Set where
+--   arbitrary = do i <- choose (0, 10000)
+--                  return (singleton i)
 
 newEmpty :: Set a
 newEmpty = \_ -> False
