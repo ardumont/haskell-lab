@@ -1,16 +1,15 @@
 module Sieve where
 
 import Test.QuickCheck
-import Test.QuickCheck.All
 
 isPrime :: Integral a => a -> Bool
 isPrime n
   | n <= 1 = False
   | n == 2 = True
   | otherwise =
-  all ( \ y -> n `mod` y /= 0) primes
+  all ( \ y -> n `mod` y /= 0) pseudoPrimes
   where
-    primes = (2:[3,5..(floor . sqrt . fromIntegral) n])
+    pseudoPrimes = (2:[3,5..(floor . sqrt . fromIntegral) n])
 
 prime :: Integral a => a -> [a]
 prime l =
