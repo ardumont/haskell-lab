@@ -1,4 +1,4 @@
-module Sieve where
+module Prime where
 
 import Test.QuickCheck
 import Data.Set
