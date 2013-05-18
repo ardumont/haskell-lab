@@ -1,6 +1,8 @@
 module Sieve where
 
 import Test.QuickCheck
+import Test.QuickCheck.All
+import Data.Set
 
 isPrime :: Integral a => a -> Bool
 isPrime n
@@ -17,7 +19,7 @@ prime l =
   where
     sieve []     r = r
     sieve (x:xs) r =
-      sieve (filter ( (/= 0) . flip (mod) x) xs) (x:r)
+      sieve (Prelude.filter ( (/= 0) . flip (mod) x) xs) (x:r)
 
 -- *Sieve> filter isPrime [1..100] == (reverse . prime) 100
 -- True
@@ -25,25 +27,21 @@ prime l =
 prop_prime :: Integer -> Bool
 prop_prime = (\ n -> all isPrime (prime n))
 
--- -- -- adding
+prop_not_prime :: Integer -> Bool
+prop_not_prime =
+  (\ n -> let noPrimes = toList $ difference (fromList [1..n]) (fromList (prime n)) in
+    all (not . isPrime) noPrimes)
+
+deepCheck :: Testable prop => prop -> IO ()
+deepCheck p = quickCheckWith stdArgs { maxSuccess = 10000} p
+
 main :: IO ()
 main = do
-  -- verboseCheckWith stdArgs { maxSuccess = 1000, maxSize = 5 } prop_prime
-  verboseCheckWith stdArgs { maxSuccess = 10000 } prop_prime
-  -- verboseCheckWith stdArgs prop_prime
+  -- verboseCheckWith stdArgs { maxSuccess = 10000 } prop_prime
+  -- verboseCheckWith stdArgs { maxSuccess = 10000 } prop_not_prime
+  deepCheck prop_prime
+  deepCheck prop_not_prime
 
--- Passed:
--- -43
--- Passed:
--- -23
--- Passed:
--- 20
--- Passed:
--- -21
--- Passed:
--- -36
--- Passed:
--- -18
--- Passed:
--- -75
+-- *Sieve> main
+-- +++ OK, passed 10000 tests.
 -- +++ OK, passed 10000 tests.
