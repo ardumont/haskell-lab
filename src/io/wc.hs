@@ -21,4 +21,4 @@ countLines :: IO ()
 countLines = do
   (filename:_) <- getArgs
   contents <- readFile filename
-  putStrLn ((show . length . lines) contents)
+  putStrLn $ (show . length . lines) contents
