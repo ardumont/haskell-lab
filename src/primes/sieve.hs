@@ -6,4 +6,4 @@ prime l =
   where
     sieve []     r = r
     sieve (x:xs) r =
-      sieve (filter (\ n -> n `mod` x /= 0) xs) (x:r)
+      sieve (filter ( (/= 0) . flip (mod) x) xs) (x:r)
