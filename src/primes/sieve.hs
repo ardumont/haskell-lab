@@ -2,6 +2,7 @@ module Sieve where
 
 import Test.QuickCheck
 import Data.Set
+import System.Environment
 
 isPrime :: Integral a => a -> Bool
 isPrime n
@@ -34,13 +35,19 @@ prop_not_prime =
 deepCheck :: Testable prop => prop -> IO ()
 deepCheck p = quickCheckWith stdArgs { maxSuccess = 10000} p
 
-main :: IO ()
-main = do
+test :: IO ()
+test = do
   -- verboseCheckWith stdArgs { maxSuccess = 10000 } prop_prime
   -- verboseCheckWith stdArgs { maxSuccess = 10000 } prop_not_prime
   deepCheck prop_prime
   deepCheck prop_not_prime
 
--- *Sieve> main
+-- *Sieve> test
 -- +++ OK, passed 10000 tests.
 -- +++ OK, passed 10000 tests.
+
+-- Now we can make it as a script
+main :: IO ()
+main = do (num:_) <- getArgs
+          let n = read num :: Int in
+            putStrLn $ (show . prime) n
