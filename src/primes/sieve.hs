@@ -1,7 +1,6 @@
 module Sieve where
 
 import Test.QuickCheck
-import Test.QuickCheck.All
 import Data.Set
 
 isPrime :: Integral a => a -> Bool
