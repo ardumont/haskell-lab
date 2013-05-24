@@ -57,3 +57,7 @@ values (App _ x y) = values x ++ values y
 -- [10]
 -- *Problem> values $ App Add (App Sub (Val 10) (Val 3)) (App Div (Val 4) (Val 2))
 -- [10,3,4,2]
+
+eval :: Expr -> [Int]
+eval (Val n) = [n | n>0]
+eval (App o l r) = [apply o x y | x <- eval l, y <- eval r, valid o x y]
