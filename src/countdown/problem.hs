@@ -46,3 +46,14 @@ data Expr = Val Int | App Op Expr Expr
 -- Val 10 :: Expr
 -- *Problem> :t App Add (Val 10) (Val 20)
 -- App Add (Val 10) (Val 20) :: Expr
+
+values :: Expr -> [Int]
+values (Val n) = [n]
+values (App _ x y) = values x ++ values y
+
+-- *Problem> values $ App Add (Val 10) (Val 20)
+-- [10,20]
+-- *Problem> values $ Val 10
+-- [10]
+-- *Problem> values $ App Add (App Sub (Val 10) (Val 3)) (App Div (Val 4) (Val 2))
+-- [10,3,4,2]
