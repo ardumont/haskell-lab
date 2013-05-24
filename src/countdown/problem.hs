@@ -1,5 +1,6 @@
 module Problem where
 
+-- operation
 data Op = Add | Sub | Mul | Div
 
 valid :: Op -> Int -> Int -> Bool
@@ -20,3 +21,20 @@ valid Div x y = x `mod` y == 0
 -- False
 -- *Problem> valid Div 20 10
 -- True
+
+apply :: Op -> Int -> Int -> Int
+apply Add x y = x + y
+apply Sub x y = x - y
+apply Mul x y = x * y
+apply Div x y = x `div` y
+
+-- *Problem> apply Add 10 20
+-- 30
+-- *Problem> apply Add 20 10
+-- 30
+-- *Problem> apply Sub 20 10
+-- 10
+-- *Problem> apply Mul 20 10
+-- 200
+-- *Problem> apply Div 20 10
+-- 2
