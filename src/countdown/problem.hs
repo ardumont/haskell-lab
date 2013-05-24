@@ -38,3 +38,11 @@ apply Div x y = x `div` y
 -- 200
 -- *Problem> apply Div 20 10
 -- 2
+
+-- expression
+data Expr = Val Int | App Op Expr Expr
+
+-- *Problem> :t Val 10
+-- Val 10 :: Expr
+-- *Problem> :t App Add (Val 10) (Val 20)
+-- App Add (Val 10) (Val 20) :: Expr
