@@ -150,4 +150,6 @@ combine l r = [ App o l r | o <- ops ]
 -- [App Mul (Val 10) (Val 20),App Add (Val 10) (Val 20),App Sub (Val 10) (Val 20),App Div (Val 10) (Val 20)]
 
 solutions :: [Int] -> Int -> [Expr]
-solutions xs n = filter (\x -> solution x xs n) (concatMap exprs (choices xs))
+solutions xs n = [ es | cs <- choices xs,
+                        es <- exprs cs,
+                        eval es == [n] ]
