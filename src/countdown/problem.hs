@@ -116,3 +116,12 @@ solution e ns n = elem (values e) (choices ns) && eval e == [n]
 
 -- *Problem> solution ex [1,3,7,10,25,50] 765
 -- True
+
+-- all possible ways of splitting a list that when concatenating gives the original list
+split :: [a] -> [([a], [a])]
+split []     = []
+split [_]    = []
+split (x:xs) = ([x], xs) : [(x: ls, rs) | (ls, rs) <- split xs]
+
+-- *Problem> split [1,3,7,10,25,50]
+-- [([1],[3,7,10,25,50]),([1,3],[7,10,25,50]),([1,3,7],[10,25,50]),([1,3,7,10],[25,50]),([1,3,7,10,25],[50])]
