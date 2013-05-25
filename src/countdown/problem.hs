@@ -66,3 +66,14 @@ eval (App o l r) = [apply o x y | x <- eval l, y <- eval r, valid o x y]
 -- [9]
 -- *Problem> eval (App Add (App Mul (Val 10) (Val 3)) (App Div (Val 4) (Val 2)))
 -- [32]
+
+subs :: [a] -> [[a]]
+subs [] = [[]]
+subs (x:xs) = xxs ++ map (x:) xxs where xxs = subs xs
+
+-- *Problem> subs [1,2]
+-- [[],[2],[1],[1,2]]
+-- *Problem> subs [1,2,3]
+-- [[],[3],[2],[2,3],[1],[1,3],[1,2],[1,2,3]]
+-- *Problem> subs [1,2,3,4]
+-- [[],[4],[3],[3,4],[2],[2,4],[2,3],[2,3,4],[1],[1,4],[1,3],[1,3,4],[1,2],[1,2,4],[1,2,3],[1,2,3,4]]
