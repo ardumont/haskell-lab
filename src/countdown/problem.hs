@@ -91,7 +91,7 @@ interleave x (y:ys) = (x:y:ys) : map (y:) (interleave x ys)
 
 perms :: [a] -> [[a]]
 perms []     = [[]]
-perms (x:xs) = concatMap (interleave x) (perms xs)
+perms (x:xs) = concatMap (interleave x) . perms $ xs
 
 -- *Problem> perms [1,2,3]
 -- [[1,2,3],[2,1,3],[2,3,1],[1,3,2],[3,1,2],[3,2,1]]
