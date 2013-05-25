@@ -4,10 +4,10 @@ module Problem where
 data Op = Add | Sub | Mul | Div deriving (Show)
 
 valid :: Op -> Int -> Int -> Bool
-valid Add _ _ = True
+valid Add x y = x <= y
 valid Sub x y = x > y
-valid Mul _ _ = True
-valid Div x y = x `mod` y == 0
+valid Mul x y = x <= y && x /= 1 && y /= 1
+valid Div x y = y /= 1 && x `mod` y == 0
 
 -- *Problem> valid Add 10 20
 -- True
