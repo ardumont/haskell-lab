@@ -156,3 +156,23 @@ solutions xs n = [ es | cs <- choices xs,
 
 -- *Problem> take 4 $ solutions [1,3,7,10,25,50] 765
 -- [App Mul (Val 3) (App Sub (App Mul (Val 7) (App Sub (Val 50) (Val 10))) (Val 25)),App Mul (App Sub (App Mul (Val 7) (App Sub (Val 50) (Val 10))) (Val 25)) (Val 3),App Mul (Val 3) (App Sub (App Mul (App Sub (Val 50) (Val 10)) (Val 7)) (Val 25)),App Mul (App Sub (App Mul (App Sub (Val 50) (Val 10)) (Val 7)) (Val 25)) (Val 3)]
+
+type Result = (Expr, Int)
+
+results :: [Int] -> [Result]
+results [] = []
+results [n] = [ (Val n, n) | n > 0]
+results xs = [ x | (ls, rs) <- split xs,
+               l        <- results ls,
+               r        <- results rs,
+               x        <- combine' l r]
+
+-- *Problem> results [1,2,3]
+-- [(App Mul (Val 1) (App Mul (Val 2) (Val 3)),6),(App Add (Val 1) (App Mul (Val 2) (Val 3)),7),(App Sub (Val 1) (App Mul (Val 2) (Val 3)),-5),(App Div (Val 1) (App Mul (Val 2) (Val 3)),0),(App Mul (Val 1) (App Add (Val 2) (Val 3)),5),(App Add (Val 1) (App Add (Val 2) (Val 3)),6),(App Sub (Val 1) (App Add (Val 2) (Val 3)),-4),(App Div (Val 1) (App Add (Val 2) (Val 3)),0),(App Mul (Val 1) (App Sub (Val 2) (Val 3)),-1),(App Add (Val 1) (App Sub (Val 2) (Val 3)),0),(App Sub (Val 1) (App Sub (Val 2) (Val 3)),2),(App Div (Val 1) (App Sub (Val 2) (Val 3)),-1),(App Mul (Val 1) (App Div (Val 2) (Val 3)),0),(App Add (Val 1) (App Div (Val 2) (Val 3)),1),(App Sub (Val 1) (App Div (Val 2) (Val 3)),1),(App Div (Val 1) (App Div (Val 2) (Val 3)),*** Exception: divide by zero
+
+
+combine' :: Result -> Result -> [Result]
+combine' (l,lv) (r,rv) = [ (App o l r, apply o lv rv) | o <- ops ]
+
+-- *Problem> combine' ((Val 10), 10) ((Val 20), 20)
+-- [(App Mul (Val 10) (Val 20),200),(App Add (Val 10) (Val 20),30),(App Sub (Val 10) (Val 20),-10),(App Div (Val 10) (Val 20),0)]
