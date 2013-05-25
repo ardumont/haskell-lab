@@ -68,7 +68,7 @@ eval (App o l r) = [apply o x y | x <- eval l, y <- eval r, valid o x y]
 -- [32]
 
 subs :: [a] -> [[a]]
-subs [] = [[]]
+subs []     = [[]]
 subs (x:xs) = xxs ++ map (x:) xxs where xxs = subs xs
 
 -- *Problem> subs [1,2]
@@ -77,3 +77,14 @@ subs (x:xs) = xxs ++ map (x:) xxs where xxs = subs xs
 -- [[],[3],[2],[2,3],[1],[1,3],[1,2],[1,2,3]]
 -- *Problem> subs [1,2,3,4]
 -- [[],[4],[3],[3,4],[2],[2,4],[2,3],[2,3,4],[1],[1,4],[1,3],[1,3,4],[1,2],[1,2,4],[1,2,3],[1,2,3,4]]
+
+interleave :: a -> [a] -> [[a]]
+interleave x []     = [[x]]
+interleave x (y:ys) = (x:y:ys) : map (y:) (interleave x ys)
+
+-- *Problem> interleave 10 [2,3]
+-- [[10,2,3],[2,10,3],[2,3,10]]
+-- *Problem> interleave 1 [2,3]
+-- [[1,2,3],[2,1,3],[2,3,1]]
+-- *Problem> interleave 4 [1,2,3]
+-- [[4,1,2,3],[1,4,2,3],[1,2,4,3],[1,2,3,4]]
