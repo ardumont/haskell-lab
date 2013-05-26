@@ -13,24 +13,19 @@ isPrime n
   where
     pseudoPrimes = (2:[3,5..(floor . sqrt . fromIntegral) n])
 
-prime :: Integral a => a -> [a]
-prime l =
-  sieve [2..l] []
-  where
-    sieve []     r = r
-    sieve (x:xs) r =
-      sieve (filter ( (/= 0) . flip (mod) x) xs) (x:r)
+primes :: [Int]
+primes = sieve [2..]
 
--- *Sieve> filter isPrime [1..100] == (reverse . prime) 100
--- True
+sieve :: [Int] -> [Int]
+sieve (p:ps) = p : sieve [n | n <- ps, n `mod` p /= 0]
 
-prop_prime :: Integer -> Bool
-prop_prime = (\ n -> all isPrime (prime n))
+prop_prime :: Int -> Bool
+prop_prime = \ n -> all isPrime (take n primes)
 
-prop_not_prime :: Integer -> Bool
+prop_not_prime :: Int -> Bool
 prop_not_prime =
-  (\ n -> let noPrimes = toList $ difference (fromList [1..n]) (fromList (prime n)) in
-    all (not . isPrime) noPrimes)
+  \ n -> let noPrimes = toList $ difference (fromList [1..n]) (fromList (take n primes)) in
+    all (not . isPrime) noPrimes
 
 deepCheck :: Testable prop => prop -> IO ()
 deepCheck p = quickCheckWith stdArgs { maxSuccess = 10000} p
@@ -50,4 +45,4 @@ test = do
 main :: IO ()
 main = do (num:_) <- getArgs
           let n = read num :: Int in
-            putStrLn $ (show . prime) n
+            putStrLn $ show (take n primes)
