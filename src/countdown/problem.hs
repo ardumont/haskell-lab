@@ -215,3 +215,13 @@ isChoice (x:xs) l = elem x l && isChoice xs (remove1 x l)
 -- True
 -- *Problem> isChoice [1..2] []
 -- False
+
+-- Using =choices=, =exprs=, and =eval=, verify that there are 33665406 possible
+-- expressions over the numbers 1, 3, 7, 10, 25, 50, and that only 4672540 of
+-- these expressions evaluate successfully.
+
+-- *Problem> length [ es | cs <- choices [1,3,7,10,25,50], es <- exprs cs]
+-- 33665406
+
+-- *Problem> length [ es | cs <- choices [1,3,7,10,25,50], es <- exprs cs, eval es /= []]
+-- 245644
