@@ -22,16 +22,21 @@ sieve (p:ps) = p : sieve [n | n <- ps, n `mod` p /= 0]
 -- *Prime> filter isPrime [1..100] == take 25 primes
 -- True
 
-prop_prime :: Int -> Bool
-prop_prime = \ n -> all isPrime (take n primes)
+prop_prime :: Property
+prop_prime = forAll
+            (elements [1..10000])
+            (\ num -> let n = abs num in all isPrime (takeWhile (< n) primes))
 
-prop_not_prime :: Int -> Bool
+prop_not_prime :: Property
 prop_not_prime =
-  \ n -> let noPrimes = toList $ difference (fromList [1..n]) (fromList (take n primes)) in
-    all (not . isPrime) noPrimes
+  forAll
+  (elements [1..10000])
+  (\ n -> let ps = (takeWhile (< n) primes)
+              noPrimes = toList $ difference (fromList [1..n]) (fromList ps) in
+    all (not . isPrime) noPrimes)
 
 deepCheck :: Testable prop => prop -> IO ()
-deepCheck p = quickCheckWith stdArgs { maxSuccess = 10000} p
+deepCheck p = quickCheckWith stdArgs { maxSuccess = 500} p
 
 test :: IO ()
 test = do
@@ -41,8 +46,8 @@ test = do
   deepCheck prop_not_prime
 
 -- *Sieve> test
--- +++ OK, passed 10000 tests.
--- +++ OK, passed 10000 tests.
+-- +++ OK, passed 500 tests.
+-- +++ OK, passed 500 tests.
 
 -- Now we can make it as a script
 main :: IO ()
