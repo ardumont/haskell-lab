@@ -183,3 +183,35 @@ solutions' xs n = [ es | cs <- choices xs,
 
 -- *Problem> take 4 $ solutions' [1,3,7,10,25,50] 765
 -- [App Mul (Val 3) (App Sub (App Mul (Val 7) (App Sub (Val 50) (Val 10))) (Val 25)),App Mul (App Sub (App Mul (Val 7) (App Sub (Val 50) (Val 10))) (Val 25)) (Val 3),App Mul (Val 3) (App Sub (App Mul (App Sub (Val 50) (Val 10)) (Val 7)) (Val 25)),App Mul (App Sub (App Mul (App Sub (Val 50) (Val 10)) (Val 7)) (Val 25)) (Val 3)]
+
+-- remove the first occurrence of a value from a list
+remove1 :: Eq a => a -> [a] -> [a]
+remove1 _ []  = []
+remove1 x (y:ys)
+  | x == y    = ys
+  | otherwise = y:remove1 x ys
+
+-- *Problem> remove1 1 [3,2..1]
+-- [3,2]
+-- *Problem> remove1 1 [9,8..1]
+-- [9,8,7,6,5,4,3,2]
+-- *Problem> remove1 1 [9,8..0]
+-- [9,8,7,6,5,4,3,2,0]
+-- *Problem> remove1 1 [9,8..0] ++ [1]
+-- [9,8,7,6,5,4,3,2,0,1]
+
+isChoice :: Eq a => [a] -> [a] -> Bool
+isChoice [] _     = True
+isChoice _ []     = False
+isChoice (x:xs) l = elem x l && isChoice xs (remove1 x l)
+
+-- *problem> isChoice [11] [1..10]
+-- False
+-- *Problem> isChoice [2..3] [1..10]
+-- True
+-- *Problem> isChoice [] [1..10]
+-- True
+-- *Problem> isChoice [] []
+-- True
+-- *Problem> isChoice [1..2] []
+-- False
