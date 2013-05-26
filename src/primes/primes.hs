@@ -19,6 +19,9 @@ primes = sieve [2..]
 sieve :: [Int] -> [Int]
 sieve (p:ps) = p : sieve [n | n <- ps, n `mod` p /= 0]
 
+-- *Prime> filter isPrime [1..100] == take 25 primes
+-- True
+
 prop_prime :: Int -> Bool
 prop_prime = \ n -> all isPrime (take n primes)
 
