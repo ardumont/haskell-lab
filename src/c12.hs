@@ -7,7 +7,7 @@ fibo = 0:1:[ x+y | (x,y) <- zip fibo (tail fibo)]
 -- [0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181]
 
 fibs :: Int -> Integer
-fibs n = last $ take n fibo
+fibs n = fibo !! n
 
 -- *C12> fibs 10
 -- 34
