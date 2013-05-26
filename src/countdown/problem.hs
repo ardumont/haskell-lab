@@ -1,4 +1,5 @@
 module Problem where
+import Test.QuickCheck (verboseCheckWith, quickCheckWith, stdArgs, maxSuccess, Testable, elements, forAll)
 
 -- operation
 data Op = Add | Sub | Mul | Div | Exp deriving (Show)
@@ -241,3 +242,20 @@ isChoice (x:xs) l = elem x l && isChoice xs (remove1 x l)
 -- Modifying the valid functions
 -- *Problem> length [ es | cs <- choices [1,3,7,10,25,50], es <- exprs cs, eval es /= []]
 -- 10839369
+
+--prop_solution :: Int -> Bool
+prop_solution = forAll (elements [1..1000]) $ \n -> all (\x -> eval x == [n]) (solutions' [1, 3, 7, 10, 25, 50] n)
+
+deepCheck :: Testable prop => prop -> IO ()
+deepCheck p = verboseCheckWith stdArgs { maxSuccess = 2 } p
+
+test :: IO ()
+test = do
+  deepCheck prop_solution
+
+-- *Problem> test
+-- Passed:
+-- 852
+-- Passed:
+-- 332
+-- +++ OK, passed 2 tests.
