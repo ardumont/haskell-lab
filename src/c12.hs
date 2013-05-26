@@ -19,17 +19,6 @@ fibs n = fibo !! n
 -- *C12> head . dropWhile (<= 1000) $ fibo
 -- 1597
 
--- r :: a -> [a]
--- r x = x : r x
-
--- t :: Int -> [a] -> [a]
--- t 0 _        = []
--- t _ []       = []
--- t n (x : xs) = x : take (n-1) xs
-
--- rep :: Int -> a -> [a]
--- rep n = (take n) . repeat
-
 data Tree a = Leaf | Node (Tree a) a (Tree a) deriving (Show)
 
 p :: Show a => Tree a -> IO ()
