@@ -1,13 +1,14 @@
 module Problem where
 
 -- operation
-data Op = Add | Sub | Mul | Div deriving (Show)
+data Op = Add | Sub | Mul | Div | Exp deriving (Show)
 
 valid :: Op -> Int -> Int -> Bool
 valid Add x y = x <= y
 valid Sub x y = x > y
 valid Mul x y = x <= y && x /= 1 && y /= 1
-valid Div x y = y /= 1 && x `mod` y == 0
+valid Div x y = y > 1 && x `mod` y == 0
+valid Exp _ y = y == 0 || y > 1
 
 -- *Problem> valid Add 10 20
 -- True
@@ -21,12 +22,21 @@ valid Div x y = y /= 1 && x `mod` y == 0
 -- False
 -- *Problem> valid Div 20 10
 -- True
+-- *Problem> valid Exp 10 2
+-- True
+-- *Problem> valid Exp 10 2
+-- True
+-- *Problem> valid Exp 10 (-1)
+-- False
+-- *Problem> valid Exp 10 1
+-- False
 
 apply :: Op -> Int -> Int -> Int
 apply Add x y = x + y
 apply Sub x y = x - y
 apply Mul x y = x * y
 apply Div x y = x `div` y
+apply Exp x y = x ^ y
 
 -- *Problem> apply Add 10 20
 -- 30
@@ -38,6 +48,8 @@ apply Div x y = x `div` y
 -- 200
 -- *Problem> apply Div 20 10
 -- 2
+-- *Problem> apply Exp 10 2
+-- 100
 
 -- expression
 data Expr = Val Int | App Op Expr Expr deriving (Show)
@@ -141,7 +153,7 @@ exprs xs  = [ x | (ls, rs) <- split xs,
 -- [App Mul (Val 1) (App Mul (Val 2) (Val 3)),App Add (Val 1) (App Mul (Val 2) (Val 3)),App Sub (Val 1) (App Mul (Val 2) (Val 3)),App Div (Val 1) (App Mul (Val 2) (Val 3)),App Mul (Val 1) (App Add (Val 2) (Val 3)),App Add (Val 1) (App Add (Val 2) (Val 3)),App Sub (Val 1) (App Add (Val 2) (Val 3)),App Div (Val 1) (App Add (Val 2) (Val 3)),App Mul (Val 1) (App Sub (Val 2) (Val 3)),App Add (Val 1) (App Sub (Val 2) (Val 3)),App Sub (Val 1) (App Sub (Val 2) (Val 3)),App Div (Val 1) (App Sub (Val 2) (Val 3)),App Mul (Val 1) (App Div (Val 2) (Val 3)),App Add (Val 1) (App Div (Val 2) (Val 3)),App Sub (Val 1) (App Div (Val 2) (Val 3)),App Div (Val 1) (App Div (Val 2) (Val 3)),App Mul (App Mul (Val 1) (Val 2)) (Val 3),App Add (App Mul (Val 1) (Val 2)) (Val 3),App Sub (App Mul (Val 1) (Val 2)) (Val 3),App Div (App Mul (Val 1) (Val 2)) (Val 3),App Mul (App Add (Val 1) (Val 2)) (Val 3),App Add (App Add (Val 1) (Val 2)) (Val 3),App Sub (App Add (Val 1) (Val 2)) (Val 3),App Div (App Add (Val 1) (Val 2)) (Val 3),App Mul (App Sub (Val 1) (Val 2)) (Val 3),App Add (App Sub (Val 1) (Val 2)) (Val 3),App Sub (App Sub (Val 1) (Val 2)) (Val 3),App Div (App Sub (Val 1) (Val 2)) (Val 3),App Mul (App Div (Val 1) (Val 2)) (Val 3),App Add (App Div (Val 1) (Val 2)) (Val 3),App Sub (App Div (Val 1) (Val 2)) (Val 3),App Div (App Div (Val 1) (Val 2)) (Val 3)]
 
 ops :: [Op]
-ops = [Mul, Add, Sub, Div]
+ops = [Mul, Add, Sub, Div, Exp]
 
 combine :: Expr -> Expr -> [Expr]
 combine l r = [ App o l r | o <- ops ]
