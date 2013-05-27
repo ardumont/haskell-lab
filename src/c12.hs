@@ -143,3 +143,18 @@ rev (x:xs) = rev xs ++ [x]
 --                    = rev xs ++ ([y] ++ [x])
 --                    = rev xs ++ [y, x]
 --                    = rev (y:x:xs)
+
+-- proof: rev' xs ys = rev xs ++ [ys]
+-- base case: rev' [] ys = rev [] ++ [ys]
+--                       = [ys]
+
+-- inductive case: rev' (x:xs) ys = rev (x:xs) ++ [ys]
+--                                = rev xs ++ [x] ++ [ys]
+--                                = rev xs ++ (x:ys)
+
+rev' :: [a] -> [a]
+rev' l = rev'' l []
+         where
+           rev'' :: [a] -> [a] -> [a]
+           rev'' [] ys     = ys
+           rev'' (x:xs) ys = rev'' xs (x:ys)
