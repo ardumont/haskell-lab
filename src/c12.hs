@@ -158,3 +158,20 @@ rev' l = rev'' l []
            rev'' :: [a] -> [a] -> [a]
            rev'' [] ys     = ys
            rev'' (x:xs) ys = rev'' xs (x:ys)
+
+data T = L Int | N T T
+
+flatten :: T -> [Int]
+flatten (L x) = [x]
+flatten (N l r) = flatten l ++ flatten r
+
+-- proof: flatten' t ns = flatten t ++ ns
+-- base case: flatten' (Leaf x) ns = flatten (Leaf x) ++ ns
+--                                 = [x] ++ ns
+--                                 = x:ns
+
+-- inductive case: flatten' (N l r) ns = flatten (N l r) ++ ns
+--                                     = (flatten l ++ flatten r) ++ ns
+--                                     = flatten l ++ (flatten r ++ ns)
+--                                     = flatten l ++ (flatten' r ns)
+--                                     = flatten' l (flatten' r ns)
