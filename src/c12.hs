@@ -112,6 +112,9 @@ rep :: Int -> a -> [a]
 rep 0 _ = []
 rep n x = x : rep (n-1) x
 
+-- *C12> rep 3 0
+-- [0,0,0]
+
 -- proof: length (rep n _) == n
 -- base case:
 -- length (rep 0 x) = length [] = 0
@@ -122,3 +125,21 @@ rep n x = x : rep (n-1) x
 --                  = 1 + length (rep n x)   -- induction
 --                  = 1 + n
 -- ok
+
+rev :: [a] -> [a]
+rev [] = []
+rev (x:xs) = rev xs ++ [x]
+
+-- *C12> rev [1..3]
+-- [3,2,1]
+
+-- proof: rev (rev xs) = xs
+-- base case:
+-- rev (rev []) = rev [] = []
+-- ok
+-- inductive case:
+-- rev (rev (x:y:xs)) = rev ((y:xs) ++ [x])
+--                    = rev xs ++ [y] ++ [x]
+--                    = rev xs ++ ([y] ++ [x])
+--                    = rev xs ++ [y, x]
+--                    = rev (y:x:xs)
