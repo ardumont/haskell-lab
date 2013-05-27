@@ -175,3 +175,12 @@ flatten (N l r) = flatten l ++ flatten r
 --                                     = flatten l ++ (flatten r ++ ns)
 --                                     = flatten l ++ (flatten' r ns)
 --                                     = flatten' l (flatten' r ns)
+
+flatten' :: T -> [Int]
+flatten' t = flatten'' t []
+             where flatten'' :: T -> [Int] -> [Int]
+                   flatten'' (L n) ns   = (n:ns)
+                   flatten'' (N l r) ns = flatten'' l (flatten'' r ns)
+
+-- *C12> flatten' (N (N (L 0) (L 1)) (L 2))
+-- [0,1,2]
