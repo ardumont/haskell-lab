@@ -107,3 +107,18 @@ add (Succ x) y = Succ (add x y)
 --                        = add (Succ (add x y) z)
 --                        = add (add (Succ x) y) z
 -- ok
+
+rep :: Int -> a -> [a]
+rep 0 _ = []
+rep n x = x : rep (n-1) x
+
+-- proof: length (rep n _) == n
+-- base case:
+-- length (rep 0 x) = length [] = 0
+-- ok
+
+-- inductive case:
+-- length (rep n+1 x) = length (x : rep n x) -- distributivity
+--                  = 1 + length (rep n x)   -- induction
+--                  = 1 + n
+-- ok
