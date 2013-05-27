@@ -133,6 +133,23 @@ rev (x:xs) = rev xs ++ [x]
 -- *C12> rev [1..3]
 -- [3,2,1]
 
+-- proof: rev (xs ++ ys) = rev ys ++ rev xs
+-- base case: rev ([] ++ ys) = rev ys = rev (ys ++ [])
+--            rev (xs ++ []) = rev xs = rev ([] ++ xs)
+-- ok
+-- inductive case: rev (x:xs ++ ys) = rev x:(xs ++ ys) = rev (xs ++ ys) ++ [x]   -- induction
+--                                                     = rev ys ++ rev xs ++ [x] -- definition on x
+--                                                     = rev ys ++ rev x:xs
+-- ok
+
+-- proof: rev [x] = [x]
+-- base case: rev [] = [] (definition)
+-- ok
+-- inductive case: rev [x] = rev x:[] -- definition
+--                         = rev [] ++ [x]
+--                         = [x]
+-- ok
+
 -- proof: rev (rev xs) = xs
 -- base case:
 -- rev (rev []) = rev [] = []
@@ -143,6 +160,7 @@ rev (x:xs) = rev xs ++ [x]
 --                    = rev xs ++ ([y] ++ [x])
 --                    = rev xs ++ [y, x]
 --                    = rev (y:x:xs)
+
 
 -- proof: rev' xs ys = rev xs ++ [ys]
 -- base case: rev' [] ys = rev [] ++ [ys]
