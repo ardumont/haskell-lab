@@ -79,3 +79,31 @@ replicateTree n = (takeTree n) . repeatTree
 --      `--0
 --         |-- /-
 --         `-- /-
+
+data Nat = Zero | Succ Nat
+
+add :: Nat -> Nat -> Nat
+add Zero y = y
+add (Succ x) y = Succ (add x y)
+
+-- base case, immediate
+-- add Zero y = y
+
+-- proof add n Zero
+-- add Zero Zero = Zero
+-- add n Zero = Succ (add n Zero)
+--            = Succ n
+--ok
+
+-- proof associativity of: add x (add y z) = add (add x y) z
+-- base case
+-- add Zero (add y z) = add y z
+--                    = add (add Zero y) z)
+-- ok
+
+-- inductive case
+-- add (Succ x) (add y z) = Succ (add x (add y z))
+--                        = Succ (add (add x y) z) -- by induction
+--                        = add (Succ (add x y) z)
+--                        = add (add (Succ x) y) z
+-- ok
