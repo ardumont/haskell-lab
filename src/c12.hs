@@ -229,3 +229,39 @@ comp (Add l r) = (comp l) ++ (comp r) ++ [ADD]
 
 -- *C12> comp (Add (Val 10) (Add (Val 11) (Val 12)))
 -- [PUSH 10,PUSH 11,PUSH 12,ADD,ADD]
+
+-- proof: exec (a ++ b) s = exec b (exec a s)
+-- base case: exec ([] ++ b) s = exec b s
+--                             = exec b (exec [] s)
+-- ok
+
+-- inductive case 1:
+--                 exec ((PUSH n:c) ++ b) s = exec (PUSH n:(c ++ b)) s
+--                                          = exec (c ++ b) (n:s) -- induction
+--                                          = exec b (exec c (n:s))
+--                                          = exec b (exec (PUSH n:c) s)
+-- ok
+-- inductive case 2
+--                 exec ((ADD l r:c) ++ b) s = exec (ADD l r : (c++b)) s
+--                                           = exec (c++b) (l+r):s -- induction
+--                                           = exec b (exec c (l+r:s))
+--                                           = exec b (exec (ADD:c) (l:r:s))
+-- ok
+
+-- proof: exec (comp e) s = [eval e] = eval e : s
+-- base case: exec (comp (Val n)) [] = exec [PUSH n] s
+--                                   = exec [] n:s
+--                                   = n:s
+--                                   = eval (Val n) : s
+-- ok
+
+-- inductive case: exec (comp (ADD l r)) s = exec ((comp l) ++ (comp r) ++ [ADD]) s
+--                                         = exec ((comp l) ++ ((comp r) ++ [ADD])) s
+--                                         = (exec ((comp r) ++ [ADD])) (exec (comp l) s)
+--                                         = exec ((comp r) ++ [ADD]) (eval l:s)
+--                                         = exec [ADD] (exec (comp r) (eval l:s))
+--                                         = exec [ADD] (eval r:(eval l s))
+--                                         = exec [] (eval r + eval l:s)
+--                                         = eval r + eval l : s
+--                                         = eval l + eval r : s
+--                                         = eval (Add l r) : s
