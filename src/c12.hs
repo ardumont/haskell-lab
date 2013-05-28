@@ -188,17 +188,26 @@ flatten' t = flatten'' t []
 data Expr = Val Int | Add Expr Expr
 
 eval :: Expr -> Int
-eval (Val x) = x
+eval (Val x)   = x
 eval (Add x y) = eval x + eval y
 
 type Stack = [Int]
 type Code = [Op]
-data Op = PUSH Int | ADD
+data Op = PUSH Int | ADD deriving (Show)
 
 exec :: Code -> Stack -> Stack
-exec [] s = s
-exec (PUSH x:c) s = exec c (x:s)
+exec [] s             = s
+exec (PUSH x:c) s     = exec c (x:s)
 exec (ADD:c) (x:y:xs) = exec c (x+y:xs)
 
 -- *C12> exec [PUSH 1,PUSH 2,ADD] []
 -- [3]
+-- *C12> exec [PUSH 10,PUSH 11,PUSH 12,ADD,ADD] []
+-- [33]
+
+comp :: Expr -> Code
+comp (Val x)   = [PUSH x]
+comp (Add l r) = (comp l) ++ (comp r) ++ [ADD]
+
+-- *C12> comp (Add (Val 10) (Add (Val 11) (Val 12)))
+-- [PUSH 10,PUSH 11,PUSH 12,ADD,ADD]
