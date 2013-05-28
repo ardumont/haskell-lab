@@ -265,3 +265,23 @@ comp (Add l r) = (comp l) ++ (comp r) ++ [ADD]
 --                                         = eval r + eval l : s
 --                                         = eval l + eval r : s
 --                                         = eval (Add l r) : s
+
+-- proof: comp' e c = comp e ++ c
+-- base case: comp' (Val n) c = comp (Val n) ++ c
+--                            = [PUSH n] ++ c
+--                            = (PUSH n):c
+
+-- inductive case: comp' (Add l r) c = comp (Add l r) ++ c
+--                                   = comp l ++ comp r ++ [ADD] ++ c
+--                                   = comp l ++ (comp r ++ (ADD:c))
+--                                   = comp l ++ (comp' r (ADD:c))
+--                                   = comp' l (comp' r (ADD:c))
+
+-- then:
+-- comp e = comp e ++ [] = comp' e []
+
+comp' :: Expr -> [Op]
+comp' e = comp'' e []
+          where comp'' :: Expr -> [Op] -> [Op]
+                comp'' (Val n) c = (PUSH n):c
+                comp'' (Add l r) c = comp'' l (comp'' r (ADD:c))
