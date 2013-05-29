@@ -285,3 +285,16 @@ comp' e = comp'' e []
           where comp'' :: Expr -> [Op] -> [Op]
                 comp'' (Val n) c = (PUSH n):c
                 comp'' (Add l r) c = comp'' l (comp'' r (ADD:c))
+
+-- proof: exec (comp' e c) s = exec c (eval e:s)
+
+-- base case: exec (comp' (Val n) c) s = exec ((PUSH n):c) s
+--                                     = exec c (n:s)
+--                                     = exec c (eval (Val n) : s)
+-- ok
+
+-- inductive case: exec (comp' (Add l r) c) s = exec (comp' l (comp' r (ADD:c))) s
+--                                            = exec (comp' r (ADD:c)) (eval l:s)
+--                                            = exec (ADD:c) (eval r:eval l:s)
+--                                            = exec c (eval r + eval l:s)
+--                                            = exec c (eval (Add l r):s)
