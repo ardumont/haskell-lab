@@ -99,3 +99,11 @@ foldl'' f x (y:ys) = foldl'' f (f x y) ys
 -- 55
 -- *Ch1> foldl'' (+) 0 [1..10]
 -- 55
+
+tmp :: (Integer, Integer)
+tmp = (foldr f 0 l, foldl f 0 l)
+  where l = [6,9,8,3,10]
+        f x y = (x+y) `div` 2
+
+-- *Ch1> tmp
+-- (6,7)
