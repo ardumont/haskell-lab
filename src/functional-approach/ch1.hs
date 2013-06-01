@@ -19,3 +19,12 @@ f :: [Int] -> [Int]
 f l = reverse (f' l [])
       where f' [] r     = r
             f' (x:xs) r = (2*x) : (f' xs r)
+
+avg :: [Int] -> Int
+avg xs | null xs   = 0
+       | otherwise = (sum xs) `div` (length xs)
+
+-- *Ch1> avg [1..10]
+-- 5
+-- *Ch1> avg []
+-- 0
