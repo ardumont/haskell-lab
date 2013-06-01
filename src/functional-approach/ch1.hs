@@ -14,3 +14,8 @@ fact n
 -- 120
 -- *Ch1> fact (-10)
 -- -1
+
+f :: [Int] -> [Int]
+f l = reverse (f' l [])
+      where f' [] r     = r
+            f' (x:xs) r = (2*x) : (f' xs r)
