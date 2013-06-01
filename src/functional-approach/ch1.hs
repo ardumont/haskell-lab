@@ -114,3 +114,13 @@ compose f g x = f (g x)
 string2int' :: String -> Int
 string2int' xs = sum [ compose (* u) digitToInt x | (u, x) <- zip unit (reverse xs)]
                  where unit = iterate (* 10) 1
+
+cube :: Num a => a -> a
+cube x = x * x * x
+
+maxi :: (Ord a) => a -> a -> a
+maxi x y | x >= y = x
+         | otherwise = y
+
+sumAtoB :: (Num a, Enum a) => a -> a -> a
+sumAtoB a b = sum [a..b]
