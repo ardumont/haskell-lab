@@ -107,3 +107,10 @@ tmp = (foldr f 0 l, foldl f 0 l)
 
 -- *Ch1> tmp
 -- (6,7)
+
+compose :: (b -> c) -> (a -> b) -> a -> c
+compose f g x = f (g x)
+
+string2int' :: String -> Int
+string2int' xs = sum [ compose (* u) digitToInt x | (u, x) <- zip unit (reverse xs)]
+                 where unit = iterate (* 10) 1
