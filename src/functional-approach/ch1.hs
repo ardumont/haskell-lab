@@ -90,3 +90,12 @@ foldr'' f x (y:ys) = f y $ foldr'' f x ys
 -- -5
 -- *Ch1> foldr (-) 0 [1..10]
 -- -5
+
+foldl'' :: (a -> b -> a) -> a -> [b] -> a
+foldl'' _ x [] = x
+foldl'' f x (y:ys) = foldl'' f (f x y) ys
+
+-- *Ch1> foldl (+) 0 [1..10]
+-- 55
+-- *Ch1> foldl'' (+) 0 [1..10]
+-- 55
