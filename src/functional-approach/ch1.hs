@@ -28,3 +28,15 @@ avg xs | null xs   = 0
 -- 5
 -- *Ch1> avg []
 -- 0
+
+mdl :: [a] -> Maybe a
+mdl xs | null xs   = Nothing
+       | otherwise = Just (xs !! p)
+                     where p = ((subtract 1) . (`div` 2) . length) xs
+
+-- *Ch1> mdl [1..10]
+-- Just 5
+-- *Ch1> mdl [1..20]
+-- Just 10
+-- *Ch1> mdl []
+-- Nothing
