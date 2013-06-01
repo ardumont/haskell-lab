@@ -1,5 +1,7 @@
 module Ch1 where
 
+import Data.Char (digitToInt)
+
 fact :: Int -> Int
 fact n
   | n < 0     = -1
@@ -62,3 +64,16 @@ rep n = [ y | x <- [1..n], y <- replicate x x]
 -- [1,2,2,3,3,3]
 -- *Ch1> rep 4
 -- [1,2,2,3,3,3,4,4,4,4]
+
+string2int :: String -> Int
+string2int xs = sum [ ((* u) . digitToInt) x | (u, x) <- zip unit (reverse xs)]
+                where unit = iterate (* 10) 1
+
+-- *Ch1> string2int "123"
+-- 123
+-- *Ch1> string2int "3434"
+-- 3434
+-- *Ch1> string2int "3454"
+-- 3454
+-- *Ch1> string2int "76"
+-- 76
