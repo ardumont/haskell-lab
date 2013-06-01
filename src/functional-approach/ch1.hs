@@ -40,3 +40,11 @@ mdl xs | null xs   = Nothing
 -- Just 10
 -- *Ch1> mdl []
 -- Nothing
+
+neg :: [Int] -> Int
+neg xs = sum [1 | x <- xs, x < 0 ]
+
+-- *Ch1> neg [1, -9, 5, 4, -6, 0]
+-- 2
+-- *Ch1> neg [1, -9, -5, 4, -6, 0]
+-- 3
