@@ -17,8 +17,8 @@ fact n
 -- *Ch1> fact (-10)
 -- -1
 
-f :: [Int] -> [Int]
-f l = reverse (f' l [])
+fn :: [Int] -> [Int]
+fn l = reverse (f' l [])
       where f' [] r     = r
             f' (x:xs) r = (2*x) : (f' xs r)
 
@@ -77,3 +77,16 @@ string2int xs = sum [ ((* u) . digitToInt) x | (u, x) <- zip unit (reverse xs)]
 -- 3454
 -- *Ch1> string2int "76"
 -- 76
+
+foldr'' :: (a -> b -> b) -> b -> [a] -> b
+foldr'' _ x []     = x
+foldr'' f x (y:ys) = f y $ foldr'' f x ys
+
+-- *Ch1> foldr'' (+) 0 [1..10]
+-- 55
+-- *Ch1> foldr (+) 0 [1..10]
+-- 55
+-- *Ch1> foldr'' (-) 0 [1..10]
+-- -5
+-- *Ch1> foldr (-) 0 [1..10]
+-- -5
