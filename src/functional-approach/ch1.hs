@@ -125,6 +125,12 @@ maxi x y | x >= y = x
 sumAtoB :: (Num a, Enum a) => a -> a -> a
 sumAtoB a b = sum [a..b]
 
+transpose3 :: [[a]] -> [[a]]
+transpose3 xs = map (\ n -> map (!! n) xs) [0..2]
+
+-- *Ch1> transpose3 [[1,2,3], [4,5,6], [7,8,9]]
+-- [[1,4,7],[2,5,8],[3,6,9]]
+
 transpose :: [[a]] -> [[a]]
 transpose xs = map (\ n -> map (!! n) xs) [0..l]
                where l = length xs - 1
