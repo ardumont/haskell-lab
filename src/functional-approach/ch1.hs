@@ -124,3 +124,13 @@ maxi x y | x >= y = x
 
 sumAtoB :: (Num a, Enum a) => a -> a -> a
 sumAtoB a b = sum [a..b]
+
+transpose :: [[a]] -> [[a]]
+transpose xs = map (\ n -> map (!! n) xs) [0..l]
+               where l = length xs - 1
+
+-- contract
+-- *Ch1> Data.List.transpose [[1,2,3], [4,5,6], [7,8,9]]
+-- [[1,4,7],[2,5,8],[3,6,9]]
+-- *Ch1> transpose [[1,2,3], [4,5,6], [7,8,9]]
+-- [[1,4,7],[2,5,8],[3,6,9]]
