@@ -1,6 +1,7 @@
 module Ch1 where
 
 import Data.Char (digitToInt)
+import Data.Array
 
 fact :: Int -> Int
 fact n
