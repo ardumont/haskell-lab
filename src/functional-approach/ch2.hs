@@ -1,4 +1,4 @@
-module Ch1 where
+module Ch2 where
 
 import Data.Char (digitToInt)
 import Data.Array
