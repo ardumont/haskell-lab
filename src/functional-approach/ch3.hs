@@ -85,3 +85,9 @@ mapcar f (Cons x l) = Cons (f x) (mapcar f l)
 
 -- *Ch3> mapcar double (Cons 1 (Cons 2 (Cons 3 Nil)))
 -- Cons 2 (Cons 4 (Cons 6 Nil))
+
+-- With the List definition, the solving of such equation renders:
+-- head (mapcar double (Cons 1 (Cons 2 (Cons 3 Nil)))) = head (Cons (double 1) (Cons 2 (Cons 3 Nil)))
+--                                                     = double 1
+--                                                     = 1 + 1
+--                                                     = 2
