@@ -63,13 +63,25 @@ cancel :: a -> a -> a
 cancel x _ = x
 
 -- infinite function that never stops
-f :: Num a => a -> t
-f x = f (x + 1)
+fn :: Num a => a -> t
+fn x = fn (x + 1)
 
 -- Then, with strict evaluation
--- cancel 1 (f 2) = cancel 1 (f 3)
---                = cancel 1 (f 4)
+-- cancel 1 (fn 2) = cancel 1 (fn 3)
+--                = cancel 1 (fn 4)
 --                = ...
 
 -- but with lazy
--- cancel 1 (f 2) = 1 -- by definition of cancel
+-- cancel 1 (fn 2) = 1 -- by definition of cancel
+
+-- Order of evaluation
+
+data List a = Nil | Cons a (List a) deriving Show
+
+-- Given
+mapcar :: (a -> b) -> (List a) -> (List b)
+mapcar _ Nil = Nil
+mapcar f (Cons x l) = Cons (f x) (mapcar f l)
+
+-- *Ch3> mapcar double (Cons 1 (Cons 2 (Cons 3 Nil)))
+-- Cons 2 (Cons 4 (Cons 6 Nil))
