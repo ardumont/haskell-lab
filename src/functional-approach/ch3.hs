@@ -158,3 +158,26 @@ avg xs = sumList xs / fromIntegral (size (xs))
 --         = 1 + n+1 + n+1
 --         = 2n + 3
 -- O(n) as complexity
+
+append :: [a] -> [a] -> [a]
+append [] ys = ys
+append (x:xs) ys = x : append xs ys
+
+-- *Ch3> append [1,2,3] [4..6]
+-- [1,2,3,4,5,6]
+
+-- Tappend [] ys = 1
+-- TAppend (x:xs) ys = 1 + (TAppend xs ys)
+-- n+1 steps to append a list of length n (xs) and ys.
+-- So, it is complexity O(n)
+
+rev :: [a] -> [a]
+rev [] = []
+rev (x:xs) = append (rev xs) [x]
+
+-- *Ch3> rev [1..10]
+-- [10,9,8,7,6,5,4,3,2,1]
+
+-- TRev [] = 1
+-- TRev (x:xs) = 1 + (TAppend xs) * (TRev xs)
+-- so O(n^2)
