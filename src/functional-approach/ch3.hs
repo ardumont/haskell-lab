@@ -1,5 +1,7 @@
 module Ch3 where
 
+-- the efficiency of function programs
+
 power :: (Integral a1, Num a) => a -> a1 -> a
 power x k = if k == 0
             then 1
