@@ -126,3 +126,35 @@ mapcar'' f (Cons'' x l) = Cons'' (f x) (mapcar'' f l)
 --                                                               = add 1 1
 --                                                               = 1 + 1
 --                                                               = 2
+
+sumList :: Num a => [a] -> a
+sumList []     = 0
+sumList (x:xs) = x + sumList xs
+
+-- *Ch3> sumList [1..10]
+-- 55
+
+size :: [a] -> Int
+size [] = 0
+size (_:xs) = 1 + size xs
+
+-- *Ch3> size [1..10]
+-- 10
+
+avg :: Fractional a => [a] -> a
+avg xs = sumList xs / fromIntegral (size (xs))
+
+-- *Ch3> avg [1..10]
+-- 5.5
+
+-- TSumList [] = 1
+-- TSumList (x:xs) = 1 + TSumList xs
+
+-- TSize [] = 1
+-- TSize (x:xs) = 1 + TSize xs
+
+-- So for n, the length of the list, we obtain a complexity in O(n+1) for sumList and size.
+-- TAvg xs = 1 + TSize xs + TSumList xs
+--         = 1 + n+1 + n+1
+--         = 2n + 3
+-- O(n) as complexity
