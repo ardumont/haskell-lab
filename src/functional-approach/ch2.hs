@@ -1,5 +1,7 @@
 module Ch2 where
 
+-- functional programming in haskell
+
 import Data.Char (digitToInt)
 import Data.Array
 
