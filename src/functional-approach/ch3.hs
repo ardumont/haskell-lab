@@ -108,3 +108,21 @@ mapcar' f (Cons' x l) = Cons' (f x) (mapcar' f l)
 --                                                          = head (Cons' (1 + 1)    (mapcar double (Cons' 2 (Cons' 3 Nil'))))
 --                                                          = head (Cons' 2          (mapcar double (Cons' 2 (Cons' 3 Nil'))))
 --                                                          = 2
+
+data List'' a = Nil'' | Cons'' a !(List'' a) deriving Show
+
+mapcar'' :: (a -> b) -> (List'' a) -> (List'' b)
+mapcar'' _ Nil'' = Nil''
+mapcar'' f (Cons'' x l) = Cons'' (f x) (mapcar'' f l)
+
+-- *Ch3> mapcar'' double (Cons'' 1 (Cons'' 2 (Cons'' 3 Nil'')))
+-- Cons'' 2 (Cons'' 4 (Cons'' 6 Nil''))
+
+-- with list' definition, solving renders:
+-- head (mapcar'' double (Cons'' 1 (Cons'' 2 (Cons'' 3 Nil'')))) = head (Cons'' (double 1) (mapcar double (Cons'' 2 (Cons'' 3 Nil''))))
+--                                                               = head (Cons'' (double 1) (Cons'' (double 2) (mapcar double (Cons'' 3 Nil''))))
+--                                                               = head (Cons'' (double 1) (Cons'' (double 2) (Cons'' (double 3) Nil'')))
+--                                                               = double 1
+--                                                               = add 1 1
+--                                                               = 1 + 1
+--                                                               = 2
