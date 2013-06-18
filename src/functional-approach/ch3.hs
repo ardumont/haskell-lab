@@ -189,3 +189,25 @@ fib :: Int -> Int
 fib 0 = 1
 fib 1 = 1
 fib n = fib (n-1) + fib (n-2)
+
+-- *Ch3> fib 2
+-- 2
+-- *Ch3> fib 10
+-- 89
+-- *Ch3> map fib [1..5]
+-- [1,2,3,5,8]
+
+-- Introducing the following equation:
+gib :: Int -> (Int, Int)
+gib n = (fib' (n+1), fib n)
+
+-- *Ch3> map gib [1..10]
+-- [(2,1),(3,2),(5,3),(8,5),(13,8),(21,13),(34,21),(55,34),(89,55),(144,89)]
+
+fib' :: Int -> Int
+fib' 0 = 1
+fib' 1 = 1
+fib' n = a+b where (a,b) = gib (n-2)
+
+-- *Ch3> map fib' [1..5]
+-- [1,2,3,5,8]
