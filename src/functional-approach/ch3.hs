@@ -184,3 +184,8 @@ rev (x:xs) = append (rev xs) [x]
 --                                               = n(n+1)/2
 --                                               = 1/2n^2 + 1/2n
 -- so O(n^2)
+
+fib :: Int -> Int
+fib 0 = 1
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
