@@ -178,6 +178,9 @@ rev (x:xs) = append (rev xs) [x]
 -- *Ch3> rev [1..10]
 -- [10,9,8,7,6,5,4,3,2,1]
 
--- TRev [] = 1
--- TRev (x:xs) = 1 + (TAppend xs) * (TRev xs)
+-- for every steps, we have O(rev xs) ~ O(n) with n the length of xs, so as append is proportional to the length of its first parameter, we have O(n)
+-- We add the cost of consing x on [] which is 1, we obtain an equation:
+-- (n + 1) + (n-1 + 1) + (n-2 + 1) + ... (1 + 1) = (n+1) + n + n-1 + n-2 + ... 2
+--                                               = n(n+1)/2
+--                                               = 1/2n^2 + 1/2n
 -- so O(n^2)
