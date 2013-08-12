@@ -138,15 +138,39 @@ toList :: Tree a -> [a]
 toList = undefined
 
 {-- Returns how many Reds and Blacks in the given Tree as (redcount, blackcount) --}
-countRB ::(Num b, Num c) => Tree a -> (b, c)
-countRB = undefined
+countRB :: (Num b, Num c) => Tree a -> (b, c)
+countRB Empty = (0, 0)
+countRB (Node B l _ r) =
+  (rc, 1 + bc)
+  where (lrc, lbc) = countRB l
+        (rrc, rbc) = countRB r
+        rc = lrc + rrc
+        bc = lbc + rbc
+countRB (Node R l _ r) =
+  (1 + rc, bc)
+  where (lrc, lbc) = countRB l
+        (rrc, rbc) = countRB r
+        rc = lrc + rrc
+        bc = lbc + rbc
+
+-- *RBT> rbt0
+-- Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty)
+-- *RBT> rbt1
+-- *RBT> countRB rbt0
+-- (2,4)
+-- Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty))
+-- *RBT> countRB rbt1
+-- (4,3)
+-- *RBT> rbt2
+-- Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty))
+-- *RBT> countRB rbt2
+-- (3,4)
 
 {-- Creates a new Red-Black Tree from a given list --}
 fromList :: Ord a => [a] -> Tree a
 fromList = undefined
 
 isRBTree :: Eq a => Tree a -> Bool
-isRBTree = undefined
 
 {-- Returns whether the given tree contains Red-Red nodes or not --}
 noRedRed :: Tree a -> Bool
