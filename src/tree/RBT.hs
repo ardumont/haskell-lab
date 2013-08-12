@@ -25,6 +25,18 @@ module RBT where
 data Color  = R | B deriving (Eq, Show)
 data Tree a = Empty | Node Color (Tree a) a (Tree a) deriving (Eq, Show)
 
+pp :: Show a => Tree a -> IO ()
+pp = (mapM_ putStrLn) . treeIndent
+  where
+    treeIndent Empty          = ["-- /-"]
+    treeIndent (Node c lb v rb) =
+      ["--" ++ (show c) ++ " " ++ (show v)] ++
+      map ("  |" ++) ls ++
+      ("  `" ++ r) : map ("   " ++) rs
+      where
+        (r:rs) = treeIndent $ rb
+        ls     = treeIndent $ lb
+
 makeLeaf :: Color -> a -> Tree a
 makeLeaf c v = Node c Empty v Empty
 
@@ -42,10 +54,49 @@ rbt0 = makeLR B 4
        (makeLR R 1 (makeLeaf B 0) (makeLeft B 3 (makeLeaf R 2)))
        (makeLeaf B 5)
 
+-- *RBT> rbt0
+-- Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty)
+
+-- *RBT> pp rbt0
+-- --B 4
+--   |--R 1
+--   |  |--B 0
+--   |  |  |-- /-
+--   |  |  `-- /-
+--   |  `--B 3
+--   |     |--R 2
+--   |     |  |-- /-
+--   |     |  `-- /-
+--   |     `-- /-
+--   `--B 5
+--      |-- /-
+--      `-- /-
+
 rbt1 :: Tree Int
 rbt1 = makeLR B 4
        (makeLR B 3 (makeLeaf R 1) (makeLeaf R 2))
        (makeLR B 6 (makeLeaf R 5) (makeLeaf R 7))
+
+
+-- *RBT> rbt1
+-- Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty))
+
+-- *RBT> pp rbt1
+-- --B 4
+--   |--B 3
+--   |  |--R 1
+--   |  |  |-- /-
+--   |  |  `-- /-
+--   |  `--R 2
+--   |     |-- /-
+--   |     `-- /-
+--   `--B 6
+--      |--R 5
+--      |  |-- /-
+--      |  `-- /-
+--      `--R 7
+--         |-- /-
+--         `-- /-
 
 rbt2 :: Tree Int
 rbt2 = makeLR B 1
@@ -54,12 +105,25 @@ rbt2 = makeLR B 1
                           (makeLR B 4 (makeLeaf R 3) (makeLeaf R 5))
                           (makeLeaf B 7))
 
--- *RBT> rbt0
--- Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty)
--- *RBT> rbt1
--- Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty))
 -- *RBT> rbt2
 -- Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty))
+
+-- *RBT> pp rbt2
+-- --B 1
+--   |--B 0
+--   |  |-- /-
+--   |  `-- /-
+--   `--R 6
+--      |--B 4
+--      |  |--R 3
+--      |  |  |-- /-
+--      |  |  `-- /-
+--      |  `--R 5
+--      |     |-- /-
+--      |     `-- /-
+--      `--B 7
+--         |-- /-
+--         `-- /-
 
 insert :: Ord a => Tree a -> a -> Tree a
 insert = undefined
