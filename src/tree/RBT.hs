@@ -77,7 +77,6 @@ rbt1 = makeLR B 4
        (makeLR B 3 (makeLeaf R 1) (makeLeaf R 2))
        (makeLR B 6 (makeLeaf R 5) (makeLeaf R 7))
 
-
 -- *RBT> rbt1
 -- Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty))
 
@@ -126,7 +125,23 @@ rbt2 = makeLR B 1
 --         `-- /-
 
 insert :: Ord a => Tree a -> a -> Tree a
-insert = undefined
+insert Empty y = makeLeaf B y
+insert t@(Node _ Empty x Empty) y
+  | x < y = makeRight B x (makeLeaf R y)
+  | x > y = makeLeft  B x (makeLeaf R y)
+  | otherwise = t
+insert t@(Node co l@(Node c _ _ _) x Empty) y
+  | x < y = Node co l            x (makeLeaf c y)
+  | x > y = Node co (insert l y) x Empty
+  | otherwise = t
+insert t@(Node co Empty x r@(Node c _ _ _)) y
+  | x < y = Node co Empty          x (insert r y)
+  | x > y = Node co (makeLeaf c y) x r
+  | otherwise = t
+insert t@(Node co l x r) y
+  | x < y = Node co l x (insert r y)
+  | x > y = Node co (insert l y) x r
+  | otherwise = t
 
 contains :: Ord a => Tree a -> a -> Bool
 contains = undefined
@@ -171,6 +186,21 @@ fromList :: Ord a => [a] -> Tree a
 fromList = undefined
 
 isRBTree :: Eq a => Tree a -> Bool
+isRBTree Empty = True
+isRBTree (Node R (Node R _ _ _) _ _) = False
+isRBTree (Node R _ _ (Node R _ _ _)) = False
+isRBTree (Node _ l _ r) =
+  and [(lbc == rbc), (isRBTree l), (isRBTree r)]
+  where (_, lbc) = countRB l
+        (_, rbc) = countRB r
+
+left :: Tree a -> Tree a
+left Empty = undefined
+left (Node _ l _ _) = l
+
+right :: Tree a -> Tree a
+right Empty = undefined
+right (Node _ _ _ r) = r
 
 {-- Returns whether the given tree contains Red-Red nodes or not --}
 noRedRed :: Tree a -> Bool
