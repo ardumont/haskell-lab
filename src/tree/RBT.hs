@@ -20,9 +20,46 @@ module RBT where
 -- with those colors distributed according to the following RB balancing rules:
 -- - no R node has a R child
 -- - every simple path from a given node to one of its non-branching node descendants contains the same number of B nodes
+-- - every root node is black (optional but simplify the operations)
 
 data Color  = R | B deriving (Eq, Show)
 data Tree a = Empty | Node Color (Tree a) a (Tree a) deriving (Eq, Show)
+
+makeLeaf :: Color -> a -> Tree a
+makeLeaf c v = Node c Empty v Empty
+
+makeLeft :: Color -> a -> Tree a -> Tree a
+makeLeft c v l = Node c l v Empty
+
+makeRight :: Color -> a -> Tree a -> Tree a
+makeRight c v r = Node c Empty v r
+
+makeLR :: Color -> a -> Tree a -> Tree a -> Tree a
+makeLR c v l r = Node c l v r
+
+rbt0 :: Tree Int
+rbt0 = makeLR B 4
+       (makeLR R 1 (makeLeaf B 0) (makeLeft B 3 (makeLeaf R 2)))
+       (makeLeaf B 5)
+
+rbt1 :: Tree Int
+rbt1 = makeLR B 4
+       (makeLR B 3 (makeLeaf R 1) (makeLeaf R 2))
+       (makeLR B 6 (makeLeaf R 5) (makeLeaf R 7))
+
+rbt2 :: Tree Int
+rbt2 = makeLR B 1
+                (makeLeaf B 0)
+                (makeLR R 6
+                          (makeLR B 4 (makeLeaf R 3) (makeLeaf R 5))
+                          (makeLeaf B 7))
+
+-- *RBT> rbt0
+-- Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty)
+-- *RBT> rbt1
+-- Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty))
+-- *RBT> rbt2
+-- Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty))
 
 insert :: Ord a => Tree a -> a -> Tree a
 insert = undefined
