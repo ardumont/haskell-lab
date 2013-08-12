@@ -89,7 +89,15 @@ noRedRed :: Tree a -> Bool
 noRedRed = undefined
 
 color :: Tree a -> Color
-color = undefined
+color Empty = undefined
+color (Node c _ _ _) = c
+
+-- *RBT> color rbt1
+-- B
+-- *RBT> color rbt0
+-- B
+-- *RBT> color rbt2
+-- B
 
 {-- Returns all paths from root to leaves --}
 paths :: Tree a -> [[(Color, a)]]
