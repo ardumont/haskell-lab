@@ -22,7 +22,7 @@ triangle xs = tri xs [1]
 -- [1,7,21,35,35,21,7,1]
 
 triangleRow :: Int -> [Int]
-triangleRow n = foldr (\ _ ns -> triangle ns) [1] [1..n]
+triangleRow n = foldl (\ ns _ -> triangle ns) [1] [1..n]
 
 -- *Pascal> triangleRow 0
 -- [1]
