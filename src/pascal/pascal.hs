@@ -44,3 +44,6 @@ triangleRow n = tRow p (triangleRow p)
 -- [1,11,55,165,330,462,462,330,165,55,11,1]
 -- *Pascal> triangleRow 6
 -- [1,16,120,560,1820,4368,8008,11440,12870,11440,8008,4368,1820,560,120,16,1]
+
+get :: Int -> Int -> Int
+get c r = (last . take c . triangleRow) r
