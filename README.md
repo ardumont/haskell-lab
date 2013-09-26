@@ -1,4 +1,4 @@
 my-haskell-lab
 ==============
 
-Some haskell hacking to learn by doing
+Haskell hacking on small exercises or more
