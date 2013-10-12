@@ -33,7 +33,7 @@ makeCodeTree l r = Fork l r (chars(l) ++ chars(r)) (weight(l) + weight(r))
 -- Fork (Fork (Leaf 'c' 1) (Leaf 'd' 2) "cd" 3) (Leaf 'd' 2) "cdd" 5
 
 times :: [Char] -> [(Char, Int)]
-times = map (\x -> (head(x), 1+(length(tail(x))))) . group . sort
+times = map (\x -> (head x, ((1+) . length . tail) x)) . group . sort
 
 -- *Huffman> times ['1','3','4','1','1','1','2']
 -- [('1',4),('2',1),('3',1),('4',1)]
