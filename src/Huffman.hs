@@ -5,7 +5,13 @@ data CodeTree = Leaf Char Int | Fork CodeTree CodeTree [Char] Int
 type Bit = Int
 
 weight :: CodeTree -> Int
-weight = undefined
+weight (Leaf _ n)     = n
+weight (Fork _ _ _ n) = n
+
+-- *Huffman> weight (Leaf 'c' 2)
+-- 2
+-- *Huffman> weight (Fork (Leaf 'c' 2) (Leaf 'd' 3) ['c', 'd'] 5)
+-- 5
 
 chars :: CodeTree -> [Char]
 chars = undefined
