@@ -1,6 +1,6 @@
 module Huffman where
 
-data CodeTree = Leaf Char Int | Fork CodeTree CodeTree [Char] Int
+data CodeTree = Leaf Char Int | Fork CodeTree CodeTree [Char] Int deriving Show
 
 type Bit = Int
 
@@ -22,8 +22,13 @@ chars (Fork _ _ cs _) = cs
 -- *Huffman> chars (Fork (Leaf 'c' 2) (Leaf 'd' 3) ['c', 'd'] 5)
 -- "cd"
 
-makeCodeTree :: CodeTree -> CodeTree
-makeCodeTree = undefined
+makeCodeTree :: CodeTree -> CodeTree -> CodeTree
+makeCodeTree l r = Fork l r (chars(l) ++ chars(r)) (weight(l) + weight(r))
+
+-- *Huffman> makeCodeTree (Leaf 'c' 1) (Leaf 'd' 2)
+-- Fork (Leaf 'c' 1) (Leaf 'd' 2) "cd" 3
+-- *Huffman> makeCodeTree (Fork (Leaf 'c' 1) (Leaf 'd' 2) "cd" 3) (Leaf 'd' 2)
+-- Fork (Fork (Leaf 'c' 1) (Leaf 'd' 2) "cd" 3) (Leaf 'd' 2) "cdd" 5
 
 times :: [Char] -> [(Char, Int)]
 times = undefined
