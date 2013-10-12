@@ -1,5 +1,7 @@
 module Huffman where
 
+import Data.List
+
 data CodeTree = Leaf Char Int | Fork CodeTree CodeTree [Char] Int deriving Show
 
 type Bit = Int
@@ -31,7 +33,12 @@ makeCodeTree l r = Fork l r (chars(l) ++ chars(r)) (weight(l) + weight(r))
 -- Fork (Fork (Leaf 'c' 1) (Leaf 'd' 2) "cd" 3) (Leaf 'd' 2) "cdd" 5
 
 times :: [Char] -> [(Char, Int)]
-times = undefined
+times cs = map (\x -> (head(x), 1+(length(tail(x))))) $ group $ sort cs
+
+-- *Huffman> times ['1','3','4','1','1','1','2']
+-- [('1',4),('2',1),('3',1),('4',1)]
+-- *Huffman> times ['a','b','b','a','a','a','d']
+-- [('a',4),('b',2),('d',1)]
 
 makeOrderedLeafList :: [(Char, Int)] -> [CodeTree]
 makeOrderedLeafList = undefined
