@@ -14,7 +14,13 @@ weight (Fork _ _ _ n) = n
 -- 5
 
 chars :: CodeTree -> [Char]
-chars = undefined
+chars (Leaf c _)      = [c]
+chars (Fork _ _ cs _) = cs
+
+-- *Huffman> chars (Leaf 'c' 2)
+-- "c"
+-- *Huffman> chars (Fork (Leaf 'c' 2) (Leaf 'd' 3) ['c', 'd'] 5)
+-- "cd"
 
 makeCodeTree :: CodeTree -> CodeTree
 makeCodeTree = undefined
