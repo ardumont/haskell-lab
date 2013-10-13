@@ -103,8 +103,13 @@ decode cts bs =
 
 --------- ENCODE
 
-encode :: (CodeTree -> [Char]) -> [Char] ->[Bit]
-encode  = undefined
+encode :: CodeTree -> [Char] -> [Bit]
+encode ct cs = concatMap (\c -> internalEncode ct c) cs
+                  where internalEncode :: CodeTree -> Char -> [Bit]
+                        internalEncode (Fork l r _ _) c = if elem c (chars l)
+                                                          then 0 : internalEncode l c
+                                                          else 1 : internalEncode r c
+                        internalEncode _ _              = []
 
 --------- QUICK ENCODE (for performance alternatives)
 

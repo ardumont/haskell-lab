@@ -120,6 +120,23 @@ testDecode1 = "to be or not to be"
 testDecodes :: Test.HUnit.Test
 testDecodes = TestList ["testDecode1" ~: testDecode1]
 
+testEncode1 :: Test.HUnit.Test
+testEncode1 = [1,0,1,0,1,1,1,0,0,1,1,0,0,1,1,0,1,0,0,0,1,1,1,0,0,0,0,0,1,1,0,1,1,1,1,0,1,0,1,1,1,0,0,1,1,0,0]
+              ~=?
+              encode (createCodeTree "to be or not to be") "to be or not to be"
+
+testEncodes :: Test.HUnit.Test
+testEncodes = TestList ["testEncode1" ~: testEncode1]
+
+testDecodeEncode1 :: Test.HUnit.Test
+testDecodeEncode1 = "to be or not to be"
+                    ~=?
+                    let st = "to be or not to be"
+                        ct = createCodeTree st in decode ct $ encode ct st
+
+testEncodeDecodes :: Test.HUnit.Test
+testEncodeDecodes = TestList ["testEncode1" ~: testEncode1]
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testWeights,
@@ -131,8 +148,10 @@ tests = TestList [testWeights,
                   testCombines,
                   testUntils,
                   testCreateCodeTrees,
-                  testDecodes]
+                  testDecodes,
+                  testEncodes,
+                  testEncodeDecodes]
 
 -- *HuffmanTests> runTestTT tests
--- Cases: 19  Tried: 19  Errors: 0  Failures: 0
--- Counts {cases = 19, tried = 19, errors = 0, failures = 0}
+-- Cases: 21  Tried: 21  Errors: 0  Failures: 0
+-- Counts {cases = 21, tried = 21, errors = 0, failures = 0}
