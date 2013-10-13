@@ -1,9 +1,9 @@
 haskell-lab
 ===========
 
-Haskell hacking on small exercises or more
+Hacking on Haskell
 
-# Use the Make Luke!
+# Luke! make Force
 
 ## Install dev platform
 
