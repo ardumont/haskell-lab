@@ -119,11 +119,12 @@ codeBits :: CodeTable -> Char -> Maybe [Bit]
 codeBits ct c = lookup c ct
 
 mergeCodeTables :: CodeTable -> CodeTable -> CodeTable
-mergeCodeTables ct0 ct1 = foldl maybeAdd ct0 ct1
-                          where maybeAdd acc ne =
-                                  case codeBits acc (fst ne) of
-                                    Just _ -> acc
-                                    _      -> ne : acc
+mergeCodeTables =
+  foldl maybeAdd
+  where maybeAdd acc ne =
+          case codeBits acc (fst ne) of
+            Just _ -> acc
+            _      -> ne : acc
 
 convert :: CodeTree -> CodeTable
 convert = undefined
