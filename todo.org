@@ -1,0 +1,11 @@
+#+title: TODO
+#+author: Antoine R. Dumont
+
+* IN-PROGRESS Documentation
+* IN-PROGRESS Testing [0%]
+** IN-PROGRESS quickcheck
+** IN-PROGRESS hunit
+** TODO test-framework
+** TODO orchestration from the root directory
+** TODO Plug ci-travis
+* IN-PROGRESS huffman encoding
