@@ -24,9 +24,14 @@ testMakeCodeTree2 = Fork (Fork (Leaf 'c' 1) (Leaf 'd' 2) "cd" 3) (Leaf 'd' 2) "c
 
 testMakeCodeTrees = TestList ["testMakeCodeTree1" ~: testMakeCodeTree1, "testMakeCodeTree2" ~: testMakeCodeTree2]
 
+testTimes1 = [('1',4),('2',1),('3',1),('4',1)] ~=? times ['1','3','4','1','1','1','2']
+testTimes2 = [('a',4),('b',2),('d',1)] ~=? times ['a','b','b','a','a','a','d']
+
+testTimess = TestList ["testTimes1" ~: testTimes1, "testTimes2" ~: testTimes2]
+
 -- Full tests
-tests = TestList [testWeights, testChars, testMakeCodeTrees]
+tests = TestList [testWeights, testChars, testMakeCodeTrees, testTimess]
 
 -- *HuffmanTests> runTestTT tests
--- Cases: 6  Tried: 6  Errors: 0  Failures: 0
--- Counts {cases = 6, tried = 6, errors = 0, failures = 0}
+-- Cases: 8  Tried: 8  Errors: 0  Failures: 0
+-- Counts {cases = 8, tried = 8, errors = 0, failures = 0}
