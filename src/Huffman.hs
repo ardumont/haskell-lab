@@ -121,11 +121,11 @@ codeBits ct c =
     Just x -> x
     _      -> []
 
-convert :: CodeTree -> CodeTable
-convert = undefined
-
 mergeCodeTables :: CodeTable -> CodeTable -> CodeTable
 mergeCodeTables = undefined
+
+convert :: CodeTree -> CodeTable
+convert = undefined
 
 quickEncode :: (CodeTree -> [Char]) -> [Char] -> [Bit]
 quickEncode = undefined
