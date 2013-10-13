@@ -169,7 +169,7 @@ testMergeCodeTables2 = [('e',[]),('a',[0,0,1]),('b',[1,0,0])]
 
 testMergeCodeTabless :: Test.HUnit.Test
 testMergeCodeTabless = TestList ["testMergeCodeTables1" ~: testMergeCodeTables1,
-                                "testMergeCodeTables2" ~: testMergeCodeTables2]
+                                 "testMergeCodeTables2" ~: testMergeCodeTables2]
 
 -- Full tests
 tests :: Test.HUnit.Test
