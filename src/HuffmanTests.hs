@@ -41,11 +41,6 @@ testTimes2 = [('a',4),('b',2),('d',1)] ~=? times ['a','b','b','a','a','a','d']
 testTimess :: Test.HUnit.Test
 testTimess = TestList ["testTimes1" ~: testTimes1, "testTimes2" ~: testTimes2]
 
--- *Huffman>
---
--- *Huffman>
---
-
 testMakeOrderedLeafList1 :: Test.HUnit.Test
 testMakeOrderedLeafList1 = [Leaf 'd' 3,Leaf 'b' 5,Leaf 'a' 10,Leaf 'e' 11]
                            ~=?
