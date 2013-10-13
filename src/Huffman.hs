@@ -116,7 +116,10 @@ encode ct cs = concatMap (\c -> internalEncode ct c) cs
 type CodeTable = [(Char, [Bit])]
 
 codeBits :: CodeTable -> Char -> [Bit]
-codeBits = undefined
+codeBits ct c =
+  case lookup c ct of
+    Just x -> x
+    _      -> []
 
 convert :: CodeTree -> CodeTable
 convert = undefined

@@ -131,6 +131,32 @@ testDecodeEncode1 = "to be or not to be"
 testEncodeDecodes :: Test.HUnit.Test
 testEncodeDecodes = TestList ["testEncode1" ~: testEncode1]
 
+testCodeBits1 :: Test.HUnit.Test
+testCodeBits1 = [0,0,1]
+                ~=?
+                codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'a'
+
+testCodeBits2 :: Test.HUnit.Test
+testCodeBits2 = [1,0,0]
+                ~=?
+                codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'b'
+
+testCodeBits3 :: Test.HUnit.Test
+testCodeBits3 = []
+                ~=?
+                codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'c'
+
+testCodeBits4 :: Test.HUnit.Test
+testCodeBits4 = []
+                ~=?
+                codeBits [] 'c'
+
+testCodeBitss :: Test.HUnit.Test
+testCodeBitss = TestList ["testCodeBits1" ~: testCodeBits1,
+                          "testCodeBits2" ~: testCodeBits2,
+                          "testCodeBits3" ~: testCodeBits3,
+                          "testCodeBits4" ~: testCodeBits4]
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testWeights,
@@ -144,7 +170,8 @@ tests = TestList [testWeights,
                   testCreateCodeTrees,
                   testDecodes,
                   testEncodes,
-                  testEncodeDecodes]
+                  testEncodeDecodes,
+                  testCodeBitss]
 
 -- *HuffmanTests> runTestTT tests
 -- Cases: 21  Tried: 21  Errors: 0  Failures: 0
