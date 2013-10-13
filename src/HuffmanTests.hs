@@ -29,9 +29,29 @@ testTimes2 = [('a',4),('b',2),('d',1)] ~=? times ['a','b','b','a','a','a','d']
 
 testTimess = TestList ["testTimes1" ~: testTimes1, "testTimes2" ~: testTimes2]
 
+-- *Huffman>
+--
+-- *Huffman>
+--
+
+testMakeOrderedLeafList1 = [Leaf 'd' 3,Leaf 'b' 5,Leaf 'a' 10,Leaf 'e' 11]
+                           ~=?
+                           makeOrderedLeafList [('a', 10), ('b', 5), ('d', 3), ('e', 11)]
+
+testMakeOrderedLeafList2 = [Leaf 'd' 3,Leaf 'b' 5,Leaf 'a' 10,Leaf 'e' 11,Leaf ' ' 100]
+                           ~=?
+                           makeOrderedLeafList [(' ', 100), ('a', 10), ('b', 5), ('d', 3), ('e', 11)]
+
+testMakeOrderedLeafLists = TestList ["testMakeOrderedLeafList1" ~: testMakeOrderedLeafList1,
+                                     "testMakeOrderedLeafList2" ~: testMakeOrderedLeafList2]
+
 -- Full tests
-tests = TestList [testWeights, testChars, testMakeCodeTrees, testTimess]
+tests = TestList [testWeights,
+                  testChars,
+                  testMakeCodeTrees,
+                  testTimess,
+                  testMakeOrderedLeafLists]
 
 -- *HuffmanTests> runTestTT tests
--- Cases: 8  Tried: 8  Errors: 0  Failures: 0
--- Counts {cases = 8, tried = 8, errors = 0, failures = 0}
+-- Cases: 10  Tried: 10  Errors: 0  Failures: 0
+-- Counts {cases = 10, tried = 10, errors = 0, failures = 0}

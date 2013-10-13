@@ -41,7 +41,12 @@ times = map (\x -> (head x, ((1+) . length . tail) x)) . group . sort
 -- [('a',4),('b',2),('d',1)]
 
 makeOrderedLeafList :: [(Char, Int)] -> [CodeTree]
-makeOrderedLeafList = undefined
+makeOrderedLeafList = (map (\(c, i) -> Leaf c i)) . (sortBy (\(_, i1) (_, i2) -> compare i1 i2))
+
+-- *Huffman> makeOrderedLeafList [('a', 10), ('b', 5), ('d', 3), ('e', 11)]
+-- [Leaf 'd' 3,Leaf 'b' 5,Leaf 'a' 10,Leaf 'e' 11]
+-- *Huffman> makeOrderedLeafList [(' ', 100), ('a', 10), ('b', 5), ('d', 3), ('e', 11)]
+-- [Leaf 'd' 3,Leaf 'b' 5,Leaf 'a' 10,Leaf 'e' 11,Leaf ' ' 100]
 
 singleton :: [CodeTree] -> Bool
 singleton = undefined
