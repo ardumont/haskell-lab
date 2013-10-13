@@ -1,11 +1,34 @@
 #+title: TODO
 #+author: Antoine R. Dumont
 
-* IN-PROGRESS Documentation
+* DONE Documentation
+CLOSED: [2013-10-13 dim. 11:42]
+cf. README.md
+* DONE Installation actions
+CLOSED: [2013-10-13 dim. 11:41]
+- Makefile to
+  - install the dev platform
+  - install dev deps
 * IN-PROGRESS Testing [0%]
-** IN-PROGRESS quickcheck
-** IN-PROGRESS hunit
-** TODO test-framework
-** TODO orchestration from the root directory
+** IN-PROGRESS QuickCheck [80%]
+- [X] Install
+- [X] long-lasting?
+- [X] Some reading
+- [X] Running Tests (cf. src/primes/Primes.hs)
+- [ ] Dig more
+
+** IN-PROGRESS Hunit [80%]
+- [X] Install
+- [X] long-lasting?
+- [X] Some reading
+- [X] Running Tests (cf. src/HuffmanTests.hs)
+- [ ] Dig more
+** IN-PROGRESS Test-Framework [40%]
+- [X] Install
+- [X] long-lasting?
+- [ ] Some reading
+- [ ] Running Tests
+- [ ] Dig more
+** TODO orchestrate tests from root directory (Makefile)
 ** TODO Plug ci-travis
 * IN-PROGRESS huffman encoding
