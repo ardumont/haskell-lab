@@ -2,7 +2,6 @@ module HuffmanTests where
 
 import Huffman
 
-import Test.Framework
 import Test.HUnit
 
 testWeight1 :: Test.HUnit.Test
