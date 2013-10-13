@@ -111,6 +111,15 @@ testCreateCodeTree1 = Fork (Fork (Fork (Fork (Leaf 'n' 1) (Leaf 'r' 1) "nr" 2) (
 testCreateCodeTrees :: Test.HUnit.Test
 testCreateCodeTrees = TestList ["testCreateCodeTree1" ~: testCreateCodeTree1]
 
+-- http://pl.wikipedia.org/wiki/Plik:Huffman_%28To_be_or_not_to_be%29.svg
+testDecode1 :: Test.HUnit.Test
+testDecode1 = "to be or not to be"
+              ~=?
+              decode (createCodeTree "to be or not to be") [1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0]
+
+testDecodes :: Test.HUnit.Test
+testDecodes = TestList ["testDecode1" ~: testDecode1]
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testWeights,
@@ -121,8 +130,9 @@ tests = TestList [testWeights,
                   testSingletons,
                   testCombines,
                   testUntils,
-                  testCreateCodeTrees]
+                  testCreateCodeTrees,
+                  testDecodes]
 
 -- *HuffmanTests> runTestTT tests
--- Cases: 18  Tried: 18  Errors: 0  Failures: 0
--- Counts {cases = 18, tried = 18, errors = 0, failures = 0}
+-- Cases: 19  Tried: 19  Errors: 0  Failures: 0
+-- Counts {cases = 19, tried = 19, errors = 0, failures = 0}

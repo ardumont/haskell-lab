@@ -90,7 +90,15 @@ createCodeTree = head . (Huffman.until singleton combine) . makeOrderedLeafList 
 -- Fork (Fork (Fork (Fork (Leaf 'n' 1) (Leaf 'r' 1) "nr" 2) (Leaf 'b' 2) "nrb" 4) (Leaf 'o' 4) "nrbo" 8) (Fork (Fork (Leaf 'e' 2) (Leaf 't' 3) "et" 5) (Leaf ' ' 5) "et " 10) "nrboet " 18
 
 decode :: CodeTree -> [Bit] -> [Char]
-decode = undefined
+decode cts bs =
+  internalDecode cts bs
+  where internalDecode :: CodeTree -> [Bit] -> [Char]
+        internalDecode (Leaf c _)     bss = c : internalDecode cts bss
+        internalDecode (Fork l r _ _) bss = case bss of
+          0 : bsss -> internalDecode l bsss
+          1 : bsss -> internalDecode r bsss
+          _        -> []
+
 
 encode :: (CodeTree -> [Char]) -> [Char] ->[Bit]
 encode = undefined
