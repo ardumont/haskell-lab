@@ -127,7 +127,9 @@ mergeCodeTables =
             _      -> ne : acc
 
 convert :: CodeTree -> CodeTable
-convert = undefined
+convert ct = foldl (\acc c -> mergeCodeTables acc (createCodeTable c)) [] . chars $ ct
+             where encodeFn = encode ct
+                   createCodeTable c = [(c, encodeFn([c]))]
 
 quickEncode :: (CodeTree -> [Char]) -> [Char] -> [Bit]
 quickEncode = undefined

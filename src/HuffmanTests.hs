@@ -171,6 +171,14 @@ testMergeCodeTabless :: Test.HUnit.Test
 testMergeCodeTabless = TestList ["testMergeCodeTables1" ~: testMergeCodeTables1,
                                  "testMergeCodeTables2" ~: testMergeCodeTables2]
 
+testConvert1 :: Test.HUnit.Test
+testConvert1 = [(' ',[1,1]),('t',[1,0,1]),('e',[1,0,0]),('o',[0,1]),('b',[0,0,1]),('r',[0,0,0,1]),('n',[0,0,0,0])]
+               ~=?
+               (convert . createCodeTree) "to be or not to be"
+
+testConverts :: Test.HUnit.Test
+testConverts = TestList ["testConvert1" ~: testConvert1]
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testWeights,
@@ -186,8 +194,9 @@ tests = TestList [testWeights,
                   testEncodes,
                   testEncodeDecodes,
                   testCodeBitss,
-                  testMergeCodeTabless]
+                  testMergeCodeTabless,
+                  testConverts]
 
 -- *HuffmanTests> runTestTT tests
--- Cases: 27  Tried: 27  Errors: 0  Failures: 0
--- Counts {cases = 27, tried = 27, errors = 0, failures = 0}
+-- Cases: 28  Tried: 28  Errors: 0  Failures: 0
+-- Counts {cases = 28, tried = 28, errors = 0, failures = 0}
