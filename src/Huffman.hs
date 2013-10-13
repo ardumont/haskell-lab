@@ -84,7 +84,10 @@ until stopFn combineFn cs =
 -- [Fork (Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30) (Fork (Leaf 'c' 20) (Leaf 'd' 21) "cd" 41) "abcd" 71]
 
 createCodeTree :: [Char] -> CodeTree
-createCodeTree = undefined
+createCodeTree = head . (Huffman.until singleton combine) . makeOrderedLeafList . times
+
+-- *Huffman> createCodeTree "to be or not to be"
+-- Fork (Fork (Fork (Fork (Leaf 'n' 1) (Leaf 'r' 1) "nr" 2) (Leaf 'b' 2) "nrb" 4) (Leaf 'o' 4) "nrbo" 8) (Fork (Fork (Leaf 'e' 2) (Leaf 't' 3) "et" 5) (Leaf ' ' 5) "et " 10) "nrboet " 18
 
 decode :: CodeTree -> [Bit] -> [Char]
 decode = undefined
