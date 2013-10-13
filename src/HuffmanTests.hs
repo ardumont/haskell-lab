@@ -132,22 +132,22 @@ testEncodeDecodes :: Test.HUnit.Test
 testEncodeDecodes = TestList ["testEncode1" ~: testEncode1]
 
 testCodeBits1 :: Test.HUnit.Test
-testCodeBits1 = [0,0,1]
+testCodeBits1 = Just [0,0,1]
                 ~=?
                 codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'a'
 
 testCodeBits2 :: Test.HUnit.Test
-testCodeBits2 = [1,0,0]
+testCodeBits2 = Just [1,0,0]
                 ~=?
                 codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'b'
 
 testCodeBits3 :: Test.HUnit.Test
-testCodeBits3 = []
+testCodeBits3 = Nothing
                 ~=?
                 codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'c'
 
 testCodeBits4 :: Test.HUnit.Test
-testCodeBits4 = []
+testCodeBits4 = Nothing
                 ~=?
                 codeBits [] 'c'
 
@@ -156,6 +156,20 @@ testCodeBitss = TestList ["testCodeBits1" ~: testCodeBits1,
                           "testCodeBits2" ~: testCodeBits2,
                           "testCodeBits3" ~: testCodeBits3,
                           "testCodeBits4" ~: testCodeBits4]
+
+testMergeCodeTables1 :: Test.HUnit.Test
+testMergeCodeTables1 = [('a',[0,0,1]),('b',[1,0,0])]
+                       ~=?
+                       mergeCodeTables [('a', [0,0,1]), ('b', [1,0,0])] [('a', [0,0,1]), ('b', [1,0,0])]
+
+testMergeCodeTables2 :: Test.HUnit.Test
+testMergeCodeTables2 = [('e',[]),('a',[0,0,1]),('b',[1,0,0])]
+                       ~=?
+                       mergeCodeTables [('a', [0,0,1]), ('b', [1,0,0])] [('a', [0,0,1]), ('b', [1,0,0]), ('e', [])]
+
+testMergeCodeTabless :: Test.HUnit.Test
+testMergeCodeTabless = TestList ["testMergeCodeTables1" ~: testMergeCodeTables1,
+                                "testMergeCodeTables2" ~: testMergeCodeTables2]
 
 -- Full tests
 tests :: Test.HUnit.Test
@@ -171,8 +185,9 @@ tests = TestList [testWeights,
                   testDecodes,
                   testEncodes,
                   testEncodeDecodes,
-                  testCodeBitss]
+                  testCodeBitss,
+                  testMergeCodeTabless]
 
 -- *HuffmanTests> runTestTT tests
--- Cases: 21  Tried: 21  Errors: 0  Failures: 0
--- Counts {cases = 21, tried = 21, errors = 0, failures = 0}
+-- Cases: 27  Tried: 27  Errors: 0  Failures: 0
+-- Counts {cases = 27, tried = 27, errors = 0, failures = 0}

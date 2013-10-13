@@ -115,14 +115,15 @@ encode ct cs = concatMap (\c -> internalEncode ct c) cs
 
 type CodeTable = [(Char, [Bit])]
 
-codeBits :: CodeTable -> Char -> [Bit]
-codeBits ct c =
-  case lookup c ct of
-    Just x -> x
-    _      -> []
+codeBits :: CodeTable -> Char -> Maybe [Bit]
+codeBits ct c = lookup c ct
 
 mergeCodeTables :: CodeTable -> CodeTable -> CodeTable
-mergeCodeTables = undefined
+mergeCodeTables ct0 ct1 = foldl maybeAdd ct0 ct1
+                          where maybeAdd acc ne =
+                                  case codeBits acc (fst ne) of
+                                    Just _ -> acc
+                                    _      -> ne : acc
 
 convert :: CodeTree -> CodeTable
 convert = undefined
