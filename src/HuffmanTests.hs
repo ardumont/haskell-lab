@@ -45,13 +45,20 @@ testMakeOrderedLeafList2 = [Leaf 'd' 3,Leaf 'b' 5,Leaf 'a' 10,Leaf 'e' 11,Leaf '
 testMakeOrderedLeafLists = TestList ["testMakeOrderedLeafList1" ~: testMakeOrderedLeafList1,
                                      "testMakeOrderedLeafList2" ~: testMakeOrderedLeafList2]
 
+testSingleton1 = False ~=? singleton [Leaf 'd' 3,Leaf 'b' 5,Leaf 'a' 10,Leaf 'e' 11,Leaf ' ' 100]
+testSingleton2 = True ~=? singleton [Leaf 'd' 3]
+
+testSingletons = TestList ["testSingleton1" ~: testSingleton1,
+                           "testSingleton2" ~: testSingleton2]
+
 -- Full tests
 tests = TestList [testWeights,
                   testChars,
                   testMakeCodeTrees,
                   testTimess,
-                  testMakeOrderedLeafLists]
+                  testMakeOrderedLeafLists,
+                  testSingletons]
 
 -- *HuffmanTests> runTestTT tests
--- Cases: 10  Tried: 10  Errors: 0  Failures: 0
--- Counts {cases = 10, tried = 10, errors = 0, failures = 0}
+-- Cases: 12  Tried: 12  Errors: 0  Failures: 0
+-- Counts {cases = 12, tried = 12, errors = 0, failures = 0}

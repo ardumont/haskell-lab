@@ -49,7 +49,12 @@ makeOrderedLeafList = (map (\(c, i) -> Leaf c i)) . (sortBy (\(_, i1) (_, i2) ->
 -- [Leaf 'd' 3,Leaf 'b' 5,Leaf 'a' 10,Leaf 'e' 11,Leaf ' ' 100]
 
 singleton :: [CodeTree] -> Bool
-singleton = undefined
+singleton = ((== 1) . length)
+
+-- *Huffman> singleton [Leaf 'd' 3,Leaf 'b' 5,Leaf 'a' 10,Leaf 'e' 11,Leaf ' ' 100]
+-- False
+-- *Huffman> singleton [Leaf 'd' 3]
+-- True
 
 combine :: [CodeTree] -> [CodeTree]
 combine = undefined
