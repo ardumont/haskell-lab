@@ -60,6 +60,18 @@ testCombine2 = [Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30,Leaf 'c' 40]
 
 testCombines = TestList ["testCombine1" ~: testCombine1,
                          "testCombine2" ~: testCombine2]
+
+testUntil1 = [Fork (Leaf 'c' 20) (Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30) "cab" 50]
+             ~=?
+             Huffman.until singleton combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 20]
+
+testUntil2 = [Fork (Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30) (Fork (Leaf 'c' 20) (Leaf 'd' 21) "cd" 41) "abcd" 71]
+             ~=?
+             Huffman.until singleton combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 20, Leaf 'd' 21]
+
+testUntils = TestList["testUntil1" ~: testUntil1,
+                      "testUntil2" ~: testUntil2]
+
 -- Full tests
 tests = TestList [testWeights,
                   testChars,
@@ -67,8 +79,9 @@ tests = TestList [testWeights,
                   testTimess,
                   testMakeOrderedLeafLists,
                   testSingletons,
-                  testCombines]
+                  testCombines,
+                  testUntils]
 
 -- *HuffmanTests> runTestTT tests
--- Cases: 12  Tried: 12  Errors: 0  Failures: 0
--- Counts {cases = 12, tried = 12, errors = 0, failures = 0}
+-- Cases: 16  Tried: 16  Errors: 0  Failures: 0
+-- Counts {cases = 16, tried = 16, errors = 0, failures = 0}

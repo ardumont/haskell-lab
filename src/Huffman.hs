@@ -72,7 +72,16 @@ combine (c1:c2:cs) = insertByKeepingOrder (makeCodeTree c1 c2) cs
 -- [Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30,Leaf 'c' 40]
 
 until :: ([CodeTree] -> Bool) -> ([CodeTree] -> [CodeTree]) -> [CodeTree] -> [CodeTree]
-until = undefined
+until stopFn combineFn cs =
+  if stopFn ncs then ncs
+  else Huffman.until stopFn combineFn ncs
+  where ncs :: [CodeTree]
+        ncs = combineFn cs
+
+-- *Huffman> Huffman.until singleton combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 20]
+-- [Fork (Leaf 'c' 20) (Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30) "cab" 50]
+-- *Huffman> Huffman.until singleton combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 20, Leaf 'd' 21]
+-- [Fork (Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30) (Fork (Leaf 'c' 20) (Leaf 'd' 21) "cd" 41) "abcd" 71]
 
 createCodeTree :: [Char] -> CodeTree
 createCodeTree = undefined
