@@ -57,10 +57,19 @@ singleton = ((== 1) . length)
 -- True
 
 combine :: [CodeTree] -> [CodeTree]
-combine = undefined
+combine [] = []
+combine [c] = [c]
+combine (c1:c2:cs) = insertByKeepingOrder (makeCodeTree c1 c2) cs
+                     where
+                       insertByKeepingOrder :: CodeTree -> [CodeTree] -> [CodeTree]
+                       insertByKeepingOrder c []       = [c]
+                       insertByKeepingOrder c cs@(cx:css) = if weight(c) <= weight(cx) then c:cs
+                                                            else cx : insertByKeepingOrder c css
 
-insertByKeepingOrder :: CodeTree -> [CodeTree] -> [CodeTree]
-insertByKeepingOrder = undefined
+-- *Huffman> combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 15]
+-- [Leaf 'c' 15,Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30]
+-- *Huffman> combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 40]
+-- [Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30,Leaf 'c' 40]
 
 until :: ([CodeTree] -> Bool) -> ([CodeTree] -> [CodeTree]) -> [CodeTree] -> [CodeTree]
 until = undefined

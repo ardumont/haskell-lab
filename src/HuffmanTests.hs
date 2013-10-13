@@ -51,13 +51,23 @@ testSingleton2 = True ~=? singleton [Leaf 'd' 3]
 testSingletons = TestList ["testSingleton1" ~: testSingleton1,
                            "testSingleton2" ~: testSingleton2]
 
+testCombine1 = [Leaf 'c' 15,Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30]
+               ~=?
+               combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 15]
+testCombine2 = [Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30,Leaf 'c' 40]
+               ~=?
+               combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 40]
+
+testCombines = TestList ["testCombine1" ~: testCombine1,
+                         "testCombine2" ~: testCombine2]
 -- Full tests
 tests = TestList [testWeights,
                   testChars,
                   testMakeCodeTrees,
                   testTimess,
                   testMakeOrderedLeafLists,
-                  testSingletons]
+                  testSingletons,
+                  testCombines]
 
 -- *HuffmanTests> runTestTT tests
 -- Cases: 12  Tried: 12  Errors: 0  Failures: 0
