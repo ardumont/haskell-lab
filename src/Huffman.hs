@@ -2,7 +2,7 @@ module Huffman where
 
 import Data.List
 
-data CodeTree = Leaf Char Int | Fork CodeTree CodeTree [Char] Int deriving Show
+data CodeTree = Leaf Char Int | Fork CodeTree CodeTree [Char] Int deriving (Show, Eq)
 
 type Bit = Int
 
