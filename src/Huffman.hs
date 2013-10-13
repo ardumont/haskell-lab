@@ -27,14 +27,13 @@ singleton :: [CodeTree] -> Bool
 singleton = ((== 1) . length)
 
 combine :: [CodeTree] -> [CodeTree]
-combine [] = []
-combine [c] = [c]
 combine (c1:c2:cs) = insertByKeepingOrder (makeCodeTree c1 c2) cs
                      where
                        insertByKeepingOrder :: CodeTree -> [CodeTree] -> [CodeTree]
                        insertByKeepingOrder c []           = [c]
                        insertByKeepingOrder c css@(cx:cxs) = if weight(c) <= weight(cx) then c:css
                                                              else cx : insertByKeepingOrder c cxs
+combine x = x
 
 until :: ([CodeTree] -> Bool) -> ([CodeTree] -> [CodeTree]) -> [CodeTree] -> [CodeTree]
 until stopFn combineFn cs =
