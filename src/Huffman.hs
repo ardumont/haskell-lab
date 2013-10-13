@@ -62,9 +62,9 @@ combine [c] = [c]
 combine (c1:c2:cs) = insertByKeepingOrder (makeCodeTree c1 c2) cs
                      where
                        insertByKeepingOrder :: CodeTree -> [CodeTree] -> [CodeTree]
-                       insertByKeepingOrder c []       = [c]
+                       insertByKeepingOrder c []           = [c]
                        insertByKeepingOrder c css@(cx:cxs) = if weight(c) <= weight(cx) then c:css
-                                                            else cx : insertByKeepingOrder c cxs
+                                                             else cx : insertByKeepingOrder c cxs
 
 -- *Huffman> combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 15]
 -- [Leaf 'c' 15,Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30]
