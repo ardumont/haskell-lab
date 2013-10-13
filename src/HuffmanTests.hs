@@ -179,6 +179,23 @@ testConvert1 = [(' ',[1,1]),('t',[1,0,1]),('e',[1,0,0]),('o',[0,1]),('b',[0,0,1]
 testConverts :: Test.HUnit.Test
 testConverts = TestList ["testConvert1" ~: testConvert1]
 
+testQuickEncode1 :: Test.HUnit.Test
+testQuickEncode1 = [1,0,1,0,1,1,1,0,0,1,1,0,0,1,1,0,1,0,0,0,1,1,1,0,0,0,0,0,1,1,0,1,1,1,1,0,1,0,1,1,1,0,0,1,1,0,0]
+                   ~=?
+                   quickEncode (createCodeTree "to be or not to be") "to be or not to be"
+
+testQuickEncodes :: Test.HUnit.Test
+testQuickEncodes = TestList ["testQuickEncode1" ~: testQuickEncode1]
+
+testDecodeQuickEncode1 :: Test.HUnit.Test
+testDecodeQuickEncode1 = "to be or not to be"
+                         ~=?
+                         let st = "to be or not to be"
+                             ct = createCodeTree st in decode ct $ quickEncode ct st
+
+testQuickEncodeDecodes :: Test.HUnit.Test
+testQuickEncodeDecodes = TestList ["testQuickEncode1" ~: testQuickEncode1]
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testWeights,
@@ -195,8 +212,10 @@ tests = TestList [testWeights,
                   testEncodeDecodes,
                   testCodeBitss,
                   testMergeCodeTabless,
-                  testConverts]
+                  testConverts,
+                  testQuickEncodes,
+                  testQuickEncodeDecodes]
 
 -- *HuffmanTests> runTestTT tests
--- Cases: 28  Tried: 28  Errors: 0  Failures: 0
--- Counts {cases = 28, tried = 28, errors = 0, failures = 0}
+-- Cases: 30  Tried: 30  Errors: 0  Failures: 0
+-- Counts {cases = 30, tried = 30, errors = 0, failures = 0}

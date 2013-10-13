@@ -131,5 +131,12 @@ convert ct = foldl (\acc c -> mergeCodeTables acc (createCodeTable c)) [] . char
              where encodeFn = encode ct
                    createCodeTable c = [(c, encodeFn([c]))]
 
-quickEncode :: (CodeTree -> [Char]) -> [Char] -> [Bit]
-quickEncode = undefined
+quickEncode :: CodeTree -> [Char] -> [Bit]
+quickEncode ct cs =
+  concatMap toBits cs
+  where codeTable :: CodeTable
+        codeTable = convert ct
+        toBits :: Char -> [Bit]
+        toBits c = case codeBits codeTable c of
+          Just x -> x
+          _      -> []
