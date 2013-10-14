@@ -216,6 +216,10 @@ tests = TestList [testWeights,
                   testQuickEncodes,
                   testQuickEncodeDecodes]
 
+main :: IO ()
+main = do x <- runTestTT tests
+          print x
+
 -- *HuffmanTests> runTestTT tests
 -- Cases: 30  Tried: 30  Errors: 0  Failures: 0
 -- Counts {cases = 30, tried = 30, errors = 0, failures = 0}
