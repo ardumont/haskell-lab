@@ -1,3 +1,4 @@
-language: emacs-lisp
-before_install: make install deps
+language: haskell
+before_install:
+  - make install deps
 script: make test
