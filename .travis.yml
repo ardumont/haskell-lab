@@ -1,0 +1,3 @@
+language: emacs-lisp
+before_install:
+script: make test
