@@ -1,8 +1,7 @@
 module Huffman where
-
 import Data.List
 
-data CodeTree = Leaf Char Int | Fork CodeTree CodeTree [Char] Int deriving (Show, Eq)
+data CodeTree = Leaf !Char !Int | Fork !CodeTree !CodeTree ![Char] !Int deriving (Show, Eq)
 
 type Bit = Int
 
@@ -14,36 +13,24 @@ chars :: CodeTree -> [Char]
 chars (Leaf c _)      = [c]
 chars (Fork _ _ cs _) = cs
 
-makeCodeTree :: CodeTree -> CodeTree -> CodeTree
-makeCodeTree l r = Fork l r (chars(l) ++ chars(r)) (weight(l) + weight(r))
-
 times :: [Char] -> [(Char, Int)]
-times = map (\x -> (head x, ((1+) . length . tail) x)) . group . sort
+times = map (\x -> (head x, length x)) . group . sort
 
-makeOrderedLeafList :: [(Char, Int)] -> [CodeTree]
-makeOrderedLeafList = (map (\(c, i) -> Leaf c i)) . (sortBy (\(_, i1) (_, i2) -> compare i1 i2))
+mkFork :: CodeTree -> CodeTree -> CodeTree
+mkFork l r = Fork l r  (chars l ++ chars r) $ weight l + weight r
+
+mkOrdered :: [(Char, Int)] -> [CodeTree]
+mkOrdered = map (\(c, i) -> Leaf c i) . sortBy (\(_, i1) (_, i2) -> compare i1 i2)
 
 singleton :: [CodeTree] -> Bool
-singleton = ((== 1) . length)
+singleton xs = (null $ tail xs) && (length xs == 1)
 
 combine :: [CodeTree] -> [CodeTree]
-combine (c1:c2:cs) = insertByKeepingOrder (makeCodeTree c1 c2) cs
-                     where
-                       insertByKeepingOrder :: CodeTree -> [CodeTree] -> [CodeTree]
-                       insertByKeepingOrder c []           = [c]
-                       insertByKeepingOrder c css@(cx:cxs) = if weight(c) <= weight(cx) then c:css
-                                                             else cx : insertByKeepingOrder c cxs
+combine (x:y:xs) = insertBy (\a b -> weight a `compare` weight b) (mkFork x y) xs
 combine x = x
 
-until :: ([CodeTree] -> Bool) -> ([CodeTree] -> [CodeTree]) -> [CodeTree] -> [CodeTree]
-until stopFn combineFn cs =
-  if stopFn ncs then ncs
-  else Huffman.until stopFn combineFn ncs
-  where ncs :: [CodeTree]
-        ncs = combineFn cs
-
-createCodeTree :: [Char] -> CodeTree
-createCodeTree = head . (Huffman.until singleton combine) . makeOrderedLeafList . times
+fromList :: [Char] -> CodeTree
+fromList = head . until singleton combine . mkOrdered . times
 
 --------- DECODE
 

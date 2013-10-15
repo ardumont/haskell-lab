@@ -1,7 +1,6 @@
 module HuffmanTests where
 
 import Huffman
-
 import Test.HUnit
 
 testWeight1 :: Test.HUnit.Test
@@ -24,11 +23,11 @@ testChars  = TestList ["testChars1" ~: testChars1, "testChars2" ~: testChars2]
 testMakeCodeTree1 :: Test.HUnit.Test
 testMakeCodeTree1 = Fork (Leaf 'c' 1) (Leaf 'd' 2) "cd" 3
                     ~=?
-                    makeCodeTree (Leaf 'c' 1) (Leaf 'd' 2)
+                    mkFork (Leaf 'c' 1) (Leaf 'd' 2)
 testMakeCodeTree2 :: Test.HUnit.Test
 testMakeCodeTree2 = Fork (Fork (Leaf 'c' 1) (Leaf 'd' 2) "cd" 3) (Leaf 'd' 2) "cdd" 5
                     ~=?
-                    makeCodeTree (Fork (Leaf 'c' 1) (Leaf 'd' 2) "cd" 3) (Leaf 'd' 2)
+                    mkFork  (Fork (Leaf 'c' 1) (Leaf 'd' 2) "cd" 3) (Leaf 'd' 2)
 
 testMakeCodeTrees :: Test.HUnit.Test
 testMakeCodeTrees = TestList ["testMakeCodeTree1" ~: testMakeCodeTree1, "testMakeCodeTree2" ~: testMakeCodeTree2]
@@ -43,13 +42,13 @@ testTimess = TestList ["testTimes1" ~: testTimes1, "testTimes2" ~: testTimes2]
 
 testMakeOrderedLeafList1 :: Test.HUnit.Test
 testMakeOrderedLeafList1 = [Leaf 'd' 3,Leaf 'b' 5,Leaf 'a' 10,Leaf 'e' 11]
-                           ~=?
-                           makeOrderedLeafList [('a', 10), ('b', 5), ('d', 3), ('e', 11)]
+                            ~=?
+                           mkOrdered [('a', 10), ('b', 5), ('d', 3), ('e', 11)]
 
 testMakeOrderedLeafList2 :: Test.HUnit.Test
 testMakeOrderedLeafList2 = [Leaf 'd' 3,Leaf 'b' 5,Leaf 'a' 10,Leaf 'e' 11,Leaf ' ' 100]
                            ~=?
-                           makeOrderedLeafList [(' ', 100), ('a', 10), ('b', 5), ('d', 3), ('e', 11)]
+                          mkOrdered [(' ', 100), ('a', 10), ('b', 5), ('d', 3), ('e', 11)]
 
 testMakeOrderedLeafLists :: Test.HUnit.Test
 testMakeOrderedLeafLists = TestList ["testMakeOrderedLeafList1" ~: testMakeOrderedLeafList1,
@@ -77,30 +76,30 @@ testCombines :: Test.HUnit.Test
 testCombines = TestList ["testCombine1" ~: testCombine1,
                          "testCombine2" ~: testCombine2]
 
-testUntil1 :: Test.HUnit.Test
-testUntil1 = [Fork (Leaf 'c' 20) (Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30) "cab" 50]
-             ~=?
-             Huffman.until singleton combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 20]
+--testUntil1 :: Test.HUnit.Test
+--testUntil1 = [Fork (Leaf 'c' 20) (Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30) "cab" 50]
+--           ~=?
+--             Huffman.until singleton combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 20]
 
-testUntil2 :: Test.HUnit.Test
-testUntil2 = [Fork (Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30) (Fork (Leaf 'c' 20) (Leaf 'd' 21) "cd" 41) "abcd" 71]
-             ~=?
-             Huffman.until singleton combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 20, Leaf 'd' 21]
+--testUntil2 :: Test.HUnit.Test
+--testUntil2 = [Fork (Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30) (Fork (Leaf 'c' 20) (Leaf 'd' 21) "cd" 41) "abcd" 71]
+  --           ~=?
+    --         Huffman.until singleton combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 20, Leaf 'd' 21]
 
-testUntil3 :: Test.HUnit.Test
-testUntil3 = [Fork (Fork (Fork (Fork (Leaf 'n' 1) (Leaf 'r' 1) "nr" 2) (Leaf 'b' 2) "nrb" 4) (Leaf 'o' 4) "nrbo" 8) (Fork (Fork (Leaf 'e' 2) (Leaf 't' 3) "et" 5) (Leaf ' ' 5) "et " 10) "nrboet " 18]
-             ~=?
-             Huffman.until singleton combine [Leaf 'n' 1,Leaf 'r' 1,Leaf 'b' 2,Leaf 'e' 2,Leaf 't' 3,Leaf 'o' 4,Leaf ' ' 5]
+--testUntil3 :: Test.HUnit.Test
+--testUntil3 = [Fork (Fork (Fork (Fork (Leaf 'n' 1) (Leaf 'r' 1) "nr" 2) (Leaf 'b' 2) "nrb" 4) (Leaf 'o' 4) "nrbo" 8) (Fork (Fork (Leaf 'e' 2) (Leaf 't' 3) "et" 5) --(Leaf ' ' 5) "et " 10) "nrboet " 18]
+  --           ~=?
+    --         Huffman.until singleton combine [Leaf 'n' 1,Leaf 'r' 1,Leaf 'b' 2,Leaf 'e' 2,Leaf 't' 3,Leaf 'o' 4,Leaf ' ' 5]
 
-testUntils :: Test.HUnit.Test
-testUntils = TestList ["testUntil1" ~: testUntil1,
-                       "testUntil2" ~: testUntil2,
-                       "testUntil3" ~: testUntil3]
+--testUntils :: Test.HUnit.Test
+--testUntils = TestList ["testUntil1" ~: testUntil1,
+ --                      "testUntil2" ~: testUntil2,
+ --                      "testUntil3" ~: testUntil3]
 
 testCreateCodeTree1 :: Test.HUnit.Test
 testCreateCodeTree1 = Fork (Fork (Fork (Fork (Leaf 'n' 1) (Leaf 'r' 1) "nr" 2) (Leaf 'b' 2) "nrb" 4) (Leaf 'o' 4) "nrbo" 8) (Fork (Fork (Leaf 'e' 2) (Leaf 't' 3) "et" 5) (Leaf ' ' 5) "et " 10) "nrboet " 18
                       ~=?
-                      createCodeTree "to be or not to be"
+                      fromList "to be or not to be"
 
 testCreateCodeTrees :: Test.HUnit.Test
 testCreateCodeTrees = TestList ["testCreateCodeTree1" ~: testCreateCodeTree1]
@@ -109,7 +108,7 @@ testCreateCodeTrees = TestList ["testCreateCodeTree1" ~: testCreateCodeTree1]
 testDecode1 :: Test.HUnit.Test
 testDecode1 = "to be or not to be"
               ~=?
-              decode (createCodeTree "to be or not to be") [1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0]
+              decode (fromList "to be or not to be") [1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0]
 
 testDecodes :: Test.HUnit.Test
 testDecodes = TestList ["testDecode1" ~: testDecode1]
@@ -117,7 +116,7 @@ testDecodes = TestList ["testDecode1" ~: testDecode1]
 testEncode1 :: Test.HUnit.Test
 testEncode1 = [1,0,1,0,1,1,1,0,0,1,1,0,0,1,1,0,1,0,0,0,1,1,1,0,0,0,0,0,1,1,0,1,1,1,1,0,1,0,1,1,1,0,0,1,1,0,0]
               ~=?
-              encode (createCodeTree "to be or not to be") "to be or not to be"
+              encode (fromList "to be or not to be") "to be or not to be"
 
 testEncodes :: Test.HUnit.Test
 testEncodes = TestList ["testEncode1" ~: testEncode1]
@@ -126,7 +125,7 @@ testDecodeEncode1 :: Test.HUnit.Test
 testDecodeEncode1 = "to be or not to be"
                     ~=?
                     let st = "to be or not to be"
-                        ct = createCodeTree st in decode ct $ encode ct st
+                        ct = fromList st in decode ct $ encode ct st
 
 testEncodeDecodes :: Test.HUnit.Test
 testEncodeDecodes = TestList ["testEncode1" ~: testEncode1]
@@ -174,7 +173,7 @@ testMergeCodeTabless = TestList ["testMergeCodeTables1" ~: testMergeCodeTables1,
 testConvert1 :: Test.HUnit.Test
 testConvert1 = [(' ',[1,1]),('t',[1,0,1]),('e',[1,0,0]),('o',[0,1]),('b',[0,0,1]),('r',[0,0,0,1]),('n',[0,0,0,0])]
                ~=?
-               (convert . createCodeTree) "to be or not to be"
+               (convert . fromList) "to be or not to be"
 
 testConverts :: Test.HUnit.Test
 testConverts = TestList ["testConvert1" ~: testConvert1]
@@ -182,7 +181,7 @@ testConverts = TestList ["testConvert1" ~: testConvert1]
 testQuickEncode1 :: Test.HUnit.Test
 testQuickEncode1 = [1,0,1,0,1,1,1,0,0,1,1,0,0,1,1,0,1,0,0,0,1,1,1,0,0,0,0,0,1,1,0,1,1,1,1,0,1,0,1,1,1,0,0,1,1,0,0]
                    ~=?
-                   quickEncode (createCodeTree "to be or not to be") "to be or not to be"
+                   quickEncode (fromList "to be or not to be") "to be or not to be"
 
 testQuickEncodes :: Test.HUnit.Test
 testQuickEncodes = TestList ["testQuickEncode1" ~: testQuickEncode1]
@@ -191,7 +190,7 @@ testDecodeQuickEncode1 :: Test.HUnit.Test
 testDecodeQuickEncode1 = "to be or not to be"
                          ~=?
                          let st = "to be or not to be"
-                             ct = createCodeTree st in decode ct $ quickEncode ct st
+                             ct = fromList st in decode ct $ quickEncode ct st
 
 testQuickEncodeDecodes :: Test.HUnit.Test
 testQuickEncodeDecodes = TestList ["testQuickEncode1" ~: testQuickEncode1]
@@ -205,7 +204,7 @@ tests = TestList [testWeights,
                   testMakeOrderedLeafLists,
                   testSingletons,
                   testCombines,
-                  testUntils,
+                  --testUntils,
                   testCreateCodeTrees,
                   testDecodes,
                   testEncodes,
@@ -217,9 +216,4 @@ tests = TestList [testWeights,
                   testQuickEncodeDecodes]
 
 main :: IO ()
-main = do x <- runTestTT tests
-          print x
-
--- *HuffmanTests> runTestTT tests
--- Cases: 30  Tried: 30  Errors: 0  Failures: 0
--- Counts {cases = 30, tried = 30, errors = 0, failures = 0}
+main = runTestTT tests >>= print
