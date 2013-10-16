@@ -23,7 +23,8 @@ mkOrdered :: [(Char, Int)] -> [CodeTree]
 mkOrdered = map (\(c, i) -> Leaf c i) . sortBy (\(_, i1) (_, i2) -> compare i1 i2)
 
 singleton :: [CodeTree] -> Bool
-singleton xs = (null $ tail xs) && (length xs == 1)
+singleton [x] = True
+singleton _   = False
 
 combine :: [CodeTree] -> [CodeTree]
 combine (x:y:xs) = insertBy (\a b -> weight a `compare` weight b) (mkFork x y) xs
