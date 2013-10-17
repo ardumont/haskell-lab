@@ -20,7 +20,7 @@ mkFork :: CodeTree -> CodeTree -> CodeTree
 mkFork l r = Fork l r  (chars l ++ chars r) $ weight l + weight r
 
 mkOrdered :: [(Char, Int)] -> [CodeTree]
-mkOrdered = map (\(c, i) -> Leaf c i) . sortBy (\(_, i1) (_, i2) -> compare i1 i2)
+mkOrdered = map (uncurry Leaf) . sortBy (\a b -> snd a `compare`  snd b)
 
 singleton :: [CodeTree] -> Bool
 singleton [x] = True
