@@ -23,7 +23,7 @@ mkOrdered :: [(Char, Int)] -> [CodeTree]
 mkOrdered = map (uncurry Leaf) . sortBy (\a b -> snd a `compare`  snd b)
 
 singleton :: [CodeTree] -> Bool
-singleton [x] = True
+singleton [_] = True
 singleton _   = False
 
 combine :: [CodeTree] -> [CodeTree]
