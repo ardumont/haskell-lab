@@ -60,7 +60,7 @@ encode ct = concatMap (encode' ct [])
 type CodeTable = [(Char, [Bit])]
 
 codeBits ::  Char -> CodeTable -> Maybe [Bit]
-codeBits c = lookup c
+codeBits  = lookup
 
 mergeCodeTables :: CodeTable -> CodeTable -> CodeTable
 mergeCodeTables = union
