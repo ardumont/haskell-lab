@@ -38,11 +38,11 @@ fromList = head . until singleton combine . mkOrdered . times
 
 decode :: CodeTree -> [Bit] -> [Char]
 decode cts = decode' cts []
-  where decode' (Leaf c _) acc bs = decode' cts (c:acc) bs
+  where decode' (Leaf c _) acc bs     = decode' cts (c:acc) bs
         decode' (Fork l r _ _) acc bs = case bs of
-          0 : bsss -> decode' l acc bsss
-          1 : bsss -> decode' r acc bsss
-          _        -> reverse acc
+                                          0 : bss -> decode' l acc bss
+                                          1 : bss -> decode' r acc bss
+                                          _       -> reverse acc
 
 --------- encode
 
