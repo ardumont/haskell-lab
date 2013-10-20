@@ -1,5 +1,6 @@
 module Huffman where
 import Data.List
+import Data.Maybe
 
 data CodeTree = Leaf !Char !Int | Fork !CodeTree !CodeTree ![Char] !Int deriving (Show, Eq)
 
@@ -36,51 +37,37 @@ fromList = head . until singleton combine . mkOrdered . times
 --------- DECODE
 
 decode :: CodeTree -> [Bit] -> [Char]
-decode cts bs =
-  internalDecode cts bs
-  where internalDecode :: CodeTree -> [Bit] -> [Char]
-        internalDecode (Leaf c _)     bss = c : internalDecode cts bss
-        internalDecode (Fork l r _ _) bss = case bss of
-          0 : bsss -> internalDecode l bsss
-          1 : bsss -> internalDecode r bsss
-          _        -> []
+decode cts = decode' cts []
+  where decode' (Leaf c _) acc bs     = decode' cts (c:acc) bs
+        decode' (Fork l r _ _) acc bs = case bs of
+                                          0 : bss -> decode' l acc bss
+                                          1 : bss -> decode' r acc bss
+                                          _       -> reverse acc
 
---------- ENCODE
+--------- encode
 
 encode :: CodeTree -> [Char] -> [Bit]
-encode ct cs = concatMap (\c -> internalEncode ct c) cs
-                  where internalEncode :: CodeTree -> Char -> [Bit]
-                        internalEncode (Fork l r _ _) c = if elem c (chars l)
-                                                          then 0 : internalEncode l c
-                                                          else 1 : internalEncode r c
-                        internalEncode _ _              = []
+encode ct = concatMap (encode' ct [])
+  where encode' (Fork l r _ _) acc c | elem c (chars l) = encode' l (0:acc) c
+                                     | elem c (chars r) = encode' r (1:acc) c
+                                     | otherwise =  acc
+        encode' _ acc _              = reverse acc
+
+
 
 --------- QUICK ENCODE (for performance alternatives)
 
 type CodeTable = [(Char, [Bit])]
 
-codeBits :: CodeTable -> Char -> Maybe [Bit]
-codeBits ct c = lookup c ct
+codeBits ::  Char -> CodeTable -> Maybe [Bit]
+codeBits  = lookup
 
 mergeCodeTables :: CodeTable -> CodeTable -> CodeTable
-mergeCodeTables =
-  foldl maybeAdd
-  where maybeAdd acc ne =
-          case codeBits acc (fst ne) of
-            Just _ -> acc
-            _      -> ne : acc
+mergeCodeTables = union
 
 convert :: CodeTree -> CodeTable
-convert ct = foldl (\acc c -> mergeCodeTables acc (createCodeTable c)) [] . chars $ ct
-             where encodeFn = encode ct
-                   createCodeTable c = [(c, encodeFn([c]))]
+convert ct = foldl1' mergeCodeTables . map createCodeTable . chars $ ct
+             where  createCodeTable c = [(c, encode ct [c])]
 
 quickEncode :: CodeTree -> [Char] -> [Bit]
-quickEncode ct cs =
-  concatMap toBits cs
-  where codeTable :: CodeTable
-        codeTable = convert ct
-        toBits :: Char -> [Bit]
-        toBits c = case codeBits codeTable c of
-          Just x -> x
-          _      -> []
+quickEncode ct = concat . concatMap (maybeToList . (flip codeBits $ convert ct))

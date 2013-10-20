@@ -2,6 +2,7 @@ module HuffmanTests where
 
 import Huffman
 import Test.HUnit
+import Data.List
 
 testWeight1 :: Test.HUnit.Test
 testWeight1 = 2 ~=? weight (Leaf 'c' 2)
@@ -113,22 +114,22 @@ testEncodeDecodes = TestList ["testEncode1" ~: testEncode1]
 testCodeBits1 :: Test.HUnit.Test
 testCodeBits1 = Just [0,0,1]
                 ~=?
-                codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'a'
+                codeBits 'a' [('a', [0,0,1]), ('b', [1,0,0])]
 
 testCodeBits2 :: Test.HUnit.Test
 testCodeBits2 = Just [1,0,0]
                 ~=?
-                codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'b'
+                codeBits 'b' [('a', [0,0,1]), ('b', [1,0,0])]
 
 testCodeBits3 :: Test.HUnit.Test
 testCodeBits3 = Nothing
                 ~=?
-                codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'c'
+                codeBits 'c' [('a', [0,0,1]), ('b', [1,0,0])]
 
 testCodeBits4 :: Test.HUnit.Test
 testCodeBits4 = Nothing
                 ~=?
-                codeBits [] 'c'
+                codeBits 'c' []
 
 testCodeBitss :: Test.HUnit.Test
 testCodeBitss = TestList ["testCodeBits1" ~: testCodeBits1,
@@ -142,7 +143,7 @@ testMergeCodeTables1 = [('a',[0,0,1]),('b',[1,0,0])]
                        mergeCodeTables [('a', [0,0,1]), ('b', [1,0,0])] [('a', [0,0,1]), ('b', [1,0,0])]
 
 testMergeCodeTables2 :: Test.HUnit.Test
-testMergeCodeTables2 = [('e',[]),('a',[0,0,1]),('b',[1,0,0])]
+testMergeCodeTables2 = [('a',[0,0,1]),('b',[1,0,0]),('e',[])]
                        ~=?
                        mergeCodeTables [('a', [0,0,1]), ('b', [1,0,0])] [('a', [0,0,1]), ('b', [1,0,0]), ('e', [])]
 
@@ -151,7 +152,7 @@ testMergeCodeTabless = TestList ["testMergeCodeTables1" ~: testMergeCodeTables1,
                                  "testMergeCodeTables2" ~: testMergeCodeTables2]
 
 testConvert1 :: Test.HUnit.Test
-testConvert1 = [(' ',[1,1]),('t',[1,0,1]),('e',[1,0,0]),('o',[0,1]),('b',[0,0,1]),('r',[0,0,0,1]),('n',[0,0,0,0])]
+testConvert1 = reverse [(' ',[1,1]),('t',[1,0,1]),('e',[1,0,0]),('o',[0,1]),('b',[0,0,1]),('r',[0,0,0,1]),('n',[0,0,0,0])]
                ~=?
                (convert . fromList) "to be or not to be"
 
