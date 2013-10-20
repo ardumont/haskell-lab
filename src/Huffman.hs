@@ -70,4 +70,4 @@ convert ct = foldl1' mergeCodeTables . map createCodeTable . chars $ ct
              where  createCodeTable c = [(c, encode ct [c])]
 
 quickEncode :: CodeTree -> [Char] -> [Bit]
-quickEncode ct = concat . concat . map (maybeToList . (flip codeBits $ convert ct))
+quickEncode ct = concat . concatMap (maybeToList . (flip codeBits $ convert ct))
