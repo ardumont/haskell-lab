@@ -2,6 +2,7 @@ module HuffmanTests where
 
 import Huffman
 import Test.HUnit
+import Data.List
 
 testWeight1 :: Test.HUnit.Test
 testWeight1 = 2 ~=? weight (Leaf 'c' 2)
@@ -76,26 +77,6 @@ testCombines :: Test.HUnit.Test
 testCombines = TestList ["testCombine1" ~: testCombine1,
                          "testCombine2" ~: testCombine2]
 
---testUntil1 :: Test.HUnit.Test
---testUntil1 = [Fork (Leaf 'c' 20) (Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30) "cab" 50]
---           ~=?
---             Huffman.until singleton combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 20]
-
---testUntil2 :: Test.HUnit.Test
---testUntil2 = [Fork (Fork (Leaf 'a' 10) (Leaf 'b' 20) "ab" 30) (Fork (Leaf 'c' 20) (Leaf 'd' 21) "cd" 41) "abcd" 71]
-  --           ~=?
-    --         Huffman.until singleton combine [Leaf 'a' 10,Leaf 'b' 20, Leaf 'c' 20, Leaf 'd' 21]
-
---testUntil3 :: Test.HUnit.Test
---testUntil3 = [Fork (Fork (Fork (Fork (Leaf 'n' 1) (Leaf 'r' 1) "nr" 2) (Leaf 'b' 2) "nrb" 4) (Leaf 'o' 4) "nrbo" 8) (Fork (Fork (Leaf 'e' 2) (Leaf 't' 3) "et" 5) --(Leaf ' ' 5) "et " 10) "nrboet " 18]
-  --           ~=?
-    --         Huffman.until singleton combine [Leaf 'n' 1,Leaf 'r' 1,Leaf 'b' 2,Leaf 'e' 2,Leaf 't' 3,Leaf 'o' 4,Leaf ' ' 5]
-
---testUntils :: Test.HUnit.Test
---testUntils = TestList ["testUntil1" ~: testUntil1,
- --                      "testUntil2" ~: testUntil2,
- --                      "testUntil3" ~: testUntil3]
-
 testCreateCodeTree1 :: Test.HUnit.Test
 testCreateCodeTree1 = Fork (Fork (Fork (Fork (Leaf 'n' 1) (Leaf 'r' 1) "nr" 2) (Leaf 'b' 2) "nrb" 4) (Leaf 'o' 4) "nrbo" 8) (Fork (Fork (Leaf 'e' 2) (Leaf 't' 3) "et" 5) (Leaf ' ' 5) "et " 10) "nrboet " 18
                       ~=?
@@ -133,22 +114,22 @@ testEncodeDecodes = TestList ["testEncode1" ~: testEncode1]
 testCodeBits1 :: Test.HUnit.Test
 testCodeBits1 = Just [0,0,1]
                 ~=?
-                codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'a'
+                codeBits 'a' [('a', [0,0,1]), ('b', [1,0,0])]
 
 testCodeBits2 :: Test.HUnit.Test
 testCodeBits2 = Just [1,0,0]
                 ~=?
-                codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'b'
+                codeBits 'b' [('a', [0,0,1]), ('b', [1,0,0])]
 
 testCodeBits3 :: Test.HUnit.Test
 testCodeBits3 = Nothing
                 ~=?
-                codeBits [('a', [0,0,1]), ('b', [1,0,0])] 'c'
+                codeBits 'c' [('a', [0,0,1]), ('b', [1,0,0])]
 
 testCodeBits4 :: Test.HUnit.Test
 testCodeBits4 = Nothing
                 ~=?
-                codeBits [] 'c'
+                codeBits 'c' []
 
 testCodeBitss :: Test.HUnit.Test
 testCodeBitss = TestList ["testCodeBits1" ~: testCodeBits1,
@@ -162,7 +143,7 @@ testMergeCodeTables1 = [('a',[0,0,1]),('b',[1,0,0])]
                        mergeCodeTables [('a', [0,0,1]), ('b', [1,0,0])] [('a', [0,0,1]), ('b', [1,0,0])]
 
 testMergeCodeTables2 :: Test.HUnit.Test
-testMergeCodeTables2 = [('e',[]),('a',[0,0,1]),('b',[1,0,0])]
+testMergeCodeTables2 = [('a',[0,0,1]),('b',[1,0,0]),('e',[])]
                        ~=?
                        mergeCodeTables [('a', [0,0,1]), ('b', [1,0,0])] [('a', [0,0,1]), ('b', [1,0,0]), ('e', [])]
 
@@ -171,7 +152,7 @@ testMergeCodeTabless = TestList ["testMergeCodeTables1" ~: testMergeCodeTables1,
                                  "testMergeCodeTables2" ~: testMergeCodeTables2]
 
 testConvert1 :: Test.HUnit.Test
-testConvert1 = [(' ',[1,1]),('t',[1,0,1]),('e',[1,0,0]),('o',[0,1]),('b',[0,0,1]),('r',[0,0,0,1]),('n',[0,0,0,0])]
+testConvert1 = reverse [(' ',[1,1]),('t',[1,0,1]),('e',[1,0,0]),('o',[0,1]),('b',[0,0,1]),('r',[0,0,0,1]),('n',[0,0,0,0])]
                ~=?
                (convert . fromList) "to be or not to be"
 
