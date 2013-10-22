@@ -19,7 +19,7 @@ sentenceOccurrences = wordOccurrences . (join "")
 
 combinations :: Occurrences -> [Occurrences]
 combinations =
-  foldl comb [[]]
+  foldl' comb [[]]
   where comb :: [Occurrences] -> (Char, Int) -> [Occurrences]
         comb ss ci = ss ++ [c:sub | sub <- ss, c <- subOccurrences ci]
         subOccurrences :: (Char, Int) -> Occurrences
