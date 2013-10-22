@@ -46,9 +46,15 @@ testSubstract2 = []
                  ~=?
                  substract [] [('x', 1), ('a', 2)]
 
+testSubstract3 :: Test.HUnit.Test
+testSubstract3 = [('b',1)]
+                 ~=?
+                 substract [('x', 3), ('a', 2), ('b', 1)] [('x', 3), ('a', 2)]
+
 testSubstracts :: Test.HUnit.Test
 testSubstracts = TestList [ "testSubstract1" ~: testSubstract1,
-                            "testSubstract2" ~: testSubstract2]
+                            "testSubstract2" ~: testSubstract2,
+                            "testSubstract3" ~: testSubstract3]
 
 -- Full tests
 tests :: Test.HUnit.Test
