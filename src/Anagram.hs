@@ -16,3 +16,10 @@ wordOccurrences = map (\x -> (head x, length x)) . group . sort
 -- [(' ',6),('a',3),('d',1),('e',2),('h',3),('i',2),('l',1),('n',1),('o',1),('r',1),('s',3),('t',4),('y',1)]
 -- *Anagram> wordOccurrences "pump it up"
 -- [(' ',2),('i',1),('m',1),('p',3),('t',1),('u',2)]
+
+join :: String -> [String] -> [Char]
+join _ []      = []
+join d (hs:ss) = foldl (\s ns -> s ++ d ++ ns) hs ss
+
+-- *Anagram> join ", " ["how do you do", "this is really exciting times", "functional programming is fun"]
+-- "how do you do, this is really exciting times, functional programming is fun"
