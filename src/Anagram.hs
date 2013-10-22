@@ -18,27 +18,13 @@ join d = foldl1' (\s ns -> s ++ d ++ ns)
 sentenceOccurrences :: Sentence -> Occurrences
 sentenceOccurrences = wordOccurrences . (join "")
 
-subOccurrences :: Occurrences -> Occurrences
-subOccurrences = concatMap (\(c, n) -> [(c, i) | i <- [1..n]])
-
--- *Anagram> subOccurrences [(' ', 5)]
--- [(' ',1),(' ',2),(' ',3),(' ',4),(' ',5)]
--- *Anagram> subOccurrences [(' ', 5),('a', 2)]
--- [(' ',1),(' ',2),(' ',3),(' ',4),(' ',5),('a',1),('a',2)]
-
 combinations :: Occurrences -> [Occurrences]
 combinations =
   foldl comb [[]]
   where comb :: [Occurrences] -> (Char, Int) -> [Occurrences]
-        comb ss o = ss ++ map (addOcc o) ss
-        addOcc :: (Char, Int) -> Occurrences -> Occurrences
-        addOcc = (:)
-
--- foldl :: ([Occurrences] -> (Char, Int) -> [Occurrences]) -> [Occurrences] -> Occurrences -> [Occurrences]
-
--- combinations :: Occurrences -> [Occurrences]
-
--- foldl :: ([[(Char, Int)]] -> (Char, Int) -> [[(Char, Int)]]) -> [[(Char, Int)]] -> [(Char, Int)] -> [[(Char, Int)]]
+        comb ss ci = ss ++ [c:sub | sub <- ss, c <- subOccurrences ci]
+        subOccurrences :: (Char, Int) -> Occurrences
+        subOccurrences (c, n) = [(c, i) | i <- [1..n]]
 
 -- TESTS
 
@@ -70,11 +56,26 @@ testSentenceOccurrences1 = [(' ',8),('a',3),('d',1),('e',2),('h',3),('i',3),('l'
 testSentenceOccurrencess :: Test.HUnit.Test
 testSentenceOccurrencess = TestList [ "testSentenceOccurrences1" ~: testSentenceOccurrences1]
 
+testCombinations1 :: Test.HUnit.Test
+testCombinations1 = [[],[('a',1)],[('a',2)],[('b',1)],[('b',1),('a',1)],[('b',1),('a',2)]]
+                    ~=?
+                    combinations [('a', 2), ('b', 1)]
+
+testCombinations2 :: Test.HUnit.Test
+testCombinations2 = [[],[('a',1)],[('a',2)],[('b',1)],[('b',2)],[('b',1),('a',1)],[('b',2),('a',1)],[('b',1),('a',2)],[('b',2),('a',2)]]
+                    ~=?
+                    combinations [('a', 2), ('b', 2)]
+
+testCombinationss :: Test.HUnit.Test
+testCombinationss = TestList ["testCombinations1" ~: testCombinations1,
+                              "testCombinations2" ~: testCombinations2]
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testWordOccurrencess,
                   testJoins,
-                  testSentenceOccurrencess]
+                  testSentenceOccurrencess,
+                  testCombinationss]
 
 main :: IO ()
 main = runTestTT tests >>= print
