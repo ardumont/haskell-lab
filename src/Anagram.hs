@@ -13,7 +13,6 @@ wordOccurrences :: Word -> Occurrences
 wordOccurrences = map (\x -> (head x, length x)) . group . sort
 
 join :: String -> [String] -> [Char]
-join _ [] = []
 join d ss = foldl1' (\s ns -> s ++ d ++ ns) ss
 
 sentenceOccurrences :: Sentence -> Occurrences
