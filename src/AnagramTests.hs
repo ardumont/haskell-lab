@@ -14,14 +14,6 @@ testWordOccurrencess :: Test.HUnit.Test
 testWordOccurrencess = TestList ["testWordOccurrences1" ~: testWordOccurrences1,
                                  "testWordOccurrences2" ~: testWordOccurrences2]
 
-testJoin1 :: Test.HUnit.Test
-testJoin1 = "how do you do, this is really exciting times, functional programming is fun"
-            ~=?
-            join ", " ["how do you do", "this is really exciting times", "functional programming is fun"]
-
-testJoins :: Test.HUnit.Test
-testJoins = TestList ["testJoin1" ~: testJoin1]
-
 testSentenceOccurrences1 :: Test.HUnit.Test
 testSentenceOccurrences1 = [(' ',8),('a',3),('d',1),('e',2),('h',3),('i',3),('l',1),('m',1),('n',1),('o',1),('p',3),('r',1),('s',3),('t',5),('u',2),('y',1)]
                            ~=?
@@ -47,7 +39,6 @@ testCombinationss = TestList ["testCombinations1" ~: testCombinations1,
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testWordOccurrencess,
-                  testJoins,
                   testSentenceOccurrencess,
                   testCombinationss]
 

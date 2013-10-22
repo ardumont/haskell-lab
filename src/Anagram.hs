@@ -11,11 +11,8 @@ type Occurrences = [(Char, Int)]
 wordOccurrences :: Word -> Occurrences
 wordOccurrences = map (\x -> (head x, length x)) . group . sort
 
-join :: String -> [String] -> [Char]
-join d = foldl1' (\s ns -> s ++ d ++ ns)
-
 sentenceOccurrences :: Sentence -> Occurrences
-sentenceOccurrences = wordOccurrences . (join "")
+sentenceOccurrences = wordOccurrences . (intercalate "")
 
 combinations :: Occurrences -> [Occurrences]
 combinations =
