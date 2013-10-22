@@ -22,7 +22,7 @@ subOccurrences :: Occurrences -> Occurrences
 subOccurrences = concatMap (\(c, n) -> [(c, i) | i <- [1..n]])
 
 -- *Anagram> subOccurrences [(' ', 5)]
--- [(' ',1),(' ',2),(' ',3),(' ',4),(' ',5)]foldl :: (a -> b -> a) -> a -> [b] -> a
+-- [(' ',1),(' ',2),(' ',3),(' ',4),(' ',5)]
 -- *Anagram> subOccurrences [(' ', 5),('a', 2)]
 -- [(' ',1),(' ',2),(' ',3),(' ',4),(' ',5),('a',1),('a',2)]
 
@@ -30,7 +30,7 @@ combinations :: Occurrences -> [Occurrences]
 combinations =
   foldl comb [[]]
   where comb :: [Occurrences] -> (Char, Int) -> [Occurrences]
-        comb ss o = map (addOcc o) ss
+        comb ss o = ss ++ map (addOcc o) ss
         addOcc :: (Char, Int) -> Occurrences -> Occurrences
         addOcc = (:)
 
