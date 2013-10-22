@@ -18,6 +18,28 @@ join d = foldl1' (\s ns -> s ++ d ++ ns)
 sentenceOccurrences :: Sentence -> Occurrences
 sentenceOccurrences = wordOccurrences . (join "")
 
+subOccurrences :: Occurrences -> Occurrences
+subOccurrences = concatMap (\(c, n) -> [(c, i) | i <- [1..n]])
+
+-- *Anagram> subOccurrences [(' ', 5)]
+-- [(' ',1),(' ',2),(' ',3),(' ',4),(' ',5)]foldl :: (a -> b -> a) -> a -> [b] -> a
+-- *Anagram> subOccurrences [(' ', 5),('a', 2)]
+-- [(' ',1),(' ',2),(' ',3),(' ',4),(' ',5),('a',1),('a',2)]
+
+combinations :: Occurrences -> [Occurrences]
+combinations =
+  foldl comb [[]]
+  where comb :: [Occurrences] -> (Char, Int) -> [Occurrences]
+        comb ss o = map (addOcc o) ss
+        addOcc :: (Char, Int) -> Occurrences -> Occurrences
+        addOcc = (:)
+
+-- foldl :: ([Occurrences] -> (Char, Int) -> [Occurrences]) -> [Occurrences] -> Occurrences -> [Occurrences]
+
+-- combinations :: Occurrences -> [Occurrences]
+
+-- foldl :: ([[(Char, Int)]] -> (Char, Int) -> [[(Char, Int)]]) -> [[(Char, Int)]] -> [(Char, Int)] -> [[(Char, Int)]]
+
 -- TESTS
 
 testWordOccurrences1 :: Test.HUnit.Test
