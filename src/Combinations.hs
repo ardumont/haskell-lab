@@ -4,7 +4,7 @@ import Test.HUnit
 
 combinations :: [a] -> [[a]]
 combinations = foldl comb [[]]
-        where comb acc e = acc ++ map ((:) e) acc
+               where comb subs sub = subs ++ map ((:) sub) subs
 
 testCombinations1 :: Test.HUnit.Test
 testCombinations1 = [[],[1],[2],[2,1],[3],[3,1],[3,2],[3,2,1]]
