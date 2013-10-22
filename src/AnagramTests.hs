@@ -36,11 +36,26 @@ testCombinationss :: Test.HUnit.Test
 testCombinationss = TestList ["testCombinations1" ~: testCombinations1,
                               "testCombinations2" ~: testCombinations2]
 
+testSubstract1 :: Test.HUnit.Test
+testSubstract1 = [('x',2),('b',1)]
+                 ~=?
+                 substract [('x', 3), ('a', 2), ('b', 1)] [('x', 1), ('a', 2)]
+
+testSubstract2 :: Test.HUnit.Test
+testSubstract2 = []
+                 ~=?
+                 substract [] [('x', 1), ('a', 2)]
+
+testSubstracts :: Test.HUnit.Test
+testSubstracts = TestList [ "testSubstract1" ~: testSubstract1,
+                            "testSubstract2" ~: testSubstract2]
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testWordOccurrencess,
                   testSentenceOccurrencess,
-                  testCombinationss]
+                  testCombinationss,
+                  testSubstracts]
 
 main :: IO ()
 main = runTestTT tests >>= print
