@@ -29,3 +29,7 @@ substract occ = foldl' update occ
                       update (x@(cc, nn) : xs) e@(c, n) = case cc == c of
                         True -> let ni = nn - n in if ni <= 0 then xs else (c, ni):xs
                         _    -> x : update xs e
+
+-- Returns a list of all anagram sentences of the given sentence.
+sentenceAnagrams :: Sentence -> [Sentence]
+sentenceAnagrams = undefined
