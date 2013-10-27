@@ -1,6 +1,7 @@
 module Anagram where
 
 import Data.List
+import System.IO
 
 type Word = String
 
@@ -33,3 +34,9 @@ substract occ = foldl' update occ
 -- Returns a list of all anagram sentences of the given sentence.
 sentenceAnagrams :: Sentence -> [Sentence]
 sentenceAnagrams = undefined
+
+extractLines :: FilePath -> IO [String]
+extractLines filepath =
+  do fileHandle <- openFile filepath ReadMode
+     contents <- hGetContents fileHandle
+     return $ lines contents
