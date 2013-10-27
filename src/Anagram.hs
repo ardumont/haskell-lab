@@ -18,7 +18,7 @@ combinations :: Occurrences -> [Occurrences]
 combinations =
   foldl' comb [[]]
   where comb :: [Occurrences] -> (Char, Int) -> [Occurrences]
-        comb ss ci = ss ++ [c:sub | sub <- ss, c <- subOccurrences ci]
+        comb ss ci = ss ++ [sub ++ [c] | sub <- ss, c <- subOccurrences ci]
         subOccurrences :: (Char, Int) -> Occurrences
         subOccurrences (c, n) = [(c, i) | i <- [1..n]]
 
