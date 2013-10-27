@@ -1,7 +1,6 @@
 module Anagram where
 
 import Data.List
-import System.IO
 
 type Word = String
 
@@ -36,7 +35,6 @@ sentenceAnagrams :: Sentence -> [Sentence]
 sentenceAnagrams = undefined
 
 extractLines :: FilePath -> IO [String]
-extractLines filepath =
-  do fileHandle <- openFile filepath ReadMode
-     contents <- hGetContents fileHandle
+extractLines filePath =
+  do contents <- readFile filePath
      return $ lines contents
