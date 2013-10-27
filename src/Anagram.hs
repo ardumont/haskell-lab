@@ -30,10 +30,6 @@ substract occ = foldl' update occ
                         True -> let ni = nn - n in if ni <= 0 then xs else (c, ni):xs
                         _    -> x : update xs e
 
--- Returns a list of all anagram sentences of the given sentence.
-sentenceAnagrams :: Sentence -> [Sentence]
-sentenceAnagrams = undefined
-
 type DicoOcc = [(Occurrences, [Word])]
 
 dicoByOccurrences :: [String] -> DicoOcc
@@ -87,6 +83,7 @@ disp n allLines =
 -- dictionary :: IO [String]
 -- dictionary = extractLines "./resources/linuxwords.txt"
 
-main :: IO ()
-main = do dicoLines <- extractLines "./resources/linuxwords.txt"
-          mapM_ putStrLn $ wordAnagrams "hello" (dicoByOccurrences dicoLines)
+mainWordAnagrams :: String -> IO ()
+mainWordAnagrams word =
+  do dicoLines <- extractLines "./resources/linuxwords.txt"
+     mapM_ putStrLn $ wordAnagrams word (dicoByOccurrences dicoLines)
