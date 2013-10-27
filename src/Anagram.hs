@@ -95,24 +95,26 @@ mainWordAnagrams word =
 -- Returns a list of all anagram sentences of the given sentence.
 sentenceAnagrams :: Sentence -> DicoOcc -> [Sentence]
 sentenceAnagrams s d =
-  (internalSentenceAnagrams . combinations . sentenceOccurrences) s
+  (nub . internalSentenceAnagrams . combinations . sentenceOccurrences) s
   where internalSentenceAnagrams []            = []
-        internalSentenceAnagrams a@(_:occs) = computeSentence a : internalSentenceAnagrams occs
-        computeSentence []     = []
-        computeSentence (o:os) = case lookup o d of
-          Nothing        -> computeSentence os
-          Just anagrams  -> [ anagram ++ otherAnagrams
-                            | anagram <- anagrams,
-                              otherAnagrams <- computeSentence $ map (\x -> substract x o) os ]
+        internalSentenceAnagrams a@(_:occs) = (sentenceCompute a d) ++ internalSentenceAnagrams occs
 
--- *Anagram> sentenceAnagrams ["abba"] [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
--- [[],[],[],[],[],[],[],[],[]]
--- *Anagram> sentenceAnagrams ["abba", "a"] [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
--- [[],[],[],[],[],[],[],[],[],[],[],[]]
--- *Anagram> :load "src/Anagram.hs"
--- [1 of 1] Compiling Anagram          ( src/Anagram.hs, interpreted )
--- Ok, modules loaded: Anagram.
--- *Anagram> sentenceAnagrams ["abba", "a"] [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
--- [[],[],[],[],[],[],[],[],[],[],[],[]]
--- *Anagram> sentenceAnagrams ["abba", "a"] [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
--- [[],[],[],[],[],[],[],[],[],[],[],[]]
+distribute :: [a] -> [[a]] -> [[a]]
+distribute xs xxs = [y:ys | y <- xs, ys <- xxs]
+
+-- *Anagram> distribute ["abba","bbaa","aabb"]  [["a","b"], ["c"]]
+-- [["abba","a","b"],["abba","c"],["bbaa","a","b"],["bbaa","c"],["aabb","a","b"],["aabb","c"]]
+
+sentenceCompute :: [Occurrences] -> DicoOcc -> [Sentence]
+sentenceCompute []     _ = [[]]
+sentenceCompute (o:os) d = case lookup o d of
+  Nothing        -> sentenceCompute os d
+  Just anagrams  -> distribute anagrams otherAnagrams ++ sentenceCompute os d
+                    where otherAnagrams = sentenceCompute oss d
+                          oss           = map (flip substract o) os
+
+-- occ :: [Occurrences]
+-- occ = [[],[('a',1)],[('a',2)],[('b',1)],[('b',2)],[('a',1),('b',1)],[('a',1),('b',2)],[('a',2),('b',1)],[('a',2),('b',2)]]
+
+dico :: DicoOcc
+dico = [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
