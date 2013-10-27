@@ -80,14 +80,6 @@ disp n allLines =
      let f = take n ll in
        mapM_ putStrLn f
 
--- dictionary :: IO [String]
--- dictionary = extractLines "./resources/linuxwords.txt"
-
-mainWordAnagrams :: String -> IO ()
-mainWordAnagrams word =
-  do dicoLines <- extractLines "./resources/linuxwords.txt"
-     mapM_ putStrLn $ wordAnagrams word (dicoByOccurrences dicoLines)
-
 --  An anagram of a sentence is formed by taking the occurrences of all the characters of
 --  all the words in the sentence, and producing all possible combinations of words with those characters,
 --  such that the words have to be from the dictionary.
@@ -116,5 +108,29 @@ sentenceCompute (o:os) d = case lookup o d of
 -- occ :: [Occurrences]
 -- occ = [[],[('a',1)],[('a',2)],[('b',1)],[('b',2)],[('a',1),('b',1)],[('a',1),('b',2)],[('a',2),('b',1)],[('a',2),('b',2)]]
 
-dico :: DicoOcc
-dico = [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
+-- dico :: DicoOcc
+-- dico = [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
+
+-- *Anagram> sentenceAnagrams ["abba"] dico
+-- [["a","a"],["a"],["abba"],["bbaa"],["aabb"],[]]
+
+dictionaryFromFile :: FilePath -> IO DicoOcc
+dictionaryFromFile filepath =
+  do dicoLines <- extractLines filepath
+     return $ dicoByOccurrences dicoLines
+
+-- dictionary :: IO [String]
+-- dictionary = extractLines "./resources/linuxwords.txt"
+
+mainWordAnagrams :: String -> FilePath -> IO ()
+mainWordAnagrams word filePath =
+  do dicoLines <- extractLines filePath
+     mapM_ putStrLn $ wordAnagrams word (dicoByOccurrences dicoLines)
+
+printSentence :: Sentence -> IO ()
+printSentence sentence = mapM_ putStrLn sentence
+
+mainSentenceAnagrams :: [String] -> FilePath -> IO ()
+mainSentenceAnagrams sentence filePath =
+  do dico <- dictionaryFromFile filePath
+     mapM_ printSentence $ sentenceAnagrams sentence dico
