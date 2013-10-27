@@ -87,3 +87,32 @@ mainWordAnagrams :: String -> IO ()
 mainWordAnagrams word =
   do dicoLines <- extractLines "./resources/linuxwords.txt"
      mapM_ putStrLn $ wordAnagrams word (dicoByOccurrences dicoLines)
+
+--  An anagram of a sentence is formed by taking the occurrences of all the characters of
+--  all the words in the sentence, and producing all possible combinations of words with those characters,
+--  such that the words have to be from the dictionary.
+
+-- Returns a list of all anagram sentences of the given sentence.
+sentenceAnagrams :: Sentence -> DicoOcc -> [Sentence]
+sentenceAnagrams s d =
+  (internalSentenceAnagrams . combinations . sentenceOccurrences) s
+  where internalSentenceAnagrams []            = []
+        internalSentenceAnagrams a@(_:occs) = computeSentence a : internalSentenceAnagrams occs
+        computeSentence []     = []
+        computeSentence (o:os) = case lookup o d of
+          Nothing        -> computeSentence os
+          Just anagrams  -> [ anagram ++ otherAnagrams
+                            | anagram <- anagrams,
+                              otherAnagrams <- computeSentence $ map (\x -> substract x o) os ]
+
+-- *Anagram> sentenceAnagrams ["abba"] [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
+-- [[],[],[],[],[],[],[],[],[]]
+-- *Anagram> sentenceAnagrams ["abba", "a"] [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
+-- [[],[],[],[],[],[],[],[],[],[],[],[]]
+-- *Anagram> :load "src/Anagram.hs"
+-- [1 of 1] Compiling Anagram          ( src/Anagram.hs, interpreted )
+-- Ok, modules loaded: Anagram.
+-- *Anagram> sentenceAnagrams ["abba", "a"] [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
+-- [[],[],[],[],[],[],[],[],[],[],[],[]]
+-- *Anagram> sentenceAnagrams ["abba", "a"] [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
+-- [[],[],[],[],[],[],[],[],[],[],[],[]]
