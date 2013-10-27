@@ -38,3 +38,9 @@ extractLines :: FilePath -> IO [String]
 extractLines filePath =
   do contents <- readFile filePath
      return $ lines contents
+
+disp :: Int -> IO [String] -> IO ()
+disp n allLines =
+  do ll <- allLines
+     let f = take n ll in
+       mapM_ putStrLn f
