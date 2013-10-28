@@ -1,6 +1,7 @@
 module Anagram where
 
 import Data.List
+import Data.Char (toLower)
 
 type Word = String
 
@@ -9,7 +10,7 @@ type Sentence = [Word]
 type Occurrences = [(Char, Int)]
 
 wordOccurrences :: Word -> Occurrences
-wordOccurrences = map (\x -> (head x, length x)) . group . sort
+wordOccurrences = sort . map (\x -> (toLower (head x), length x)) . group
 
 sentenceOccurrences :: Sentence -> Occurrences
 sentenceOccurrences = wordOccurrences . (intercalate "")
