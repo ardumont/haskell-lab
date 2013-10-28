@@ -88,9 +88,7 @@ disp n allLines =
 -- Returns a list of all anagram sentences of the given sentence.
 sentenceAnagrams :: Sentence -> DicoOcc -> [Sentence]
 sentenceAnagrams s d =
-  (internalSentenceAnagrams . combinations . sentenceOccurrences) s
-  where internalSentenceAnagrams []            = []
-        internalSentenceAnagrams a@(_:occs) = (sentenceCompute a d)  ++ internalSentenceAnagrams occs
+  (nub . flip sentenceCompute d . combinations . sentenceOccurrences) s
 
 -- distribute :: [a] -> [[a]] -> [[a]]
 -- distribute xs xxs = [y:ys | y <- xs, ys <- xxs]
@@ -102,11 +100,8 @@ sentenceCompute :: [Occurrences] -> DicoOcc -> [Sentence]
 sentenceCompute []     _ = [[]]
 sentenceCompute (o:os) d = case lookup o d of
   Nothing        -> sentenceCompute os d
-  Just anagrams  -> [y:ys | y <- anagrams, ys <- sentenceCompute oss d] -- ++ sentenceCompute os d
+  Just anagrams  -> [y:ys | y <- anagrams, ys <- sentenceCompute oss d] ++ sentenceCompute os d
                     where oss = map (flip substract o) os
-
-occu :: [Occurrences]
-occu = [[],[('a',1)],[('a',2)],[('b',1)],[('b',2)],[('a',1),('b',1)],[('a',1),('b',2)],[('a',2),('b',1)],[('a',2),('b',2)]]
 
 dicoYesMan :: DicoOcc
 dicoYesMan = dicoByOccurrences ["en", "as", "my",
