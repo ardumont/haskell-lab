@@ -33,11 +33,12 @@ substract occ = foldl' update occ
 type DicoOcc = [(Occurrences, [Word])]
 
 dicoByOccurrences :: [String] -> DicoOcc
-dicoByOccurrences = foldl' add []
+dicoByOccurrences = nub . (foldl' add []) -- Fixme - using nub to destroy duplicated entries at the end
   where add acc word = let occ = wordOccurrences word in
           case lookup occ acc of
             Nothing -> (occ, [word]) : acc
-            Just ws -> (occ, word : ws) : acc -- Fixme - how to update the associative array
+            Just ws -> (occ, nws) : acc -- Fixme - how to update the associative array
+                       where nws = if elem word ws then ws else word : ws -- no duplicated entries
 
 -- *Anagram> dicoByOccurrences ["a", "abb", "baa", "c"]
 -- [([('c',1)],["c"]),([('a',2),('b',1)],["baa"]),([('a',1),('b',2)],["abb"]),([('a',1)],["a"])]
