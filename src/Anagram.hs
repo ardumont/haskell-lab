@@ -128,7 +128,7 @@ mainWordAnagrams word filePath =
      mapM_ putStrLn $ wordAnagrams word (dicoByOccurrences dicoLines)
 
 printSentence :: Sentence -> IO ()
-printSentence sentence = mapM_ putStrLn sentence
+printSentence sentence = putStr "[" >> mapM_ (putStr . (++) " ") sentence >> putStrLn "]"
 
 mainSentenceAnagrams :: [String] -> FilePath -> IO ()
 mainSentenceAnagrams sentence filePath =
