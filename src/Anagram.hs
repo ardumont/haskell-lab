@@ -92,8 +92,8 @@ sentenceAnagrams s d =
   where internalSentenceAnagrams []            = []
         internalSentenceAnagrams a@(_:occs) = (sentenceCompute a d) ++ internalSentenceAnagrams occs
 
-distribute :: [a] -> [[a]] -> [[a]]
-distribute xs xxs = [y:ys | y <- xs, ys <- xxs]
+-- distribute :: [a] -> [[a]] -> [[a]]
+-- distribute xs xxs = [y:ys | y <- xs, ys <- xxs]
 
 -- *Anagram> distribute ["abba","bbaa","aabb"]  [["a","b"], ["c"]]
 -- [["abba","a","b"],["abba","c"],["bbaa","a","b"],["bbaa","c"],["aabb","a","b"],["aabb","c"]]
@@ -102,9 +102,8 @@ sentenceCompute :: [Occurrences] -> DicoOcc -> [Sentence]
 sentenceCompute []     _ = [[]]
 sentenceCompute (o:os) d = case lookup o d of
   Nothing        -> sentenceCompute os d
-  Just anagrams  -> distribute anagrams otherAnagrams ++ sentenceCompute os d
-                    where otherAnagrams = sentenceCompute oss d
-                          oss           = map (flip substract o) os
+  Just anagrams  -> [y:ys | y <- anagrams, ys <- sentenceCompute oss d] -- ++ sentenceCompute os d
+                    where oss = map (flip substract o) os
 
 occu :: [Occurrences]
 occu = [[],[('a',1)],[('a',2)],[('b',1)],[('b',2)],[('a',1),('b',1)],[('a',1),('b',2)],[('a',2),('b',1)],[('a',2),('b',2)]]
