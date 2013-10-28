@@ -106,14 +106,48 @@ sentenceCompute (o:os) d = case lookup o d of
                     where otherAnagrams = sentenceCompute oss d
                           oss           = map (flip substract o) os
 
--- occ :: [Occurrences]
--- occ = [[],[('a',1)],[('a',2)],[('b',1)],[('b',2)],[('a',1),('b',1)],[('a',1),('b',2)],[('a',2),('b',1)],[('a',2),('b',2)]]
+occu :: [Occurrences]
+occu = [[],[('a',1)],[('a',2)],[('b',1)],[('b',2)],[('a',1),('b',1)],[('a',1),('b',2)],[('a',2),('b',1)],[('a',2),('b',2)]]
 
--- dico :: DicoOcc
--- dico = [([('a', 1)], ["a"]), ([('a', 2), ('b', 2)], ["abba", "bbaa", "aabb"])]
+dicoYesMan :: DicoOcc
+dicoYesMan = dicoByOccurrences ["en", "as", "my",
+                                "en", "my", "as",
+                                "man", "yes", "men",
+                                "say", "as", "en",
+                                "my", "as", "my",
+                                "en", "sane", "my",
+                                "Sean", "my", "my",
+                                "en", "as", "my",
+                                "as", "en", "my",
+                                "sane", "my", "Sean",
+                                "say", "men", "yes",
+                                "man"]
 
--- *Anagram> sentenceAnagrams ["abba"] dico
--- [["a","a"],["a"],["abba"],["bbaa"],["aabb"],[]]
+-- *Anagram> sentenceAnagrams ["yes", "man"] dicoYesMan
+
+dicoLinuxRulez :: DicoOcc
+dicoLinuxRulez = dicoByOccurrences ["Rex", "Lin", "Zulu",
+                                    "nil", "Zulu", "Rex",
+                                    "Rex", "nil", "Zulu",
+                                    "Zulu", "Rex", "Lin",
+                                    "null", "Uzi", "Rex",
+                                    "Rex", "Zulu", "Lin",
+                                    "Uzi", "null", "Rex",
+                                    "Rex", "null", "Uzi",
+                                    "null", "Rex", "Uzi",
+                                    "Lin", "Rex", "Zulu",
+                                    "nil", "Rex", "Zulu",
+                                    "Rex", "Uzi", "null",
+                                    "Rex", "Zulu", "nil",
+                                    "Zulu", "Rex", "nil",
+                                    "Zulu", "Lin", "Rex",
+                                    "Lin", "Zulu", "Rex",
+                                    "Uzi", "Rex", "null",
+                                    "Zulu", "nil", "Rex",
+                                    "rulez", "Linux",
+                                    "Linux", "rulez"]
+
+-- *Anagram> sentenceAnagrams ["Linux", "rulez"] dicoLinuxRulez
 
 dictionaryFromFile :: FilePath -> IO DicoOcc
 dictionaryFromFile filepath =
