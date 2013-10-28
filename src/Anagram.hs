@@ -47,18 +47,8 @@ dicoByOccurrences = nub . (foldl' add []) -- Fixme - using nub to destroy duplic
             Just ws -> (occ, nws) : acc -- Fixme - how to update the associative array
                        where nws = if elem word ws then ws else word : ws -- no duplicated entries
 
--- *Anagram> dicoByOccurrences ["a", "abb", "baa", "c"]
--- [([('c',1)],["c"]),([('a',2),('b',1)],["baa"]),([('a',1),('b',2)],["abb"]),([('a',1)],["a"])]
-
 findAnagram :: Word -> [(Occurrences, a)] -> Maybe a
 findAnagram w d = (flip lookup d . wordOccurrences) w
-
--- *Anagram> findAnagram "a" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
--- Nothing
--- *Anagram> findAnagram "abb" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
--- Just ["abb","bab","bba"]
--- *Anagram> findAnagram "bab" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
--- Just ["abb","bab","bba"]
 
 -- Returns all the anagrams of a given word.
 wordAnagrams :: Word -> DicoOcc -> [Word]
@@ -66,16 +56,7 @@ wordAnagrams w d = case findAnagram w d of
   Nothing -> []
   Just x  -> x
 
--- *Anagram> wordAnagrams "abb" [([('a', 1), ('b', 2)], ["abb"])]
--- ["abb"]
--- *Anagram> wordAnagrams "abb" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
--- ["abb","bab","bba"]
--- *Anagram> wordAnagrams "bba" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
--- ["abb","bab","bba"]
--- *Anagram> wordAnagrams "a" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
--- []
-
--- I/O
+-- ######### I/O
 
 extractLines :: FilePath -> IO [String]
 extractLines filePath =
@@ -102,48 +83,6 @@ sentenceAnagrams s d =
           Nothing        -> sentenceCompute os
           Just anagrams  -> [y:ys | y <- anagrams, ys <- sentenceCompute oss] ++ sentenceCompute os
             where oss = map (flip substract o) os
-
-dicoYesMan :: DicoOcc
-dicoYesMan = dicoByOccurrences ["en", "as", "my",
-                                "en", "my", "as",
-                                "man", "yes", "men",
-                                "say", "as", "en",
-                                "my", "as", "my",
-                                "en", "sane", "my",
-                                "Sean", "my", "my",
-                                "en", "as", "my",
-                                "as", "en", "my",
-                                "sane", "my", "Sean",
-                                "say", "men", "yes",
-                                "man"]
-
-dicoLinuxRulez :: DicoOcc
-dicoLinuxRulez = dicoByOccurrences ["Rex", "Lin", "Zulu",
-                                    "nil", "Zulu", "Rex",
-                                    "Rex", "nil", "Zulu",
-                                    "Zulu", "Rex", "Lin",
-                                    "null", "Uzi", "Rex",
-                                    "Rex", "Zulu", "Lin",
-                                    "Uzi", "null", "Rex",
-                                    "Rex", "null", "Uzi",
-                                    "null", "Rex", "Uzi",
-                                    "Lin", "Rex", "Zulu",
-                                    "nil", "Rex", "Zulu",
-                                    "Rex", "Uzi", "null",
-                                    "Rex", "Zulu", "nil",
-                                    "Zulu", "Rex", "nil",
-                                    "Zulu", "Lin", "Rex",
-                                    "Lin", "Zulu", "Rex",
-                                    "Uzi", "Rex", "null",
-                                    "Zulu", "nil", "Rex",
-                                    "rulez", "Linux",
-                                    "Linux", "rulez"]
-
--- *Anagram> sentenceAnagrams ["yes", "man"] dicoYesMan
--- [["en","as","my"],["en","my","as"],["man","yes"],["men","say"],["as","en","my"],["as","my","en"],["Sean","my"],["sane","my"],["my","en","as"],["my","as","en"],["my","Sean"],["my","sane"],["say","men"],["yes","man"]]
-
--- *Anagram> sentenceAnagrams ["Linux", "rulez"] dicoLinuxRulez
--- [["nil","Rex","Zulu"],["nil","Zulu","Rex"],["Lin","Rex","Zulu"],["Lin","Zulu","Rex"],["Rex","nil","Zulu"],["Rex","Lin","Zulu"],["Rex","Zulu","nil"],["Rex","Zulu","Lin"],["Linux","rulez"],["rulez","Linux"],["Zulu","nil","Rex"],["Zulu","Lin","Rex"],["Zulu","Rex","nil"],["Zulu","Rex","Lin"]]
 
 dictionaryFromFile :: FilePath -> IO DicoOcc
 dictionaryFromFile filepath =
@@ -219,12 +158,144 @@ testSubstracts = TestList [ "testSubstract1" ~: testSubstract1,
                             "testSubstract2" ~: testSubstract2,
                             "testSubstract3" ~: testSubstract3]
 
+testDicoByOccurrences1 :: Test.HUnit.Test
+testDicoByOccurrences1 = [([('c',1)],["c"]),([('a',2),('b',1)],["baa"]),([('a',1),('b',2)],["abb"]),([('a',1)],["a"])]
+                         ~=?
+                         dicoByOccurrences ["a", "abb", "baa", "c"]
+
+testDicoByOccurrencess :: Test.HUnit.Test
+testDicoByOccurrencess = TestList ["testDicoByOccurrences1" ~: testDicoByOccurrences1]
+
+testFindAnagram1 :: Test.HUnit.Test
+testFindAnagram1 = Nothing
+                   ~=?
+                   findAnagram "a" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
+
+testFindAnagram2 :: Test.HUnit.Test
+testFindAnagram2 = Just ["abb","bab","bba"]
+                   ~=?
+                   findAnagram "abb" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
+
+testFindAnagram3 :: Test.HUnit.Test
+testFindAnagram3 = Just ["abb","bab","bba"]
+                   ~=?
+                   findAnagram "bab" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
+
+testFindAnagrams :: Test.HUnit.Test
+testFindAnagrams = TestList ["testFindAnagram1" ~: testFindAnagram1,
+                             "testFindAnagram2" ~: testFindAnagram2,
+                             "testFindAnagram3" ~: testFindAnagram3]
+
+testWordAnagrams1 :: Test.HUnit.Test
+testWordAnagrams1 = ["abb"] ~=? wordAnagrams "abb" [([('a', 1), ('b', 2)], ["abb"])]
+
+testWordAnagrams2 :: Test.HUnit.Test
+testWordAnagrams2 = ["abb","bab","bba"] ~=? wordAnagrams "abb" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
+
+testWordAnagrams3 :: Test.HUnit.Test
+testWordAnagrams3 = ["abb","bab","bba"] ~=? wordAnagrams "bba" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
+
+testWordAnagrams4 :: Test.HUnit.Test
+testWordAnagrams4 = [] ~=? wordAnagrams "a" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
+
+testWordAnagrams :: Test.HUnit.Test
+testWordAnagrams = TestList ["testWordAnagrams1" ~: testWordAnagrams1,
+                             "testWordAnagrams2" ~: testWordAnagrams2,
+                             "testWordAnagrams3" ~: testWordAnagrams3,
+                             "testWordAnagrams4" ~: testWordAnagrams4]
+
+testSentenceAnagrams1 :: Test.HUnit.Test
+testSentenceAnagrams1 =  [["en","as","my"],
+                          ["en","my","as"],
+                          ["man","yes"],
+                          ["men","say"],
+                          ["as","en","my"],
+                          ["as","my","en"],
+                          ["Sean","my"],
+                          ["sane","my"],
+                          ["my","en","as"],
+                          ["my","as","en"],
+                          ["my","Sean"],
+                          ["my","sane"],
+                          ["say","men"],
+                          ["yes","man"]]
+                        ~=?
+                        sentenceAnagrams ["yes", "man"] dicoYesMan
+  where dicoYesMan = dicoByOccurrences ["en", "as", "my",
+                                        "en", "my", "as",
+                                        "man", "yes", "men",
+                                        "say", "as", "en",
+                                        "my", "as", "my",
+                                        "en", "sane", "my",
+                                        "Sean", "my", "my",
+                                        "en", "as", "my",
+                                        "as", "en", "my",
+                                        "sane", "my", "Sean",
+                                        "say", "men", "yes",
+                                        "man"]
+
+testSentenceAnagrams2 :: Test.HUnit.Test
+testSentenceAnagrams2 = [["nil","Rex","Zulu"],
+                         ["nil","Zulu","Rex"],
+                         ["Lin","Rex","Zulu"],
+                         ["Lin","Zulu","Rex"],
+                         ["null","Rex","Uzi"],
+                         ["null","Uzi","Rex"],
+                         ["Rex","nil","Zulu"],
+                         ["Rex","Lin","Zulu"],
+                         ["Rex","null","Uzi"],
+                         ["Rex","Uzi","null"],
+                         ["Rex","Zulu","nil"],
+                         ["Rex","Zulu","Lin"],
+                         ["Linux","rulez"],
+                         ["Uzi","null","Rex"],
+                         ["Uzi","Rex","null"],
+                         ["Zulu","nil","Rex"],
+                         ["Zulu","Lin","Rex"],
+                         ["Zulu","Rex","nil"],
+                         ["Zulu","Rex","Lin"],
+                         ["rulez","Linux"]]
+                        ~=?
+                        sentenceAnagrams ["Linux", "rulez"] dicoLinuxRulez
+  where dicoLinuxRulez = dicoByOccurrences ["Rex", "Lin", "Zulu",
+                                            "nil", "Zulu", "Rex",
+                                            "Rex", "nil", "Zulu",
+                                            "Zulu", "Rex", "Lin",
+                                            "null", "Uzi", "Rex",
+                                            "Rex", "Zulu", "Lin",
+                                            "Uzi", "null", "Rex",
+                                            "Rex", "null", "Uzi",
+                                            "null", "Rex", "Uzi",
+                                            "Lin", "Rex", "Zulu",
+                                            "nil", "Rex", "Zulu",
+                                            "Rex", "Uzi", "null",
+                                            "Rex", "Zulu", "nil",
+                                            "Zulu", "Rex", "nil",
+                                            "Zulu", "Lin", "Rex",
+                                            "Lin", "Zulu", "Rex",
+                                            "Uzi", "Rex", "null",
+                                            "Zulu", "nil", "Rex",
+                                            "rulez", "Linux",
+                                            "Linux", "rulez"]
+
+testSentenceAnagrams :: Test.HUnit.Test
+testSentenceAnagrams = TestList ["testSentenceAnagrams1" ~: testSentenceAnagrams1,
+                                 "testSentenceAnagrams2" ~: testSentenceAnagrams2]
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testWordOccurrencess,
                   testSentenceOccurrencess,
                   testCombinationss,
-                  testSubstracts]
+                  testSubstracts,
+                  testDicoByOccurrencess,
+                  testFindAnagrams,
+                  testWordAnagrams,
+                  testSentenceAnagrams]
 
 main :: IO ()
 main = runTestTT tests >>= print
+
+-- *Anagram> runTestTT tests
+-- Cases: 18  Tried: 18  Errors: 0  Failures: 0
+-- Counts {cases = 18, tried = 18, errors = 0, failures = 0}
