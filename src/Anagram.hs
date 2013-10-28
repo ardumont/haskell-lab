@@ -89,20 +89,13 @@ disp n allLines =
 -- Returns a list of all anagram sentences of the given sentence.
 sentenceAnagrams :: Sentence -> DicoOcc -> [Sentence]
 sentenceAnagrams s d =
-  (nub . flip sentenceCompute d . combinations . sentenceOccurrences) s
-
--- distribute :: [a] -> [[a]] -> [[a]]
--- distribute xs xxs = [y:ys | y <- xs, ys <- xxs]
-
--- *Anagram> distribute ["abba","bbaa","aabb"]  [["a","b"], ["c"]]
--- [["abba","a","b"],["abba","c"],["bbaa","a","b"],["bbaa","c"],["aabb","a","b"],["aabb","c"]]
-
-sentenceCompute :: [Occurrences] -> DicoOcc -> [Sentence]
-sentenceCompute []     _ = [[]]
-sentenceCompute (o:os) d = case lookup o d of
-  Nothing        -> sentenceCompute os d
-  Just anagrams  -> [y:ys | y <- anagrams, ys <- sentenceCompute oss d] ++ sentenceCompute os d
-                    where oss = map (flip substract o) os
+  (filter (\x -> sum (map length x) == sum (map length s)) . nub . sentenceCompute . combinations . sentenceOccurrences) s
+  where sentenceCompute :: [Occurrences] -> [Sentence]
+        sentenceCompute []     = [[]]
+        sentenceCompute (o:os) = case lookup o d of
+          Nothing        -> sentenceCompute os
+          Just anagrams  -> [y:ys | y <- anagrams, ys <- sentenceCompute oss] ++ sentenceCompute os
+            where oss = map (flip substract o) os
 
 dicoYesMan :: DicoOcc
 dicoYesMan = dicoByOccurrences ["en", "as", "my",
@@ -117,8 +110,6 @@ dicoYesMan = dicoByOccurrences ["en", "as", "my",
                                 "sane", "my", "Sean",
                                 "say", "men", "yes",
                                 "man"]
-
--- *Anagram> sentenceAnagrams ["yes", "man"] dicoYesMan
 
 dicoLinuxRulez :: DicoOcc
 dicoLinuxRulez = dicoByOccurrences ["Rex", "Lin", "Zulu",
@@ -142,15 +133,16 @@ dicoLinuxRulez = dicoByOccurrences ["Rex", "Lin", "Zulu",
                                     "rulez", "Linux",
                                     "Linux", "rulez"]
 
+-- *Anagram> sentenceAnagrams ["yes", "man"] dicoYesMan
+-- [["en","as","my"],["en","my","as"],["man","yes"],["men","say"],["as","en","my"],["as","my","en"],["Sean","my"],["sane","my"],["my","en","as"],["my","as","en"],["my","Sean"],["my","sane"],["say","men"],["yes","man"]]
+
 -- *Anagram> sentenceAnagrams ["Linux", "rulez"] dicoLinuxRulez
+-- [["nil","Rex","Zulu"],["nil","Zulu","Rex"],["Lin","Rex","Zulu"],["Lin","Zulu","Rex"],["Rex","nil","Zulu"],["Rex","Lin","Zulu"],["Rex","Zulu","nil"],["Rex","Zulu","Lin"],["Linux","rulez"],["rulez","Linux"],["Zulu","nil","Rex"],["Zulu","Lin","Rex"],["Zulu","Rex","nil"],["Zulu","Rex","Lin"]]
 
 dictionaryFromFile :: FilePath -> IO DicoOcc
 dictionaryFromFile filepath =
   do dicoLines <- extractLines filepath
      return $ dicoByOccurrences dicoLines
-
--- dictionary :: IO [String]
--- dictionary = extractLines "./resources/linuxwords.txt"
 
 mainWordAnagrams :: String -> FilePath -> IO ()
 mainWordAnagrams word filePath =
