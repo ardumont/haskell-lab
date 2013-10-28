@@ -88,9 +88,9 @@ disp n allLines =
 -- Returns a list of all anagram sentences of the given sentence.
 sentenceAnagrams :: Sentence -> DicoOcc -> [Sentence]
 sentenceAnagrams s d =
-  (nub . internalSentenceAnagrams . combinations . sentenceOccurrences) s
+  (internalSentenceAnagrams . combinations . sentenceOccurrences) s
   where internalSentenceAnagrams []            = []
-        internalSentenceAnagrams a@(_:occs) = (sentenceCompute a d) ++ internalSentenceAnagrams occs
+        internalSentenceAnagrams a@(_:occs) = (sentenceCompute a d)  ++ internalSentenceAnagrams occs
 
 -- distribute :: [a] -> [[a]] -> [[a]]
 -- distribute xs xxs = [y:ys | y <- xs, ys <- xxs]
