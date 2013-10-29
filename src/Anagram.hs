@@ -76,8 +76,12 @@ disp n allLines =
 -- Returns a list of all anagram sentences of the given sentence.
 sentenceAnagrams :: Sentence -> DicoOcc -> [Sentence]
 sentenceAnagrams s d =
-  (filter (\x -> sum (map length x) == sum (map length s)) . nub . sentenceCompute . combinations . sentenceOccurrences) s
-  where sentenceCompute :: [Occurrences] -> [Sentence]
+  (filteringSentencesOnOccurrence . nub . sentenceCompute . combinations) sentenceOccurrenceRef
+  where filteringSentencesOnOccurrence :: [Sentence] -> [Sentence]
+        filteringSentencesOnOccurrence = filter (\x -> sentenceOccurrences(x) == sentenceOccurrenceRef)
+        sentenceOccurrenceRef :: Occurrences
+        sentenceOccurrenceRef = sentenceOccurrences(s)
+        sentenceCompute :: [Occurrences] -> [Sentence]
         sentenceCompute []     = [[]]
         sentenceCompute (o:os) = case lookup o d of
           Nothing        -> sentenceCompute os
