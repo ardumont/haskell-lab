@@ -78,9 +78,9 @@ sentenceAnagrams :: Sentence -> DicoOcc -> [Sentence]
 sentenceAnagrams s d =
   (filteringSentencesOnOccurrence . nub . sentenceCompute . combinations) sentenceOccurrenceRef
   where filteringSentencesOnOccurrence :: [Sentence] -> [Sentence]
-        filteringSentencesOnOccurrence = filter (\x -> sentenceOccurrences(x) == sentenceOccurrenceRef)
+        filteringSentencesOnOccurrence = filter (\x -> sentenceOccurrences x == sentenceOccurrenceRef)
         sentenceOccurrenceRef :: Occurrences
-        sentenceOccurrenceRef = sentenceOccurrences(s)
+        sentenceOccurrenceRef = sentenceOccurrences s
         sentenceCompute :: [Occurrences] -> [Sentence]
         sentenceCompute []     = [[]]
         sentenceCompute (o:os) = case lookup o d of
