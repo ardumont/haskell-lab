@@ -12,3 +12,6 @@ huffman-tests:
 
 anagram-tests:
 	cd src && runhaskell AnagramTests
+
+anagram-run-sample:
+	cd src && runhaskell Anagram Linux rulez
