@@ -3,6 +3,7 @@ module Anagram where
 import Data.List
 import Data.Char (toLower)
 import qualified Data.Map as Map
+import System.Environment
 
 -- ######### Definition type
 
@@ -97,9 +98,13 @@ mainWordAnagrams word filePath =
      mapM_ putStrLn $ wordAnagrams word (dicoByOccurrences dicoLines)
 
 printSentence :: Sentence -> IO ()
-printSentence sentence = putStr "[" >> mapM_ (putStr . (++) " ") sentence >> putStrLn "]"
+printSentence sentence = putStr "[" >> mapM_ (putStr . (++) " ") sentence >> putStrLn " ]"
 
 mainSentenceAnagrams :: [String] -> FilePath -> IO ()
 mainSentenceAnagrams sentence filePath =
   do dico <- dictionaryFromFile filePath
      mapM_ printSentence $ sentenceAnagrams sentence dico
+
+main :: IO ()
+main = do args <- getArgs
+          mainSentenceAnagrams args "../resources/linuxwords.txt"
