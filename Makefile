@@ -4,7 +4,11 @@ install:
 deps:
 	cabal update && cabal install test-framework test-framework-hunit
 
-test:
-	cd src && \
-	runhaskell HuffmanTests && \
-	runhaskell AnagramTests
+tests: huffman-tests anagram-tests
+
+
+huffman-tests:
+	cd src && runhaskell HuffmanTests
+
+anagram-tests:
+	cd src && runhaskell AnagramTests
