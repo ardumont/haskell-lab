@@ -2,6 +2,7 @@ module AnagramTests where
 
 import Anagram
 import Test.HUnit
+import qualified Data.Map as Map
 
 -- ######### Tests
 
@@ -60,44 +61,33 @@ testSubstracts = TestList [ "testSubstract1" ~: testSubstract1,
                             "testSubstract3" ~: testSubstract3]
 
 testDicoByOccurrences1 :: Test.HUnit.Test
-testDicoByOccurrences1 = [([('c',1)],["c"]),([('a',2),('b',1)],["baa"]),([('a',1),('b',2)],["abb"]),([('a',1)],["a"])]
+testDicoByOccurrences1 = Map.fromList [([('a',1)],["a"]),([('a',1),('b',2)],["abb"]),([('a',2),('b',1)],["baa"]),([('c',1)],["c"])]
                          ~=?
                          dicoByOccurrences ["a", "abb", "baa", "c"]
 
+testDicoByOccurrences2 :: Test.HUnit.Test
+testDicoByOccurrences2 = Map.fromList [([('a',1)],["a"]),([('a',1),('b',2)],["abb","bab"]),([('a',2),('b',1)],["baa"]),([('c',1)],["c"])]
+                         ~=?
+                         dicoByOccurrences ["a", "abb", "baa", "abb", "bab", "c"]
+
 testDicoByOccurrencess :: Test.HUnit.Test
-testDicoByOccurrencess = TestList ["testDicoByOccurrences1" ~: testDicoByOccurrences1]
+testDicoByOccurrencess = TestList ["testDicoByOccurrences1" ~: testDicoByOccurrences1,
+                                   "testDicoByOccurrences2" ~: testDicoByOccurrences2]
 
-testFindAnagram1 :: Test.HUnit.Test
-testFindAnagram1 = Nothing
-                   ~=?
-                   findAnagram "a" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
-
-testFindAnagram2 :: Test.HUnit.Test
-testFindAnagram2 = Just ["abb","bab","bba"]
-                   ~=?
-                   findAnagram "abb" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
-
-testFindAnagram3 :: Test.HUnit.Test
-testFindAnagram3 = Just ["abb","bab","bba"]
-                   ~=?
-                   findAnagram "bab" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
-
-testFindAnagrams :: Test.HUnit.Test
-testFindAnagrams = TestList ["testFindAnagram1" ~: testFindAnagram1,
-                             "testFindAnagram2" ~: testFindAnagram2,
-                             "testFindAnagram3" ~: testFindAnagram3]
+dicoOcc :: [(Occurrences, [Word])] -> DicoOcc
+dicoOcc l = Map.fromList l :: DicoOcc
 
 testWordAnagrams1 :: Test.HUnit.Test
-testWordAnagrams1 = ["abb"] ~=? wordAnagrams "abb" [([('a', 1), ('b', 2)], ["abb"])]
+testWordAnagrams1 = ["abb"] ~=? (wordAnagrams "abb" $ dicoOcc [([('a', 1), ('b', 2)], ["abb"])])
 
 testWordAnagrams2 :: Test.HUnit.Test
-testWordAnagrams2 = ["abb","bab","bba"] ~=? wordAnagrams "abb" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
+testWordAnagrams2 = ["abb","bab","bba"] ~=? (wordAnagrams "abb" $ dicoOcc [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])])
 
 testWordAnagrams3 :: Test.HUnit.Test
-testWordAnagrams3 = ["abb","bab","bba"] ~=? wordAnagrams "bba" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
+testWordAnagrams3 = ["abb","bab","bba"] ~=? (wordAnagrams "bba" $ dicoOcc [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])])
 
 testWordAnagrams4 :: Test.HUnit.Test
-testWordAnagrams4 = [] ~=? wordAnagrams "a" [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])]
+testWordAnagrams4 = [] ~=? (wordAnagrams "a" $ dicoOcc [([('a', 1), ('b', 2)], ["abb", "bab", "bba"])])
 
 testWordAnagrams :: Test.HUnit.Test
 testWordAnagrams = TestList ["testWordAnagrams1" ~: testWordAnagrams1,
@@ -112,12 +102,12 @@ testSentenceAnagrams1 =  [["en","as","my"],
                           ["men","say"],
                           ["as","en","my"],
                           ["as","my","en"],
-                          ["Sean","my"],
                           ["sane","my"],
+                          ["Sean","my"],
                           ["my","en","as"],
                           ["my","as","en"],
-                          ["my","Sean"],
                           ["my","sane"],
+                          ["my","Sean"],
                           ["say","men"],
                           ["yes","man"]]
                         ~=?
@@ -136,25 +126,25 @@ testSentenceAnagrams1 =  [["en","as","my"],
                                         "man"]
 
 testSentenceAnagrams2 :: Test.HUnit.Test
-testSentenceAnagrams2 = [["nil","Rex","Zulu"],
-                         ["nil","Zulu","Rex"],
-                         ["Lin","Rex","Zulu"],
+testSentenceAnagrams2 = [["Lin","Rex","Zulu"],
                          ["Lin","Zulu","Rex"],
+                         ["nil","Rex","Zulu"],
+                         ["nil","Zulu","Rex"],
                          ["null","Rex","Uzi"],
                          ["null","Uzi","Rex"],
-                         ["Rex","nil","Zulu"],
                          ["Rex","Lin","Zulu"],
+                         ["Rex","nil","Zulu"],
                          ["Rex","null","Uzi"],
-                         ["Rex","Uzi","null"],
-                         ["Rex","Zulu","nil"],
+                        ["Rex","Uzi","null"],
                          ["Rex","Zulu","Lin"],
+                         ["Rex","Zulu","nil"],
                          ["Linux","rulez"],
                          ["Uzi","null","Rex"],
                          ["Uzi","Rex","null"],
-                         ["Zulu","nil","Rex"],
                          ["Zulu","Lin","Rex"],
-                         ["Zulu","Rex","nil"],
+                         ["Zulu","nil","Rex"],
                          ["Zulu","Rex","Lin"],
+                         ["Zulu","Rex","nil"],
                          ["rulez","Linux"]]
                         ~=?
                         sentenceAnagrams ["Linux", "rulez"] dicoLinuxRulez
@@ -190,7 +180,6 @@ tests = TestList [testWordOccurrencess,
                   testCombinationss,
                   testSubstracts,
                   testDicoByOccurrencess,
-                  testFindAnagrams,
                   testWordAnagrams,
                   testSentenceAnagrams]
 

@@ -36,24 +36,23 @@ substract occ = foldl' update occ
                         True -> let ni = nn - n in if ni <= 0 then xs else (c, ni):xs
                         _    -> x : update xs e
 
-type DicoOcc = [(Occurrences, [Word])]
+type DicoOcc = Map.Map Occurrences [Word]
 
 dicoByOccurrences :: [String] -> DicoOcc
-dicoByOccurrences = nub . (foldl' add []) -- Fixme - using nub to destroy duplicated entries at the end
-  where add acc word = let occ = wordOccurrences word in
-          case lookup occ acc of
-            Nothing -> (occ, [word]) : acc
-            Just ws -> (occ, nws) : acc -- Fixme - how to update the associative array
-                       where nws = if elem word ws then ws else word : ws -- no duplicated entries
-
-findAnagram :: Word -> [(Occurrences, a)] -> Maybe a
-findAnagram w d = (flip lookup d . wordOccurrences) w
+dicoByOccurrences = foldl' add Map.empty
+  where add :: DicoOcc -> String -> DicoOcc
+        add dico word = Map.insertWith iadd occuKey [word] dico
+                       where occuKey :: Occurrences
+                             occuKey = wordOccurrences word
+                             iadd :: Eq a => [a] -> [a] -> [a]
+                             iadd ws (w:_) = if elem w ws then ws else (w:ws)
 
 -- Returns all the anagrams of a given word.
 wordAnagrams :: Word -> DicoOcc -> [Word]
-wordAnagrams w d = case findAnagram w d of
-  Nothing -> []
-  Just x  -> x
+wordAnagrams w d =
+  case (flip Map.lookup d . wordOccurrences) w of
+    Nothing -> []
+    Just x  -> x
 
 -- ######### I/O
 
@@ -82,7 +81,7 @@ sentenceAnagrams s d =
         sentenceOccurrenceRef = sentenceOccurrences s
         sentenceCompute :: [Occurrences] -> [Sentence]
         sentenceCompute []     = [[]]
-        sentenceCompute (o:os) = case lookup o d of
+        sentenceCompute (o:os) = case Map.lookup o d of
           Nothing        -> sentenceCompute os
           Just anagrams  -> [y:ys | y <- anagrams, ys <- sentenceCompute oss] ++ sentenceCompute os
             where oss = map (flip substract o) os
