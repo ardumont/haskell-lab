@@ -124,10 +124,14 @@ rbt2 = Node B
 -- This way, we can factor some joint functions for those data structure
 
 rebalance :: Tree a -> Tree a
-rebalance = undefined
 
 insert :: Ord a => a -> Tree a -> Tree a
 insert = undefined
+rebalance (Node B (Node R (Node R zl zv zr) xv xr) yv yr) = Node R (Node B zl zv zr) xv (Node B xr yv yr)
+rebalance (Node B xl xv (Node R yl yv (Node R zl zv zr))) = Node R (Node B xl xv yl) yv (Node B zr zv zl)
+rebalance (Node B (Node R yl yv (Node R zl zv zr)) xv xr) = Node R (Node B yl yv zl) zv (Node B zr xv xr)
+rebalance (Node B xl xv (Node R (Node R zl zv zr) yv yr)) = Node R (Node B xl xv zl) zv (Node B zr yv yr)
+rebalance r = r
 
 contains :: Ord a => Tree a -> a -> Bool
 contains = undefined
