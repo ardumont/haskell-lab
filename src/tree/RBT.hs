@@ -133,24 +133,21 @@ rbt2 = Node B 1
 --         |-- /-
 --         `-- /-
 
+-- FIXME: Improve the data type to create a constructor of meta data (color + value for RBT and just value for AVL)
+-- This way, we can factor some joint functions for those data structure
+
+rotateR :: Tree a -> Tree a
+rotateR Empty                     = Empty
+rotateR n@(Node _ _ Empty _)        = n
+rotateR (Node yc yv (Node xc xv xl xr) yr) = (Node xc xv xl (Node yc yv xr yr))
+
+rotateL :: Tree a -> Tree a
+rotateL Empty                     = Empty
+rotateL n@(Node _ _ _ Empty)        = n
+rotateL (Node xc xv xl (Node yc yv yl yr)) = (Node yc yv (Node xc xv xl yl) yr)
+
 insert :: Ord a => Tree a -> a -> Tree a
-insert Empty y = makeLeaf B y
-insert t@(Node _ x Empty Empty) y
-  | x < y = makeRight B x (makeLeaf R y)
-  | x > y = makeLeft  B x (makeLeaf R y)
-  | otherwise = t
-insert t@(Node co x l@(Node c _ _ _) Empty) y
-  | x < y = Node co x l            (makeLeaf c y)
-  | x > y = Node co x (insert l y) Empty
-  | otherwise = t
-insert t@(Node co x Empty r@(Node c _ _ _)) y
-  | x < y = Node co x          Empty (insert r y)
-  | x > y = Node co x (makeLeaf c y) r
-  | otherwise = t
-insert t@(Node co x l r) y
-  | x < y = Node co x l (insert r y)
-  | x > y = Node co x (insert l y) r
-  | otherwise = t
+insert = undefined
 
 contains :: Ord a => Tree a -> a -> Bool
 contains = undefined
