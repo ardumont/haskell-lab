@@ -1,6 +1,10 @@
 module RBT where
 
-import Data.List (foldl')
+import Data.List (foldl', sort)
+
+import Test.QuickCheck
+import Test.Framework (defaultMain, testGroup)
+import Test.Framework.Providers.QuickCheck2 (testProperty)
 
 data Color  = R | B deriving (Eq, Show)
 data Tree a = Empty | Node Color (Tree a) a (Tree a) deriving (Eq, Show)
@@ -208,3 +212,7 @@ noRedRed Empty = undefined
 {-- Returns all paths from root to leaves --}
 paths :: Tree a -> [[(Color, a)]]
 paths = undefined
+prop_sort_list_2_RBT_to_sorted_list :: [Int] -> Bool
+prop_sort_list_2_RBT_to_sorted_list xs = sortedResult == expectedSortedList
+               where sortedResult = toSortedList $ fromList xs
+                     expectedSortedList = sort sortedResult
