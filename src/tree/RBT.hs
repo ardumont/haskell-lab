@@ -194,9 +194,21 @@ isRBTree = undefined
 --   where (_, lbc) = countRB l
 --         (_, rbc) = countRB r
 
--- Returns whether the given tree contains Red-Red nodes or not --
+-- Returns whether the given tree contains Red-Red nodes or not
 noRedRed :: Tree a -> Bool
-noRedRed Empty = undefined
+noRedRed Empty                       = True
+noRedRed (Node R (Node R _ _ _) _ _) = False
+noRedRed (Node R _ _ (Node R _ _ _)) = False
+noRedRed (Node _ l _ r)              = noRedRed l && noRedRed r
+
+-- *RBT> noRedRed $ Node B (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty
+-- True
+-- *RBT> noRedRed $ Node B (Node R (Node R Empty 5 Empty) 10 Empty) 20 Empty
+-- False
+-- *RBT> noRedRed $ Node R (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty
+-- False
+-- *RBT> noRedRed $ Node B (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty
+-- True
 
 -- *RBT> color rbt1
 -- B
