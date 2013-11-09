@@ -2,14 +2,14 @@ module RBT where
 
 import Data.List (foldl', sort, nub)
 
-import Test.QuickCheck
+--import Test.QuickCheck
 import Test.HUnit
 import Test.Framework (defaultMain, testGroup)
 import Test.Framework.Providers.QuickCheck2 (testProperty)
 
-import Test.Framework.Options (TestOptions, TestOptions'(..))
-import Test.Framework.Runners.Options (RunnerOptions, RunnerOptions'(..))
-import Test.Framework.Providers.HUnit
+-- import Test.Framework.Options (TestOptions, TestOptions'(..))
+-- import Test.Framework.Runners.Options (RunnerOptions, RunnerOptions'(..))
+-- import Test.Framework.Providers.HUnit
 
 data Color  = R | B deriving (Eq, Show)
 data Tree a = Empty | Node Color (Tree a) a (Tree a) deriving (Eq, Show)
@@ -162,7 +162,7 @@ contains (Node _ l x r) y = case compare y x of
   GT -> contains r y
 
 toSortedList :: Tree a -> [a]
-toSortedList Empty = []
+toSortedList Empty          = []
 toSortedList (Node _ l v r) = toSortedList l ++ v : toSortedList r
 
 toList :: Tree a -> [a]
@@ -194,13 +194,6 @@ noRedRed (Node R (Node R _ _ _) _ _) = False
 noRedRed (Node R _ _ (Node R _ _ _)) = False
 noRedRed (Node _ l _ r)              = noRedRed l && noRedRed r
 
--- *RBT> color rbt1
--- B
--- *RBT> color rbt0
--- B
--- *RBT> color rbt2
--- B
-
 -- Returns all paths from root to leaves --
 paths :: Tree a -> [[(Color, a)]]
 paths = undefined
@@ -221,21 +214,27 @@ testNoRedReds :: Test
 testNoRedReds = TestList [testNoRedRed1, testNoRedRed2, testNoRedRed3, testNoRedRed4]
 
 testCountRB1 :: Test
-testCountRB1 = (2,4) ~=? countRB (Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty))
+testCountRB1 = (2,4) ~=? countRB (Node B (Node R (Node B Empty 0 Empty) 1
+                                          (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty))
 
 testCountRB2 :: Test
-testCountRB2 = (4,3) ~=? countRB (Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty)))
+testCountRB2 = (4,3) ~=? countRB (Node B (Node B (Node R Empty 1 Empty) 3
+                                          (Node R Empty 2 Empty)) 4
+                                  (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty)))
 
 testCountRB3 :: Test
-testCountRB3 = (3,4) ~=? countRB (Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty)))
+testCountRB3 = (3,4) ~=? countRB (Node B (Node B Empty 0 Empty) 1
+                                  (Node R (Node B (Node R Empty 3 Empty) 4
+                                           (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty)))
 
 testCountRBs :: Test
 testCountRBs = TestList [testCountRB1, testCountRB2, testCountRB3]
 
 prop_sort_list_2_RBT_to_sorted_list :: [Int] -> Bool
-prop_sort_list_2_RBT_to_sorted_list xs = sortedResult == expectedSortedList
-               where sortedResult = (toSortedList . fromList) xs
-                     expectedSortedList = sort sortedResult
+prop_sort_list_2_RBT_to_sorted_list xs =
+  sortedResult == expectedSortedList
+  where sortedResult = (toSortedList . fromList) xs
+        expectedSortedList = sort sortedResult
 
 prop_rbt :: [Int] -> Bool
 prop_rbt xs = (isRBTree . fromList) xs == True
@@ -262,7 +261,6 @@ testsQuick = [
 testsHUnit :: Test
 testsHUnit = TestList [testCountRBs,
                        testNoRedReds]
-
 
 main :: IO ()
 main = runTestTT testsHUnit >> defaultMain testsQuick
