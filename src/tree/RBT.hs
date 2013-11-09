@@ -150,7 +150,7 @@ contains = undefined
 
 toSortedList :: Tree a -> [a]
 toSortedList Empty = []
-toSortedList (Node _ l v r) = toSortedList l ++ [v] ++ toSortedList r
+toSortedList (Node _ l v r) = toSortedList l ++ v : toSortedList r
 
 toList :: Tree a -> [a]
 toList Empty          = []
