@@ -150,7 +150,11 @@ fromList :: Ord a => [a] -> Tree a
 fromList = foldl' insert Empty
 
 contains :: Ord a => Tree a -> a -> Bool
-contains = undefined
+contains Empty _        = False
+contains (Node _ l x r) y = case compare y x of
+  EQ -> True
+  LT -> contains l y
+  GT -> contains r y
 
 toSortedList :: Tree a -> [a]
 toSortedList Empty = []
@@ -160,7 +164,7 @@ toList :: Tree a -> [a]
 toList Empty          = []
 toList (Node _ l x r) = x : toList l ++ toList r
 
-{-- Returns how many Reds and Blacks in the given Tree as (redcount, blackcount) --}
+-- Returns how many Reds and Blacks in the given Tree as (redcount, blackcount)
 countRB :: (Num b, Num c) => Tree a -> (b, c)
 countRB Empty = (0, 0)
 countRB (Node B l _ r) =
@@ -212,7 +216,25 @@ noRedRed Empty = undefined
 {-- Returns all paths from root to leaves --}
 paths :: Tree a -> [[(Color, a)]]
 paths = undefined
+
 prop_sort_list_2_RBT_to_sorted_list :: [Int] -> Bool
 prop_sort_list_2_RBT_to_sorted_list xs = sortedResult == expectedSortedList
                where sortedResult = toSortedList $ fromList xs
                      expectedSortedList = sort sortedResult
+
+prop_insert_element_is_contained_in_tree :: [Int] -> Int -> Bool
+prop_insert_element_is_contained_in_tree xs e =
+  contains t e == elem e xs
+  where t = fromList xs
+
+-- deepCheck :: Testable prop => prop -> IO ()
+-- deepCheck p = quickCheckWith stdArgs { maxSuccess = 500} p
+
+tests =
+  [testGroup "Group of tests"
+   [testProperty "Should return a sorted list when creating a RBT then transforming it into a sorted list"
+    prop_sort_list_2_RBT_to_sorted_list,
+    testProperty "Element inserted is contained in the RBT" prop_insert_element_is_contained_in_tree]]
+
+main :: IO ()
+main = defaultMain tests
