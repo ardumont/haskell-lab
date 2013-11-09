@@ -179,14 +179,13 @@ countRB (Node c l _ r) =
         rc = lrc + rrc
         bc = lbc + rbc
 
+blackHeight :: Tree a -> Int
+blackHeight Empty          = 1
+blackHeight (Node c l _ _) = (if c == B then 1 else 0) + blackHeight l
+
 isRBTree :: Eq a => Tree a -> Bool
-isRBTree = undefined
--- isRBTree (Node R _ (Node R _ _ _) _) = False
--- isRBTree (Node R _ _ (Node R _ _ _)) = False
--- isRBTree (Node _ _ l r) =
---   and [(lbc == rbc), (isRBTree l), (isRBTree r)]
---   where (_, lbc) = countRB l
---         (_, rbc) = countRB r
+isRBTree Empty            = True
+isRBTree t@(Node _ l _ r) = and [noRedRed t, blackHeight l == blackHeight r]
 
 -- Returns whether the given tree contains Red-Red nodes or not
 noRedRed :: Tree a -> Bool
@@ -238,6 +237,9 @@ prop_sort_list_2_RBT_to_sorted_list xs = sortedResult == expectedSortedList
                where sortedResult = (toSortedList . fromList) xs
                      expectedSortedList = sort sortedResult
 
+prop_rbt :: [Int] -> Bool
+prop_rbt xs = (isRBTree . fromList) xs == True
+
 prop_insert_element_is_contained_in_tree :: [Int] -> Int -> Bool
 prop_insert_element_is_contained_in_tree xs e =
   (contains . fromList) xs e == elem e xs
@@ -251,6 +253,7 @@ prop_fromList_build_a_tree xs = (length . toList . fromList) xs == (length . nub
 testsQuick = [
   testGroup "Group of tests" [
      testProperty "Should return a sorted list when creating a RBT then transforming it into a sorted list" prop_sort_list_2_RBT_to_sorted_list,
+     testProperty "Should always be a rbt" prop_rbt,
      testProperty "Element inserted is contained in the RBT" prop_insert_element_is_contained_in_tree,
      testProperty "Length of the list built from the RBT" prop_fromList_build_a_tree
      ]
