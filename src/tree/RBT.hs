@@ -194,7 +194,7 @@ isRBTree = undefined
 --   where (_, lbc) = countRB l
 --         (_, rbc) = countRB r
 
-{-- Returns whether the given tree contains Red-Red nodes or not --}
+-- Returns whether the given tree contains Red-Red nodes or not --
 noRedRed :: Tree a -> Bool
 noRedRed Empty = undefined
 
@@ -205,22 +205,9 @@ noRedRed Empty = undefined
 -- *RBT> color rbt2
 -- B
 
-{-- Returns all paths from root to leaves --}
+-- Returns all paths from root to leaves --
 paths :: Tree a -> [[(Color, a)]]
 paths = undefined
-
--- *RBT> rbt0
--- Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty)
--- *RBT> rbt1
--- *RBT> countRB rbt0
--- (2,4)
--- Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty))
--- *RBT> countRB rbt1
--- (4,3)
--- *RBT> rbt2
--- Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty))
--- *RBT> countRB rbt2
--- (3,4)
 
 testCountRB1 :: Test.HUnit.Test
 testCountRB1 = (2,4) ~=? countRB (Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty))
