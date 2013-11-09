@@ -145,13 +145,13 @@ toList = undefined
 {-- Returns how many Reds and Blacks in the given Tree as (redcount, blackcount) --}
 countRB :: (Num b, Num c) => Tree a -> (b, c)
 countRB Empty = (0, 0)
-countRB (Node B _ l r) =
+countRB (Node B l _ r) =
   (rc, 1 + bc)
   where (lrc, lbc) = countRB l
         (rrc, rbc) = countRB r
         rc = lrc + rrc
         bc = lbc + rbc
-countRB (Node R _ l r) =
+countRB (Node R l _ r) =
   (1 + rc, bc)
   where (lrc, lbc) = countRB l
         (rrc, rbc) = countRB r
