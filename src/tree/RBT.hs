@@ -25,6 +25,18 @@ module RBT where
 data Color  = R | B deriving (Eq, Show)
 data Tree a = Empty | Node Color a (Tree a) (Tree a) deriving (Eq, Show)
 
+left :: Tree a -> Tree a
+left Empty = undefined
+left (Node _ _ l _) = l
+
+right :: Tree a -> Tree a
+right Empty = undefined
+right (Node _ _ _ r) = r
+
+color :: Tree a -> Color
+color Empty = undefined
+color (Node c _ _ _) = c
+
 pp :: Show a => Tree a -> IO ()
 pp = (mapM_ putStrLn) . treeIndent
   where
@@ -191,21 +203,9 @@ isRBTree (Node _ _ l r) =
   where (_, lbc) = countRB l
         (_, rbc) = countRB r
 
-left :: Tree a -> Tree a
-left Empty = undefined
-left (Node _ _ l _) = l
-
-right :: Tree a -> Tree a
-right Empty = undefined
-right (Node _ _ _ r) = r
-
 {-- Returns whether the given tree contains Red-Red nodes or not --}
 noRedRed :: Tree a -> Bool
-noRedRed = undefined
-
-color :: Tree a -> Color
-color Empty = undefined
-color (Node c _ _ _) = c
+noRedRed Empty = undefined
 
 -- *RBT> color rbt1
 -- B
