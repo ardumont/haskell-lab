@@ -1,6 +1,6 @@
 module AnagramTests where
 
-import Anagram
+import Anagram hiding (main)
 import Test.HUnit
 import qualified Data.Map as Map
 
