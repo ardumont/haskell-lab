@@ -23,11 +23,11 @@ module RBT where
 -- - every root node is black (optional but simplify the operations)
 
 data Color  = R | B deriving (Eq, Show)
-data Tree a = Empty | Node Color a (Tree a) (Tree a) deriving (Eq, Show)
+data Tree a = Empty | Node Color (Tree a) a (Tree a) deriving (Eq, Show)
 
 left :: Tree a -> Tree a
 left Empty = undefined
-left (Node _ _ l _) = l
+left (Node _ l _ _) = l
 
 right :: Tree a -> Tree a
 right Empty = undefined
@@ -41,7 +41,7 @@ pp :: Show a => Tree a -> IO ()
 pp = (mapM_ putStrLn) . treeIndent
   where
     treeIndent Empty          = ["-- /-"]
-    treeIndent (Node c v lb rb) =
+    treeIndent (Node c lb v rb) =
       ["--" ++ (show c) ++ " " ++ (show v)] ++
       map ("  |" ++) ls ++
       ("  `" ++ r) : map ("   " ++) rs
@@ -50,17 +50,18 @@ pp = (mapM_ putStrLn) . treeIndent
         ls     = treeIndent $ lb
 
 makeLeaf :: Color -> a -> Tree a
-makeLeaf c v = Node c v Empty Empty
+makeLeaf c v = Node c Empty v Empty
 
 makeLeft :: Color -> a -> Tree a -> Tree a
-makeLeft c v l = Node c v l Empty
+makeLeft c v l = Node c l v Empty
 
 makeRight :: Color -> a -> Tree a -> Tree a
-makeRight c v r = Node c v Empty r
+makeRight c v r = Node c Empty v r
 
 rbt0 :: Tree Int
-rbt0 = Node B 4
-       (Node R 1 (makeLeaf B 0) (makeLeft B 3 (makeLeaf R 2)))
+rbt0 = Node B
+       (Node R (makeLeaf B 0) 1 (makeLeft B 3 (makeLeaf R 2)))
+       4
        (makeLeaf B 5)
 
 -- *RBT> rbt0
@@ -82,9 +83,10 @@ rbt0 = Node B 4
 --      `-- /-
 
 rbt1 :: Tree Int
-rbt1 = Node B 4
-       (Node B 3 (makeLeaf R 1) (makeLeaf R 2))
-       (Node B 6 (makeLeaf R 5) (makeLeaf R 7))
+rbt1 = Node B
+       (Node B (makeLeaf R 1) 3 (makeLeaf R 2))
+       4
+       (Node B (makeLeaf R 5) 6 (makeLeaf R 7))
 
 -- *RBT> rbt1
 -- Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty))
@@ -107,10 +109,12 @@ rbt1 = Node B 4
 --         `-- /-
 
 rbt2 :: Tree Int
-rbt2 = Node B 1
+rbt2 = Node B
               (makeLeaf B 0)
-              (Node R 6
-                     (Node B 4 (makeLeaf R 3) (makeLeaf R 5))
+              1
+              (Node R
+                     (Node B (makeLeaf R 3) 4 (makeLeaf R 5))
+                      6
                      (makeLeaf B 7))
 
 -- *RBT> rbt2
@@ -138,15 +142,15 @@ rbt2 = Node B 1
 
 rotateR :: Tree a -> Tree a
 rotateR Empty                     = Empty
-rotateR n@(Node _ _ Empty _)        = n
-rotateR (Node yc yv (Node xc xv xl xr) yr) = (Node xc xv xl (Node yc yv xr yr))
+rotateR n@(Node _ Empty _ _)        = n
+rotateR (Node yc (Node xc xl xv xr) yv yr) = (Node xc xl xv (Node yc xr yv yr))
 
 rotateL :: Tree a -> Tree a
 rotateL Empty                     = Empty
 rotateL n@(Node _ _ _ Empty)        = n
-rotateL (Node xc xv xl (Node yc yv yl yr)) = (Node yc yv (Node xc xv xl yl) yr)
+rotateL (Node xc xl xv (Node yc yl yv yr)) = (Node yc (Node xc xl xv yl) yv yr)
 
-insert :: Ord a => Tree a -> a -> Tree a
+insert :: Ord a => a -> Tree a -> Tree a
 insert = undefined
 
 contains :: Ord a => Tree a -> a -> Bool
@@ -192,13 +196,13 @@ fromList :: Ord a => [a] -> Tree a
 fromList = undefined
 
 isRBTree :: Eq a => Tree a -> Bool
-isRBTree Empty = True
-isRBTree (Node R _ (Node R _ _ _) _) = False
-isRBTree (Node R _ _ (Node R _ _ _)) = False
-isRBTree (Node _ _ l r) =
-  and [(lbc == rbc), (isRBTree l), (isRBTree r)]
-  where (_, lbc) = countRB l
-        (_, rbc) = countRB r
+isRBTree = undefined
+-- isRBTree (Node R _ (Node R _ _ _) _) = False
+-- isRBTree (Node R _ _ (Node R _ _ _)) = False
+-- isRBTree (Node _ _ l r) =
+--   and [(lbc == rbc), (isRBTree l), (isRBTree r)]
+--   where (_, lbc) = countRB l
+--         (_, rbc) = countRB r
 
 {-- Returns whether the given tree contains Red-Red nodes or not --}
 noRedRed :: Tree a -> Bool
