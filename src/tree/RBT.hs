@@ -123,15 +123,8 @@ rbt2 = Node B
 -- FIXME: Improve the data type to create a constructor of meta data (color + value for RBT and just value for AVL)
 -- This way, we can factor some joint functions for those data structure
 
-rotateR :: Tree a -> Tree a
-rotateR Empty                     = Empty
-rotateR n@(Node _ Empty _ _)        = n
-rotateR (Node yc (Node xc xl xv xr) yv yr) = (Node xc xl xv (Node yc xr yv yr))
-
-rotateL :: Tree a -> Tree a
-rotateL Empty                     = Empty
-rotateL n@(Node _ _ _ Empty)        = n
-rotateL (Node xc xl xv (Node yc yl yv yr)) = (Node yc (Node xc xl xv yl) yv yr)
+rebalance :: Tree a -> Tree a
+rebalance = undefined
 
 insert :: Ord a => a -> Tree a -> Tree a
 insert = undefined
