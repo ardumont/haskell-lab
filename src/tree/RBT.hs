@@ -149,7 +149,8 @@ contains :: Ord a => Tree a -> a -> Bool
 contains = undefined
 
 toSortedList :: Tree a -> [a]
-toSortedList = undefined
+toSortedList Empty = []
+toSortedList (Node _ l v r) = toSortedList l ++ [v] ++ toSortedList r
 
 toList :: Tree a -> [a]
 toList Empty          = []
