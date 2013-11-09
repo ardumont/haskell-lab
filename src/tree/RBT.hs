@@ -170,16 +170,10 @@ toList Empty          = []
 toList (Node _ l x r) = x : toList l ++ toList r
 
 -- Returns how many Reds and Blacks in the given Tree as (redcount, blackcount)
-countRB :: (Num b, Num c) => Tree a -> (b, c)
+countRB :: Tree a -> (Int, Int)
 countRB Empty = (0, 0)
-countRB (Node B l _ r) =
-  (rc, 1 + bc)
-  where (lrc, lbc) = countRB l
-        (rrc, rbc) = countRB r
-        rc = lrc + rrc
-        bc = lbc + rbc
-countRB (Node R l _ r) =
-  (1 + rc, bc)
+countRB (Node c l _ r) =
+  if c == B then (rc, 1 + bc) else (1 + rc, bc)
   where (lrc, lbc) = countRB l
         (rrc, rbc) = countRB r
         rc = lrc + rrc
