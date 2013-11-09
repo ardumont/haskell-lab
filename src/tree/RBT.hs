@@ -1,8 +1,7 @@
 module RBT where
 
-import Data.List (foldl', sort)
+import Data.List (foldl', sort, nub)
 
-import Test.QuickCheck
 import Test.Framework (defaultMain, testGroup)
 import Test.Framework.Providers.QuickCheck2 (testProperty)
 
@@ -227,6 +226,9 @@ prop_insert_element_is_contained_in_tree xs e =
   contains t e == elem e xs
   where t = fromList xs
 
+prop_fromList_build_a_tree :: [Int] -> Bool
+prop_fromList_build_a_tree xs = (length . toList . fromList) xs == (length . nub) xs
+
 -- deepCheck :: Testable prop => prop -> IO ()
 -- deepCheck p = quickCheckWith stdArgs { maxSuccess = 500} p
 
@@ -234,7 +236,8 @@ tests =
   [testGroup "Group of tests"
    [testProperty "Should return a sorted list when creating a RBT then transforming it into a sorted list"
     prop_sort_list_2_RBT_to_sorted_list,
-    testProperty "Element inserted is contained in the RBT" prop_insert_element_is_contained_in_tree]]
+    testProperty "Element inserted is contained in the RBT" prop_insert_element_is_contained_in_tree,
+    testProperty "Length of the list built from the RBT" prop_fromList_build_a_tree]]
 
 main :: IO ()
 main = defaultMain tests
