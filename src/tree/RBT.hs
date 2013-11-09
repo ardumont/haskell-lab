@@ -195,15 +195,6 @@ noRedRed (Node R (Node R _ _ _) _ _) = False
 noRedRed (Node R _ _ (Node R _ _ _)) = False
 noRedRed (Node _ l _ r)              = noRedRed l && noRedRed r
 
--- *RBT> noRedRed $ Node B (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty
--- True
--- *RBT> noRedRed $ Node B (Node R (Node R Empty 5 Empty) 10 Empty) 20 Empty
--- False
--- *RBT> noRedRed $ Node R (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty
--- False
--- *RBT> noRedRed $ Node B (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty
--- True
-
 -- *RBT> color rbt1
 -- B
 -- *RBT> color rbt0
@@ -215,14 +206,32 @@ noRedRed (Node _ l _ r)              = noRedRed l && noRedRed r
 paths :: Tree a -> [[(Color, a)]]
 paths = undefined
 
-testCountRB1 :: Test.HUnit.Test
+testNoRedRed1 :: Test
+testNoRedRed1 = True  ~=? noRedRed (Node B (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty)
+
+testNoRedRed2 :: Test
+testNoRedRed2 = False ~=? noRedRed (Node R (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty)
+
+testNoRedRed3 :: Test
+testNoRedRed3 = False ~=? noRedRed (Node B (Node R (Node R Empty 5 Empty) 10 Empty) 20 Empty)
+
+testNoRedRed4 :: Test
+testNoRedRed4 = True  ~=? noRedRed (Node B (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty)
+
+testNoRedReds :: Test
+testNoRedReds = TestList [testNoRedRed1, testNoRedRed2, testNoRedRed3, testNoRedRed4]
+
+testCountRB1 :: Test
 testCountRB1 = (2,4) ~=? countRB (Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty))
 
-testCountRB2 :: Test.HUnit.Test
+testCountRB2 :: Test
 testCountRB2 = (4,3) ~=? countRB (Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty)))
 
-testCountRB3 :: Test.HUnit.Test
+testCountRB3 :: Test
 testCountRB3 = (3,4) ~=? countRB (Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty)))
+
+testCountRBs :: Test
+testCountRBs = TestList [testCountRB1, testCountRB2, testCountRB3]
 
 prop_sort_list_2_RBT_to_sorted_list :: [Int] -> Bool
 prop_sort_list_2_RBT_to_sorted_list xs = sortedResult == expectedSortedList
@@ -248,7 +257,8 @@ testsQuick = [
   ]
 
 testsHUnit :: Test
-testsHUnit = TestList [testCountRB1,testCountRB2,testCountRB2]
+testsHUnit = TestList [testCountRBs,
+                       testNoRedReds]
 
 
 main :: IO ()
