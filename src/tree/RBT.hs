@@ -2,8 +2,14 @@ module RBT where
 
 import Data.List (foldl', sort, nub)
 
+import Test.QuickCheck
+import Test.HUnit
 import Test.Framework (defaultMain, testGroup)
 import Test.Framework.Providers.QuickCheck2 (testProperty)
+
+import Test.Framework.Options (TestOptions, TestOptions'(..))
+import Test.Framework.Runners.Options (RunnerOptions, RunnerOptions'(..))
+import Test.Framework.Providers.HUnit
 
 data Color  = R | B deriving (Eq, Show)
 data Tree a = Empty | Node Color (Tree a) a (Tree a) deriving (Eq, Show)
@@ -179,19 +185,6 @@ countRB (Node R l _ r) =
         rc = lrc + rrc
         bc = lbc + rbc
 
--- *RBT> rbt0
--- Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty)
--- *RBT> rbt1
--- *RBT> countRB rbt0
--- (2,4)
--- Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty))
--- *RBT> countRB rbt1
--- (4,3)
--- *RBT> rbt2
--- Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty))
--- *RBT> countRB rbt2
--- (3,4)
-
 isRBTree :: Eq a => Tree a -> Bool
 isRBTree = undefined
 -- isRBTree (Node R _ (Node R _ _ _) _) = False
@@ -216,6 +209,28 @@ noRedRed Empty = undefined
 paths :: Tree a -> [[(Color, a)]]
 paths = undefined
 
+-- *RBT> rbt0
+-- Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty)
+-- *RBT> rbt1
+-- *RBT> countRB rbt0
+-- (2,4)
+-- Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty))
+-- *RBT> countRB rbt1
+-- (4,3)
+-- *RBT> rbt2
+-- Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty))
+-- *RBT> countRB rbt2
+-- (3,4)
+
+testCountRB1 :: Test.HUnit.Test
+testCountRB1 = (2,4) ~=? countRB (Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty))
+
+testCountRB2 :: Test.HUnit.Test
+testCountRB2 = (4,3) ~=? countRB (Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty)))
+
+testCountRB3 :: Test.HUnit.Test
+testCountRB3 = (3,4) ~=? countRB (Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty)))
+
 prop_sort_list_2_RBT_to_sorted_list :: [Int] -> Bool
 prop_sort_list_2_RBT_to_sorted_list xs = sortedResult == expectedSortedList
                where sortedResult = (toSortedList . fromList) xs
@@ -231,12 +246,17 @@ prop_fromList_build_a_tree xs = (length . toList . fromList) xs == (length . nub
 -- deepCheck :: Testable prop => prop -> IO ()
 -- deepCheck p = quickCheckWith stdArgs { maxSuccess = 500} p
 
-tests =
-  [testGroup "Group of tests"
-   [testProperty "Should return a sorted list when creating a RBT then transforming it into a sorted list"
-    prop_sort_list_2_RBT_to_sorted_list,
-    testProperty "Element inserted is contained in the RBT" prop_insert_element_is_contained_in_tree,
-    testProperty "Length of the list built from the RBT" prop_fromList_build_a_tree]]
+testsQuick = [
+  testGroup "Group of tests" [
+     testProperty "Should return a sorted list when creating a RBT then transforming it into a sorted list" prop_sort_list_2_RBT_to_sorted_list,
+     testProperty "Element inserted is contained in the RBT" prop_insert_element_is_contained_in_tree,
+     testProperty "Length of the list built from the RBT" prop_fromList_build_a_tree
+     ]
+  ]
+
+testsHUnit :: Test
+testsHUnit = TestList [testCountRB1,testCountRB2,testCountRB2]
+
 
 main :: IO ()
-main = defaultMain tests
+main = runTestTT testsHUnit >> defaultMain testsQuick
