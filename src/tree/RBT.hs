@@ -152,7 +152,8 @@ toSortedList :: Tree a -> [a]
 toSortedList = undefined
 
 toList :: Tree a -> [a]
-toList = undefined
+toList Empty          = []
+toList (Node _ l x r) = x : (toList l) ++ (toList r)
 
 {-- Returns how many Reds and Blacks in the given Tree as (redcount, blackcount) --}
 countRB :: (Num b, Num c) => Tree a -> (b, c)
