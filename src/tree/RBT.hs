@@ -1,5 +1,7 @@
 module RBT where
 
+import Data.List (foldl')
+
 data Color  = R | B deriving (Eq, Show)
 data Tree a = Empty | Node Color (Tree a) a (Tree a) deriving (Eq, Show)
 
@@ -131,11 +133,17 @@ rebalance (Node B xl xv (Node R (Node R zl zv zr) yv yr)) = Node R (Node B xl xv
 rebalance r = r
 
 insert :: Ord a => Tree a -> a -> Tree a
-insert Empty y = makeLeaf B y
-insert n@(Node c l x r) y
-  | x < y      = rebalance $ Node c l x (insert r y)
-  | y < x      = rebalance $ Node c (insert l y) x r
-  | otherwise  = n
+insert t y = Node B l v r -- force the root to be black
+             where Node _ l v r = ins t
+                   ins Empty = makeLeaf R y
+                   ins n@(Node c tl x tr)
+                     | x == y     = n
+                     | x < y      = rebalance $ Node c tl x (ins tr)
+                     | otherwise  = rebalance $ Node c (ins tl) x tr
+
+-- Creates a new Red-Black Tree from a given list
+fromList :: Ord a => [a] -> Tree a
+fromList = foldl' insert Empty
 
 contains :: Ord a => Tree a -> a -> Bool
 contains = undefined
@@ -174,10 +182,6 @@ countRB (Node R l _ r) =
 -- Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty))
 -- *RBT> countRB rbt2
 -- (3,4)
-
-{-- Creates a new Red-Black Tree from a given list --}
-fromList :: Ord a => [a] -> Tree a
-fromList = undefined
 
 isRBTree :: Eq a => Tree a -> Bool
 isRBTree = undefined
