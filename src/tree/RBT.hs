@@ -218,13 +218,12 @@ paths = undefined
 
 prop_sort_list_2_RBT_to_sorted_list :: [Int] -> Bool
 prop_sort_list_2_RBT_to_sorted_list xs = sortedResult == expectedSortedList
-               where sortedResult = toSortedList $ fromList xs
+               where sortedResult = (toSortedList . fromList) xs
                      expectedSortedList = sort sortedResult
 
 prop_insert_element_is_contained_in_tree :: [Int] -> Int -> Bool
 prop_insert_element_is_contained_in_tree xs e =
-  contains t e == elem e xs
-  where t = fromList xs
+  (contains . fromList) xs e == elem e xs
 
 prop_fromList_build_a_tree :: [Int] -> Bool
 prop_fromList_build_a_tree xs = (length . toList . fromList) xs == (length . nub) xs
