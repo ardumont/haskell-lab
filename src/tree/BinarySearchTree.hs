@@ -468,6 +468,10 @@ testsHUnit = TestList [testLeafs,
                        testDeleteMins,
                        testRemoves]
 
+prop_insert_maintains_sbt_properties :: [Int] -> Int -> Bool
+prop_insert_maintains_sbt_properties xs e =
+  (isBSearchTree . flip insert e . fromList) xs == True
+
 prop_insert_element_is_contained_in_tree :: [Int] -> Int -> Bool
 prop_insert_element_is_contained_in_tree xs e =
   (contains . flip insert e . fromList) xs e == True
@@ -497,6 +501,7 @@ testsQuick = [
      testProperty "A (B)inary (S)earch (T)ree created fromList should always be" prop_always_sbt,
      testProperty "Element inserted is contained in the RBT" prop_insert_element_is_contained_in_tree,
      testProperty "Element inserted and removed is no longer contained" prop_remove_then_no_longer_contained,
+     testProperty "insert maintains the SBT properties" prop_insert_maintains_sbt_properties,
      testProperty "DeleteMin maintains the SBT properties" prop_remove_max_then_still_sbt,
      testProperty "DeleteMax maintains the SBT properties" prop_remove_min_then_still_sbt
      ]
