@@ -28,7 +28,7 @@ pp = (mapM_ putStrLn) . treeIndent
   where
     treeIndent Empty          = ["-- /-"]
     treeIndent (Node v lb rb) =
-      ["--" ++ (show v)] ++
+      ["-- " ++ (show v)] ++
       map ("  |" ++) ls ++
       ("  `" ++ r) : map ("   " ++) rs
       where
