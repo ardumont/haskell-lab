@@ -17,7 +17,7 @@ bst-tests:
 	cd src/tree && runhaskell BSTTests
 
 rbt-tests:
-	cd src/tree && runhaskell RBT
+	cd src/tree && runhaskell RBTTests
 
 anagram-run-sample:
 	cd src && runhaskell Anagram Linux rulez
