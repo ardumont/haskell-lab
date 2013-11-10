@@ -160,10 +160,10 @@ remove (Node x l r) y
     (Nothing, _) -> Empty
 
 testLeaf1 :: Test
-testLeaf1 = leaf 1 ~=? Node 1 Empty Empty
+testLeaf1 = leaf 1 ~=? t where t = Node 1 Empty Empty :: Tree Int
 
 testLeaf2 :: Test
-testLeaf2 = leaf 2 ~=? Node 2 Empty Empty
+testLeaf2 = leaf 2 ~=? t where t = Node 2 Empty Empty :: Tree Int
 
 testLeafs :: Test
 testLeafs = TestList ["testLeaf1" ~: testLeaf1,
@@ -339,10 +339,10 @@ testInserts = TestList["testInsert1" ~: testInsert1,
                        "testInsert2" ~: testInsert2]
 
 testValue1 :: Test
-testValue1 = Just 10 ~=? value (Node 10 Empty Empty)
+testValue1 = Just 10 ~=? value (Node 10 Empty Empty :: Tree Int)
 
 testValue2 :: Test
-testValue2 = Just 10 ~=? value (leaf 10)
+testValue2 = Just 10 ~=? value (leaf 10 :: Tree Int)
 
 testValue3 :: Test
 testValue3 = Nothing ~=? value (Empty :: Tree Int)
