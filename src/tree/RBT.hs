@@ -257,8 +257,8 @@ prop_insert_element_is_contained_in_tree :: [Int] -> Int -> Bool
 prop_insert_element_is_contained_in_tree xs e =
   (contains . fromList) xs e == elem e xs
 
-prop_fromList_build_a_tree :: [Int] -> Bool
-prop_fromList_build_a_tree xs = (length . toList . fromList) xs == (length . nub) xs
+prop_fromList_2_tree :: [Int] -> Bool
+prop_fromList_2_tree xs = (length . toList . fromList) xs == (length . nub) xs
 
 -- deepCheck :: Testable prop => prop -> IO ()
 -- deepCheck p = quickCheckWith stdArgs { maxSuccess = 500} p
@@ -269,7 +269,7 @@ testsQuick = [
      testProperty "fromList should always create a RBT" prop_rbt,
      testProperty "Sorted list from a RBT Should return a sorted list" prop_sort_list_2_RBT_to_sorted_list,
      testProperty "Element inserted is contained in the RBT" prop_insert_element_is_contained_in_tree,
-     testProperty "Length of the list built from the RBT" prop_fromList_build_a_tree
+     testProperty "Length of the input list == length of the output list minus duplicates " prop_fromList_2_tree
      ]
   ]
 
