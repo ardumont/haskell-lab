@@ -328,7 +328,7 @@ testRightSons = TestList["testRightSon1" ~: testRightSon1,
                          "testRightSon4" ~: testRightSon4]
 
 testInsert1 :: Test
-testInsert1 = Node 4 (leaf 3) (Node 7 (leaf 5) (Node 10 (leaf 10) Empty)) ~=? insert t1 10
+testInsert1 = Node 4 (Node 3 Empty Empty) (Node 7 (Node 5 Empty Empty) (Node 10 Empty Empty)) ~=? insert t1 10
 
 testInsert2 :: Test
 testInsert2 = Node 20 (Node 15 (Node 8 (Node 7 Empty Empty) (Node 11 Empty Empty)) (Node 18 Empty Empty)) (Node 118 (Node 35 (Node 33 Empty Empty) (Node 49 Empty (Node 60 Empty Empty))) (Node 166 Empty (Node 200 Empty Empty)))
