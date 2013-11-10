@@ -47,64 +47,6 @@ makeLeft c v l = Node c l v Empty
 makeRight :: Color -> a -> Tree a -> Tree a
 makeRight c v r = Node c Empty v r
 
-rbt0 :: Tree Int
-rbt0 = Node B
-       (Node R (makeLeaf B 0) 1 (makeLeft B 3 (makeLeaf R 2)))
-       4
-       (makeLeaf B 5)
-
--- *RBT> rbt0
--- Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty)
-
--- *RBT> pp rbt0
--- --B 4
---   |--R 1
---   |  |--B 0
---   |  |  |-- /-
---   |  |  `-- /-
---   |  `--B 3
---   |     |--R 2
---   |     |  |-- /-
---   |     |  `-- /-
---   |     `-- /-
---   `--B 5
---      |-- /-
---      `-- /-
-
-rbt1 :: Tree Int
-rbt1 = Node B
-       (Node B (makeLeaf R 1) 3 (makeLeaf R 2))
-       4
-       (Node B (makeLeaf R 5) 6 (makeLeaf R 7))
-
--- *RBT> rbt1
--- Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty))
-
--- *RBT> pp rbt1
--- --B 4
---   |--B 3
---   |  |--R 1
---   |  |  |-- /-
---   |  |  `-- /-
---   |  `--R 2
---   |     |-- /-
---   |     `-- /-
---   `--B 6
---      |--R 5
---      |  |-- /-
---      |  `-- /-
---      `--R 7
---         |-- /-
---         `-- /-
-
-rbt2 :: Tree Int
-rbt2 = Node B
-              (makeLeaf B 0)
-              1
-              (Node R
-                     (Node B (makeLeaf R 3) 4 (makeLeaf R 5))
-                      6
-                     (makeLeaf B 7))
 
 -- *RBT> rbt2
 -- Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty))
@@ -203,4 +145,7 @@ noRedRed (Node _ l _ r)              = noRedRed l && noRedRed r
 
 -- Returns all paths from root to leaves --
 paths :: Tree a -> [[(Color, a)]]
-paths = undefined
+paths Empty                  = [[]]
+paths (Node c Empty v Empty) = [[(c, v)]]
+paths (Node c l v r) = [ cv : p | p <- paths l ++ paths r ]
+                       where cv = (c, v)

@@ -38,6 +38,31 @@ testCountRB3 = (3,4) ~=? countRB t where t = Node B (Node B Empty 0 Empty) 1 (No
 testCountRBs :: Test
 testCountRBs = TestList [testCountRB1, testCountRB2, testCountRB3]
 
+testPaths1 :: Test
+testPaths1 = [[(B,4),(R,1),(B,0)],
+              [(B,4),(R,1),(B,3),(R,2)],
+              [(B,4),(R,1),(B,3)],
+              [(B,4),(B,5)]]
+             ~=?
+             paths (Node B
+                    (Node R (makeLeaf B 0) 1 (makeLeft B 3 (makeLeaf R 2)))
+                    4
+                    (makeLeaf B 5))
+
+testPaths2 :: Test
+testPaths2 = [[(B,1),(B,0)],[(B,1),(R,6),(B,4),(R,3)],[(B,1),(R,6),(B,4),(R,5)],[(B,1),(R,6),(B,7)]]
+             ~=?
+             paths (Node B
+              (makeLeaf B 0)
+              1
+              (Node R
+                     (Node B (makeLeaf R 3) 4 (makeLeaf R 5))
+                      6
+                     (makeLeaf B 7)))
+
+testPathss :: Test
+testPathss = TestList ["testPaths1" ~: testPaths1, "testPaths2" ~: testPaths2]
+
 prop_sort_list_2_RBT_to_sorted_list :: [Int] -> Bool
 prop_sort_list_2_RBT_to_sorted_list xs =
   sortedResult == expectedSortedList
@@ -76,7 +101,8 @@ testsQuick = [
 
 testsHUnit :: Test
 testsHUnit = TestList [testCountRBs,
-                       testNoRedReds]
+                       testNoRedReds,
+                       testPathss]
 
 main :: IO ()
 main = runTestTT testsHUnit >> defaultMain testsQuick
