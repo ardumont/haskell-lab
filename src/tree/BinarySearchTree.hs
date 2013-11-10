@@ -1,5 +1,6 @@
 module BinarySearchTree where
 
+import Data.List (foldl')
 import Test.HUnit
 import Test.Framework (defaultMain, testGroup)
 import Test.Framework.Providers.QuickCheck2 (testProperty)
@@ -48,11 +49,7 @@ toList Empty        = []
 toList (Node x l r) = x : (toList l) ++ (toList r)
 
 fromList :: Ord a => [a] -> Tree a
-fromList []     = Empty
-fromList (x:xs) = Node x (fromList lefts) (fromList rights)
-                  where p      = (<= x)
-                        lefts  = takeWhile p xs
-                        rights = dropWhile p xs
+fromList = foldl' insert Empty
 
 -- Returns a sorted list of all elements of the given Tree.
 -- Note that we can't go back to the origin Tree
