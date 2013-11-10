@@ -31,6 +31,10 @@ color :: Tree a -> Color
 color Empty = undefined
 color (Node c _ _ _) = c
 
+value :: Tree a -> Maybe a
+value Empty          = Nothing
+value (Node _ _ v _) = Just v
+
 pp :: Show a => Tree a -> IO ()
 pp = (mapM_ putStrLn) . treeIndent
   where
@@ -183,9 +187,21 @@ blackHeight :: Tree a -> Int
 blackHeight Empty          = 1
 blackHeight (Node c l _ _) = (if c == B then 1 else 0) + blackHeight l
 
-isRBTree :: Eq a => Tree a -> Bool
-isRBTree Empty            = True
-isRBTree t@(Node _ l _ r) = and [noRedRed t, blackHeight l == blackHeight r]
+-- FIXME create your own type to permit the behaviour sharing between RBT and BST as a RBT is a BST
+-- this function is repeated and adapted from the BST module, this is not DRY!
+
+isBST :: (Ord a) => Tree a -> Bool
+isBST Empty          = True
+isBST (Node _ l x r) =
+  case [value l, value r] of
+    [Nothing, Nothing] -> True
+    [Nothing, Just z]  -> and [x < z, isBST l, isBST r]
+    [Just y, Nothing]  -> and [y <= x, isBST l, isBST r]
+    [Just y, Just z]   -> and [y <= x, x < z, isBST l, isBST r]
+
+isRBT :: (Ord a, Eq a) => Tree a -> Bool
+isRBT Empty            = True
+isRBT t@(Node _ l _ r) = and [isBST t, noRedRed t, blackHeight l == blackHeight r]
 
 -- Returns whether the given tree contains Red-Red nodes or not
 noRedRed :: Tree a -> Bool
@@ -236,8 +252,11 @@ prop_sort_list_2_RBT_to_sorted_list xs =
   where sortedResult = (toSortedList . fromList) xs
         expectedSortedList = sort sortedResult
 
+prop_rbt_is_a_bst :: [Int] -> Bool
+prop_rbt_is_a_bst xs = (isBST . fromList) xs == True
+
 prop_rbt :: [Int] -> Bool
-prop_rbt xs = (isRBTree . fromList) xs == True
+prop_rbt xs = (isRBT . fromList) xs == True
 
 prop_insert_element_is_contained_in_tree :: [Int] -> Int -> Bool
 prop_insert_element_is_contained_in_tree xs e =
@@ -251,8 +270,9 @@ prop_fromList_build_a_tree xs = (length . toList . fromList) xs == (length . nub
 
 testsQuick = [
   testGroup "Group of tests" [
-     testProperty "Should return a sorted list when creating a RBT then transforming it into a sorted list" prop_sort_list_2_RBT_to_sorted_list,
-     testProperty "Should always be a rbt" prop_rbt,
+     testProperty "A (R)ed (B)lack (T)ree should be a (B)inary (S)earch (T)ree" prop_rbt_is_a_bst,
+     testProperty "fromList should always create a RBT" prop_rbt,
+     testProperty "Sorted list from a RBT Should return a sorted list" prop_sort_list_2_RBT_to_sorted_list,
      testProperty "Element inserted is contained in the RBT" prop_insert_element_is_contained_in_tree,
      testProperty "Length of the list built from the RBT" prop_fromList_build_a_tree
      ]
