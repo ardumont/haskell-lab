@@ -187,8 +187,8 @@ blackHeight :: Tree a -> Int
 blackHeight Empty          = 1
 blackHeight (Node c l _ _) = (if c == B then 1 else 0) + blackHeight l
 
--- FIXME create your own type to permit the behaviour sharing between RBT and BST as a RBT is a BST
--- this function is repeated and adapted from the BST module, this is not DRY!
+-- FIXME create my own type to permit the behaviour sharing between RBT and BST as a RBT is a BST
+-- This function is repeated and adapted from the BST module, this is not DRY!
 
 isBST :: (Ord a) => Tree a -> Bool
 isBST Empty          = True
