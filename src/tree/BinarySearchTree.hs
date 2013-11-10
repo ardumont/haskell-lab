@@ -116,8 +116,8 @@ leftSon (Node _ l _) = l
 insert :: (Ord a) => Tree a -> a -> Tree a
 insert Empty x = leaf x
 insert n@(Node x l r) y = case compare y x of
-  GT -> Node x l (insert r y)
   EQ -> n
+  GT -> Node x l (insert r y)
   _  -> Node x (insert l y) r
 
 value :: Tree a -> Maybe a
