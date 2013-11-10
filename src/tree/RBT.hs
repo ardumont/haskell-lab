@@ -215,33 +215,28 @@ paths :: Tree a -> [[(Color, a)]]
 paths = undefined
 
 testNoRedRed1 :: Test
-testNoRedRed1 = True  ~=? noRedRed (Node B (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty)
+testNoRedRed1 = True  ~=? noRedRed t where t = Node B (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty :: Tree Int
 
 testNoRedRed2 :: Test
-testNoRedRed2 = False ~=? noRedRed (Node R (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty)
+testNoRedRed2 = False ~=? noRedRed t where t = Node R (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty :: Tree Int
 
 testNoRedRed3 :: Test
-testNoRedRed3 = False ~=? noRedRed (Node B (Node R (Node R Empty 5 Empty) 10 Empty) 20 Empty)
+testNoRedRed3 = False ~=? noRedRed t where t = Node B (Node R (Node R Empty 5 Empty) 10 Empty) 20 Empty :: Tree Int
 
 testNoRedRed4 :: Test
-testNoRedRed4 = True  ~=? noRedRed (Node B (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty)
+testNoRedRed4 = True  ~=? noRedRed t where t = Node B (Node R (Node B Empty 5 Empty) 10 Empty) 20 Empty :: Tree Int
 
 testNoRedReds :: Test
 testNoRedReds = TestList [testNoRedRed1, testNoRedRed2, testNoRedRed3, testNoRedRed4]
 
 testCountRB1 :: Test
-testCountRB1 = (2,4) ~=? countRB (Node B (Node R (Node B Empty 0 Empty) 1
-                                          (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty))
+testCountRB1 = (2,4) ~=? countRB t where t = Node B (Node R (Node B Empty 0 Empty) 1 (Node B (Node R Empty 2 Empty) 3 Empty)) 4 (Node B Empty 5 Empty) :: Tree Int
 
 testCountRB2 :: Test
-testCountRB2 = (4,3) ~=? countRB (Node B (Node B (Node R Empty 1 Empty) 3
-                                          (Node R Empty 2 Empty)) 4
-                                  (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty)))
+testCountRB2 = (4,3) ~=? countRB t where t = Node B (Node B (Node R Empty 1 Empty) 3 (Node R Empty 2 Empty)) 4 (Node B (Node R Empty 5 Empty) 6 (Node R Empty 7 Empty)) :: Tree Int
 
 testCountRB3 :: Test
-testCountRB3 = (3,4) ~=? countRB (Node B (Node B Empty 0 Empty) 1
-                                  (Node R (Node B (Node R Empty 3 Empty) 4
-                                           (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty)))
+testCountRB3 = (3,4) ~=? countRB t where t = Node B (Node B Empty 0 Empty) 1 (Node R (Node B (Node R Empty 3 Empty) 4 (Node R Empty 5 Empty)) 6 (Node B Empty 7 Empty)) :: Tree Int
 
 testCountRBs :: Test
 testCountRBs = TestList [testCountRB1, testCountRB2, testCountRB3]
