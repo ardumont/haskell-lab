@@ -14,7 +14,7 @@ anagram-tests:
 	cd src && runhaskell AnagramTests
 
 bst-tests:
-	cd src/tree && runhaskell BinarySearchTree
+	cd src/tree && runhaskell BSTTests
 
 rbt-tests:
 	cd src/tree && runhaskell RBT
