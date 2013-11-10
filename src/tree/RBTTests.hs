@@ -2,7 +2,7 @@ module RBTTests where
 
 import RBT
 import Data.List (sort, nub)
---import Test.QuickCheck
+import Test.QuickCheck
 import Test.HUnit
 import Test.Framework (defaultMain, testGroup)
 import Test.Framework.Providers.QuickCheck2 (testProperty)
@@ -96,3 +96,18 @@ main = runTestTT testsHUnit >> defaultMain testsQuick
 -- Passed  6           6
 -- Failed  0           0
 -- Total   6           6
+
+-- ######### Trying out to make a tree a generator
+
+-- instance Arbitrary (Tree a) where
+--   arbitrary = oneof [ return Empty, arbitrary ]
+
+-- sizedArbTestTree :: Ord a => Int -> Gen (Tree a)
+-- sizedArbTestTree 0 = return Empty
+-- sizedArbTestTree n =
+--   do c <- arbitrary
+--      t <- sizedArbTestTree (n-1)
+--      return $ insert t c
+
+-- instance Arbitrary (Tree a) where
+--   arbitrary = sized sizedArbTestTree
