@@ -17,3 +17,9 @@ make install
 ``` sh
 make deps
 ```
+
+## Tests
+
+``` sh
+make tests
+```
