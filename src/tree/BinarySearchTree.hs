@@ -118,8 +118,9 @@ leftSon (Node _ l _) = l
 
 insert :: (Ord a) => Tree a -> a -> Tree a
 insert Empty x = leaf x
-insert (Node x l r) y = case compare y x of
+insert n@(Node x l r) y = case compare y x of
   GT -> Node x l (insert r y)
+  EQ -> n
   _  -> Node x (insert l y) r
 
 value :: Tree a -> Maybe a
@@ -471,12 +472,10 @@ prop_insert_element_is_contained_in_tree :: [Int] -> Int -> Bool
 prop_insert_element_is_contained_in_tree xs e =
   (contains . flip insert e . fromList) xs e == True
 
-prop_remove_then_no_longer_contained :: [Int] -> Bool
-prop_remove_then_no_longer_contained xs =
-  contains nt m == False
-  where t = fromList xs
-        Just m = smallValue t
-        nt = remove t m
+prop_remove_then_no_longer_contained :: [Int] -> Int -> Bool
+prop_remove_then_no_longer_contained xs e =
+  and [contains t e, not $ contains (remove t e) e]
+  where t = (flip insert e . fromList) xs
 
 prop_remove_min_then_still_sbt :: [Int] -> Bool
 prop_remove_min_then_still_sbt xs =
