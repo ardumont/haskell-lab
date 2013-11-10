@@ -136,7 +136,7 @@ rbt2 = Node B
 --         `-- /-
 
 -- FIXME: Improve the data type to create a constructor of meta data (color + value for RBT and just value for AVL)
--- This way, we can factor some joint functions for those data structure
+-- This way, we can factor some functions for those data structures
 
 rebalance :: Tree a -> Tree a
 rebalance (Node B (Node R (Node R a x b) y c) z d) = Node R (Node B a x b) y (Node B c z d)
