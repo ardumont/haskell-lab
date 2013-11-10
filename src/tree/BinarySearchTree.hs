@@ -1,8 +1,8 @@
 module BinarySearchTree where
 
 import Test.HUnit
--- import Test.Framework (defaultMain, testGroup)
--- import Test.Framework.Providers.QuickCheck2 (testProperty)
+import Test.Framework (defaultMain, testGroup)
+import Test.Framework.Providers.QuickCheck2 (testProperty)
 
 {--
 Given the following binary Tree data type, provide an implementation of all functions
@@ -467,8 +467,44 @@ testsHUnit = TestList [testLeafs,
                        testDeleteMins,
                        testRemoves]
 
+prop_insert_element_is_contained_in_tree :: [Int] -> Int -> Bool
+prop_insert_element_is_contained_in_tree xs e =
+  (contains . fromList) xs e == elem e xs
+
+prop_remove_then_no_longer_contained :: [Int] -> Bool
+prop_remove_then_no_longer_contained xs =
+  contains nt m == False
+  where t = fromList xs
+        Just m = smallValue t
+        nt = remove t m
+
+prop_remove_min_then_still_sbt :: [Int] -> Bool
+prop_remove_min_then_still_sbt xs =
+  isBSearchTree t == True
+  where (_, t) = (deleteMin . fromList) xs
+
+prop_remove_max_then_still_sbt :: [Int] -> Bool
+prop_remove_max_then_still_sbt xs =
+  isBSearchTree t == True
+  where (_, t) = (deleteMax . fromList) xs
+
+-- deepCheck :: Testable prop => prop -> IO ()
+-- deepCheck p = quickCheckWith stdArgs { maxSuccess = 500} p
+prop_always_sbt  :: [Int] -> Bool
+prop_always_sbt xs = (isBSearchTree . fromList) xs == True
+
+testsQuick = [
+  testGroup "Group of tests" [
+     testProperty "A (B)inary (S)earch (T)ree created fromList should always be" prop_always_sbt,
+     testProperty "Element inserted is contained in the RBT" prop_insert_element_is_contained_in_tree,
+     testProperty "Element inserted and removed is no longer contained" prop_remove_then_no_longer_contained,
+     testProperty "DeleteMin maintains the SBT properties" prop_remove_max_then_still_sbt,
+     testProperty "DeleteMax maintains the SBT properties" prop_remove_min_then_still_sbt
+     ]
+  ]
+
 main :: IO ()
-main = runTestTT testsHUnit >> return ()
+main = runTestTT testsHUnit >> defaultMain testsQuick >> return ()
 
 -- *BinarySearchTree> main
 -- Cases: 52  Tried: 52  Errors: 0  Failures: 0
