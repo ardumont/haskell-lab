@@ -469,7 +469,7 @@ testsHUnit = TestList [testLeafs,
 
 prop_insert_element_is_contained_in_tree :: [Int] -> Int -> Bool
 prop_insert_element_is_contained_in_tree xs e =
-  (contains . fromList) xs e == elem e xs
+  (contains . flip insert e . fromList) xs e == True
 
 prop_remove_then_no_longer_contained :: [Int] -> Bool
 prop_remove_then_no_longer_contained xs =
