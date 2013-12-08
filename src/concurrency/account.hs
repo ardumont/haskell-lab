@@ -1,5 +1,6 @@
 module Account where
 
+import Control.Concurrent
 import Control.Concurrent.STM
 
 -- Represent the balance of the account
@@ -51,3 +52,31 @@ transferFromAccountAToAccountB =
 -- Transfer 10 from A to B:
 -- A: 90
 -- B: 310
+
+limitedWithdraw :: Account -> Int -> STM ()
+limitedWithdraw acc amt =
+  do balance <- readTVar acc
+     check (0 <= amt && amt <= balance)
+     writeTVar acc (balance - amt)
+
+-- Beware signature is different from deposit one
+delayDeposit :: Account -> Int -> IO ()
+delayDeposit acc amt =
+  do threadDelay 3000000            -- wait 3 seconds
+     atomically ( deposit acc amt )
+
+withdrawFromAccountAWithRetry :: IO ()
+withdrawFromAccountAWithRetry =
+  do accA <- accountA
+     displayAccount "A" accA
+     putStrLn "Transfer 11 from A (waiting if not enough money)..."
+     forkIO(delayDeposit accA 1)
+     atomically ( limitedWithdraw accA 11 )
+     displayAccount "A" accA
+    where accountA :: IO Account
+          accountA = atomically . newTVar $ (10 :: Int)
+
+-- *Account> withdrawFromAccountAWithRetry
+-- A: 10
+-- Transfer 11 from A (waiting if not enough money)...
+-- A: 0
