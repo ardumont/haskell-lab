@@ -19,9 +19,7 @@ deposit acc amt =
      writeTVar acc (balance + amt)
 
 withdraw :: Account -> Int -> STM ()
-withdraw acc amt =
-  do balance <- readTVar acc
-     writeTVar acc (balance - amt)
+withdraw acc amt = deposit acc (- amt)
 
 showAccount :: Account -> IO String
 showAccount acc = do bal <- (atomically . readTVar) acc
