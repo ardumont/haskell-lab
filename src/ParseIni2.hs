@@ -7,6 +7,7 @@ import Text.ParserCombinators.Parsec
 import Data.Either
 import Data.Maybe
 import Data.List as List
+import System.Environment
 
 ---------------- Using Parsec - http://www.serpentine.com/blog/2007/01/31/parsing-a-simple-config-file-in-haskell/
 
@@ -151,3 +152,57 @@ fromFilePath filePath =
 
 -- *ParseIni2> fromFilePath "/home/tony/.mozilla/firefox/mwad0hks.default/extensions.ini"
 -- fromList [("ExtensionDirs",[("Extension0","/home/tony/.mozilla/firefox/mwad0hks.default/extensions/anticontainer@downthemall.net.xpi"),("Extension1","/home/tony/.mozilla/firefox/mwad0hks.default/extensions/artur.dubovoy@gmail.com.xpi"),("Extension2","/home/tony/.mozilla/firefox/mwad0hks.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"),("Extension3","/usr/lib/firefox/browser/extensions/{46551EC9-40F0-4e47-8E18-8E5CF550CFB8}"),("Extension4","/usr/lib/firefox/browser/extensions/mint-search-enhancer@linuxmint.com"),("Extension5","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/{2e1445b0-2682-11e1-bfc2-0800200c9a66}"),("Extension6","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/ubufox@ubuntu.com"),("Extension7","/usr/lib/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/online-accounts@lists.launchpad.net"),("Extension8","/home/tony/.mozilla/firefox/mwad0hks.default/extensions/keysnail@mooz.github.com")]),("ThemeDirs",[("Extension0","/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")])]
+
+countProperties :: Ord k => k -> Map.Map k [a] -> Int
+countProperties k m = case Map.lookup k m of Just l -> length l
+
+-- *ParseIni2> countProperties "ExtensionDirs" $ fromString fullLinesSample
+-- 7
+
+setProperty :: Ord k => k -> a -> Map.Map k [a] -> Map.Map k [a]
+setProperty k v m = Map.update (\l -> Just (l ++ [v])) k m
+
+-- *ParseIni2> setProperty "ExtensionDirs" ("Extension8", "test") $ fromString fullLinesSample
+-- fromList [("ExtensionDirs",[("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"),("Extension1","/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi"),("Extension2","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{a3a5c777-f583-4fef-9380-ab4add1bc2a2}.xpi"),("Extension3","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/{2e1445b0-2682-11e1-bfc2-0800200c9a66}"),("Extension4","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/ubufox@ubuntu.com"),("Extension5","/usr/lib/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/online-accounts@lists.launchpad.net"),("Extension6","/home/tony/.mozilla/firefox/vfazausl.default/extensions/keysnail@mooz.github.com"),("Extension8","test")]),("ThemeDirs",[("Extension0","/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")])]
+
+updateNewExtension :: Map.Map String [(String, t)] -> t -> Map.Map String [(String, t)]
+updateNewExtension iniProperties newExtensionValue =
+  let nbExtensions = countProperties "ExtensionDirs" iniProperties
+      newExtension = ("Extension" ++ (show nbExtensions), newExtensionValue)
+  in setProperty "ExtensionDirs" newExtension iniProperties
+
+-- *ParseIni2> updateNewExtension (fromString fullLinesSample) "some-value"
+-- fromList [("ExtensionDirs",[("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"),("Extension1","/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi"),("Extension2","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{a3a5c777-f583-4fef-9380-ab4add1bc2a2}.xpi"),("Extension3","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/{2e1445b0-2682-11e1-bfc2-0800200c9a66}"),("Extension4","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/ubufox@ubuntu.com"),("Extension5","/usr/lib/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/online-accounts@lists.launchpad.net"),("Extension6","/home/tony/.mozilla/firefox/vfazausl.default/extensions/keysnail@mooz.github.com"),("Extension7","some-value")]),("ThemeDirs",[("Extension0","/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")])]
+
+loadAndUpdateExtensionsWith inputFilePath inputExtension =
+  do putStrLn $ "input file:" ++ inputFilePath
+     putStrLn $ "extension to add:" ++ inputExtension
+     iniProperties <- fromFilePath inputFilePath
+     return $ updateNewExtension iniProperties inputExtension
+
+-- *ParseIni2> loadAndUpdateExtensionsWith "/home/tony/.mozilla/firefox/vfazausl.default/extensions.ini" "/home/tony/.mozilla/firefox/mwad0hks.default/extensions/keysnail@mooz.github.com"
+-- input file:/home/tony/.mozilla/firefox/vfazausl.default/extensions.ini
+-- extension to add:/home/tony/.mozilla/firefox/mwad0hks.default/extensions/keysnail@mooz.github.com
+-- fromList [("ExtensionDirs",[("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"),("Extension1","/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi"),("Extension2","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{a3a5c777-f583-4fef-9380-ab4add1bc2a2}.xpi"),("Extension3","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/{2e1445b0-2682-11e1-bfc2-0800200c9a66}"),("Extension4","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/ubufox@ubuntu.com"),("Extension5","/usr/lib/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/online-accounts@lists.launchpad.net"),("Extension6","/home/tony/.mozilla/firefox/vfazausl.default/extensions/keysnail@mooz.github.com"),("Extension7","/home/tony/.mozilla/firefox/mwad0hks.default/extensions/keysnail@mooz.github.com")]),("ThemeDirs",[("Extension0","/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")])]
+
+main :: IO ()
+main = do (inputFilePath:inputExtension:_) <- getArgs
+          updatedIniProperties <- loadAndUpdateExtensionsWith inputFilePath inputExtension
+          putStrLn $ stringify updatedIniProperties
+
+-- ╭─tony@dagobah(0,59,) 18:11:00 ~/repo/perso/haskell-lab/src (master)
+-- ╰─➤  runhaskell ParseIni2.hs "/home/tony/.mozilla/firefox/vfazausl.default/extensions.ini" "/home/tony/.mozilla/firefox/mwad0hks.default/extensions/keysnail@mooz.github.com"
+-- input file:/home/tony/.mozilla/firefox/vfazausl.default/extensions.ini
+-- extension to add:/home/tony/.mozilla/firefox/mwad0hks.default/extensions/keysnail@mooz.github.com
+-- [ExtensionDirs]
+-- Extension0=/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi
+-- Extension1=/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi
+-- Extension2=/home/tony/.mozilla/firefox/vfazausl.default/extensions/{a3a5c777-f583-4fef-9380-ab4add1bc2a2}.xpi
+-- Extension3=/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/{2e1445b0-2682-11e1-bfc2-0800200c9a66}
+-- Extension4=/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/ubufox@ubuntu.com
+-- Extension5=/usr/lib/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/online-accounts@lists.launchpad.net
+-- Extension6=/home/tony/.mozilla/firefox/vfazausl.default/extensions/keysnail@mooz.github.com
+-- Extension7=/home/tony/.mozilla/firefox/mwad0hks.default/extensions/keysnail@mooz.github.com
+
+-- [ThemeDirs]
+-- Extension0=/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
