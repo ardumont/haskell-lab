@@ -1,4 +1,4 @@
-module ParseIni2 where
+module LoadAndUpdateIni where
 
 --import Char
 import qualified Data.Map as Map
@@ -183,7 +183,7 @@ main = do (inputFilePath:inputExtension:_) <- getArgs
           putStrLn $ stringify updatedIniProperties
 
 -- ╭─tony@dagobah(0,59,) 18:11:00 ~/repo/perso/haskell-lab/src (master)
--- ╰─➤  runhaskell ParseIni2.hs "/home/tony/.mozilla/firefox/vfazausl.default/extensions.ini" "/home/tony/.mozilla/firefox/mwad0hks.default/extensions/keysnail@mooz.github.com"
+-- ╰─➤  runhaskell LoadAndUpdateIni.hs "/home/tony/.mozilla/firefox/vfazausl.default/extensions.ini" "/home/tony/.mozilla/firefox/mwad0hks.default/extensions/keysnail@mooz.github.com"
 -- input file:/home/tony/.mozilla/firefox/vfazausl.default/extensions.ini
 -- extension to add:/home/tony/.mozilla/firefox/mwad0hks.default/extensions/keysnail@mooz.github.com
 -- [ExtensionDirs]
