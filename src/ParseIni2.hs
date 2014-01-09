@@ -170,8 +170,7 @@ updateNewExtension iniProperties newExtensionValue =
 -- fromList [("ExtensionDirs",[("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"),("Extension1","/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi"),("Extension2","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{a3a5c777-f583-4fef-9380-ab4add1bc2a2}.xpi"),("Extension3","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/{2e1445b0-2682-11e1-bfc2-0800200c9a66}"),("Extension4","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/ubufox@ubuntu.com"),("Extension5","/usr/lib/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/online-accounts@lists.launchpad.net"),("Extension6","/home/tony/.mozilla/firefox/vfazausl.default/extensions/keysnail@mooz.github.com"),("Extension7","some-value")]),("ThemeDirs",[("Extension0","/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")])]
 
 loadAndUpdateExtensionsWith inputFilePath inputExtension =
-  do iniProperties <- fromFilePath inputFilePath
-     return $ updateNewExtension iniProperties inputExtension
+  fromFilePath inputFilePath >>= \iniProperties -> return $ updateNewExtension iniProperties inputExtension
 
 -- *ParseIni2> loadAndUpdateExtensionsWith "/home/tony/.mozilla/firefox/vfazausl.default/extensions.ini" "/home/tony/.mozilla/firefox/mwad0hks.default/extensions/keysnail@mooz.github.com"
 -- input file:/home/tony/.mozilla/firefox/vfazausl.default/extensions.ini
