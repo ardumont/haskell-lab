@@ -145,4 +145,5 @@ fromString stringToParse =
 
 fromFilePath :: FilePath -> IO (Map.Map String [(String, String)])
 fromFilePath filePath =
-  readFile filePath >>= (\stringToParse -> return $ fromString stringToParse)
+  do stringToParse <- readFile filePath
+     return $ fromString stringToParse
