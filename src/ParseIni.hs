@@ -1,10 +1,10 @@
 module ParseIni where
 
 import Data.Ini
-import Data.List
 
 iniFilePath :: FilePath
-iniFilePath = "/home/tony/.mozilla/firefox/mwad0hks.default/extensions.ini"
+--iniFilePath = "/home/tony/.mozilla/firefox/mwad0hks.default/extensions.ini"
+iniFilePath = "/home/tony/.mozilla/firefox/vfazausl.default/extensions.ini"
 
 ioIniFile :: IO Ini
 ioIniFile = do eitherIni <- readIniFile iniFilePath
