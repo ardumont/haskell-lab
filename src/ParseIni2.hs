@@ -128,14 +128,10 @@ mapify xs =
 
 stringify :: Map.Map String [(String, String)] -> String
 stringify m = (unlines . map stringifyLine) $ Map.keys m
-              where stringifyLine :: String -> String
-                    stringifyLine k = (stringifySection k) ++ (stringifyProperties (Map.lookup k m))
-                    stringifyProperties :: Maybe [(String, String)] -> String
+              where stringifyLine k = (stringifySection k) ++ (stringifyProperties (Map.lookup k m))
                     stringifyProperties Nothing = []
                     stringifyProperties (Just xs) = (unlines . map stringifyProperty) xs
-                    stringifyProperty :: (String, String) -> String
                     stringifyProperty (k, v) = k ++ "=" ++ v
-                    stringifySection :: String -> String
                     stringifySection k = "[" ++ k ++ "]\n"
 
 -- *ParseIni2> stringify $ mapify [("ExtensionDirs",""),("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"), ("Extension1","/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi"), ("ThemeDirs", ""), ("Extension0", "/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")]
