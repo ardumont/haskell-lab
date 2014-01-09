@@ -136,3 +136,8 @@ stringify m = (unlines . map stringifyLine) $ Map.keys m
 
 -- *ParseIni2> stringify $ mapify [("ExtensionDirs",""),("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"), ("Extension1","/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi"), ("ThemeDirs", ""), ("Extension0", "/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")]
 -- "[ExtensionDirs]\nExtension0=/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi\nExtension1=/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi\n\n[ThemeDirs]\nExtension0=/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}\n\n"
+
+-- testing s = do parsedString <- parse fileContent fullLinesSample
+--                return r
+--             where r = case parsedString of
+--                  Right m -> mapify m
