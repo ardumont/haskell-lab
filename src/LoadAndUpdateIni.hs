@@ -1,6 +1,5 @@
 module LoadAndUpdateIni where
 
---import Char
 import qualified Data.Map as Map
 import Text.ParserCombinators.Parsec
 import Data.Maybe
