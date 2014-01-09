@@ -1,12 +1,9 @@
 module ParseIni2 where
 
 --import Char
-import Control.Monad
 import qualified Data.Map as Map
 import Text.ParserCombinators.Parsec
-import Data.Either
 import Data.Maybe
-import Data.List as List
 import System.Environment
 
 ---------------- Using Parsec - http://www.serpentine.com/blog/2007/01/31/parsing-a-simple-config-file-in-haskell/
