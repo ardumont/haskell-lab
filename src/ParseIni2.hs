@@ -8,9 +8,7 @@ import System.Environment
 
 ---------------- Using Parsec - http://www.serpentine.com/blog/2007/01/31/parsing-a-simple-config-file-in-haskell/
 
-type Config = Map.Map String String
-
---readConfig :: FilePath -> Config
+type IniConfig = Map.Map String [(String, String)]
 
 ident :: Parser String
 ident = do c <- letter <|> char '_'
@@ -109,10 +107,10 @@ fullLinesSample = "[ExtensionDirs]\n" ++
 -- [("ExtensionDirs",""),("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"),("Extension1","/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi"),("Extension2","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{a3a5c777-f583-4fef-9380-ab4add1bc2a2}.xpi"),("Extension3","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/{2e1445b0-2682-11e1-bfc2-0800200c9a66}"),("Extension4","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/ubufox@ubuntu.com"),("Extension5","/usr/lib/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/online-accounts@lists.launchpad.net"),("Extension6","/home/tony/.mozilla/firefox/vfazausl.default/extensions/keysnail@mooz.github.com"),("ThemeDirs",""),("Extension0","/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")]
 
 -- transform the current ini file into a map of section, (key, value)
-mapify :: [(String, String)] -> Map.Map String [(String, String)]
+mapify :: [(String, String)] -> IniConfig
 mapify xs =
   internalMapify xs "" Map.empty
-  where internalMapify :: [(String, String)] -> String -> Map.Map String [(String, String)] -> Map.Map String [(String, String)]
+  where internalMapify :: [(String, String)] -> String -> IniConfig -> IniConfig
         internalMapify [] _ m = m
         internalMapify (e@(key, val) : xss) oldKey m =
           if val == ""
@@ -122,7 +120,7 @@ mapify xs =
 -- *ParseIni2> mapify [("ExtensionDirs",""),("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"), ("Extension1","/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi"), ("ThemeDirs", ""), ("Extension0", "/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")]
 -- fromList [("ExtensionDirs",[("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"),("Extension1","/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi")]),("ThemeDirs",[("Extension0","/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")])]
 
-stringify :: Map.Map String [(String, String)] -> String
+stringify :: IniConfig -> String
 stringify m = (unlines . map stringifyLine) $ Map.keys m
               where stringifyLine k = (stringifySection k) ++ (stringifyProperties (Map.lookup k m))
                     stringifyProperties Nothing = []
@@ -133,7 +131,7 @@ stringify m = (unlines . map stringifyLine) $ Map.keys m
 -- *ParseIni2> stringify $ mapify [("ExtensionDirs",""),("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"), ("Extension1","/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi"), ("ThemeDirs", ""), ("Extension0", "/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")]
 -- "[ExtensionDirs]\nExtension0=/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi\nExtension1=/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi\n\n[ThemeDirs]\nExtension0=/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}\n\n"
 
-fromString :: String -> Map.Map String [(String, String)]
+fromString :: String -> IniConfig
 fromString stringToParse =
   case (parse fileContent "" stringToParse) of
     Left _  -> Map.empty
@@ -142,7 +140,7 @@ fromString stringToParse =
 -- *ParseIni2> fromString fullLinesSample
 -- fromList [("ExtensionDirs",[("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"),("Extension1","/home/tony/.mozilla/firefox/vfazausl.default/extensions/artur.dubovoy@gmail.com.xpi"),("Extension2","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{a3a5c777-f583-4fef-9380-ab4add1bc2a2}.xpi"),("Extension3","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/{2e1445b0-2682-11e1-bfc2-0800200c9a66}"),("Extension4","/usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/ubufox@ubuntu.com"),("Extension5","/usr/lib/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/online-accounts@lists.launchpad.net"),("Extension6","/home/tony/.mozilla/firefox/vfazausl.default/extensions/keysnail@mooz.github.com")]),("ThemeDirs",[("Extension0","/usr/lib/firefox/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}")])]
 
-fromFilePath :: FilePath -> IO (Map.Map String [(String, String)])
+fromFilePath :: FilePath -> IO IniConfig
 fromFilePath filePath =
   do stringToParse <- readFile filePath
      return $ fromString stringToParse
