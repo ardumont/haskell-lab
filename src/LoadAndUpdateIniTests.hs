@@ -45,10 +45,33 @@ testParseComment1 = () ~=? parseRightExtract (parse comment "# this is a comment
 testParseComments :: Test.HUnit.Test
 testParseComments = TestList ["testParseComment1" ~: testParseComment1]
 
+testParseEol1 :: Test.HUnit.Test
+testParseEol1 = () ~=? parseRightExtract (parse eol "\n" "\n")
+
+testParseEol2 :: Test.HUnit.Test
+testParseEol2 = () ~=? parseRightExtract (parse eol "\r\n" "\r\n")
+
+testParseEol3 :: Test.HUnit.Test
+testParseEol3 = () ~=? parseRightExtract (parse eol "\r" "\r")
+
+testParseEol4 :: Test.HUnit.Test
+testParseEol4 = () ~=? parseRightExtract (parse eol "\n\r" "\n\r")
+
+
+-- *LoadAndUpdateIni> parseTest  eol "some-other"
+-- parse error at (line 1, column 1):
+-- unexpected "s"
+-- expecting eol
+
+
+testParseEols :: Test.HUnit.Test
+testParseEols = TestList [testParseEol1,testParseEol2,testParseEol3,testParseEol4]
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testParseTests
-                 ,testParseComments]
+                 ,testParseComments
+                 ,testParseEols]
 
 main :: IO ()
 main = runTestTT tests >>= print
