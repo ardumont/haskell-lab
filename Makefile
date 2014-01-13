@@ -1,3 +1,9 @@
+pull:
+	git pull --rebase --prune origin master
+
+push:
+	git push origin master
+
 install:
 	sudo apt-get install -y haskell-platform
 
