@@ -35,25 +35,11 @@ item = do key <- ident
        where rstrip :: String -> String
              rstrip = id
 
--- *ParseIni2> parseTest item "Extension0=/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"
--- ("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi")
-
 section :: Parser (String, String)
 section = do char '['
              value <- manyTill anyChar (char ']')
              return (value, "")
           <?> "Section"
-
--- *ParseIni2> parseTest section "[this-is-a-section]"
--- ("this-is-a-section", "")
--- *ParseIni2> parseTest section "[not-a-section"
--- parse error at (line 1, column 15):
--- unexpected end of input
--- expecting "]"
--- *ParseIni2> parseTest section "[unfinished-a-section"
--- parse error at (line 1, column 22):
--- unexpected end of input
--- expecting "]"
 
 line :: Parser (Maybe (String, String))
 line = do skipMany space

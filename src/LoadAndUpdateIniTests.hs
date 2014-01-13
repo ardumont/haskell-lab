@@ -73,12 +73,30 @@ testParseItem1 = ("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/ext
 testParseItems :: Test.HUnit.Test
 testParseItems = TestList [testParseItem1]
 
+
+testParseSection1 :: Test.HUnit.Test
+testParseSection1 = ("this-is-a-section", "") ~=? parseRightExtract (parse section "[this-is-a-section]" "[this-is-a-section]")
+
+testParseSections :: Test.HUnit.Test
+testParseSections = TestList [testParseSection1]
+
+
+-- *ParseIni2> parseTest section "[not-a-section"
+-- parse error at (line 1, column 15):
+-- unexpected end of input
+-- expecting "]"
+-- *ParseIni2> parseTest section "[unfinished-a-section"
+-- parse error at (line 1, column 22):
+-- unexpected end of input
+-- expecting "]"
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testParseTests
                  ,testParseComments
                  ,testParseEols
-                 ,testParseItems]
+                 ,testParseItems
+                 ,testParseSections]
 
 main :: IO ()
 main = runTestTT tests >>= print
