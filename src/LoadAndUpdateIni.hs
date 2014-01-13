@@ -48,8 +48,7 @@ line = do skipMany space
        where mb = return . Just
 
 fileContent :: Parser [(String, String)]
-fileContent = do linesOfFile <- many line
-                 (return . catMaybes) linesOfFile
+fileContent = many line >>= (return . catMaybes)
 
 fullLinesSample :: String
 fullLinesSample = "[ExtensionDirs]\n" ++
