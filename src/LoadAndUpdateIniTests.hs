@@ -90,6 +90,17 @@ testParseSections = TestList [testParseSection1]
 -- unexpected end of input
 -- expecting "]"
 
+testParseLine1 :: Test.HUnit.Test
+testParseLine1 = Just ("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi")
+                 ~=?
+                 parseRightExtract (parse line "Extension0=/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi" "Extension0=/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi")
+
+testParseLine2 :: Test.HUnit.Test
+testParseLine2 = Just ("Extensions","") ~=? parseRightExtract (parse line "[Extensions]" "[Extensions]")
+
+testParseLines :: Test.HUnit.Test
+testParseLines = TestList [testParseLine1, testParseLine2]
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testParseTests

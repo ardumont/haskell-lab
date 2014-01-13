@@ -47,11 +47,6 @@ line = do skipMany space
        --    try (comment >> Nothing) <|> (section >>= mb) <|> (item >>= mb)
        where mb = return . Just
 
--- *ParseIni2> parseTest line "Extension0=/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi"
--- Just ("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi")
--- *ParseIni2> parseTest line "[Extensions]"
--- Just ("Extensions","")
-
 fileContent :: Parser [(String, String)]
 fileContent = do linesOfFile <- many line
                  (return . catMaybes) linesOfFile
