@@ -20,13 +20,6 @@ comment = do char '#'
              skipMany (noneOf "\r\n")
            <?> "Comment"
 
--- *ParseIni2> parseTest comment "# this is a comment"
--- ()
--- *ParseIni2> parseTest comment "this is not a comment"
--- parse error at (line 1, column 1):
--- unexpected "t"
--- expecting Comment
-
 eol :: Parser ()
 eol = do try (many1 (oneOf "\r\n"))
          return ()
