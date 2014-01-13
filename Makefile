@@ -10,7 +10,7 @@ install:
 deps:
 	cabal update && cabal install test-framework test-framework-hunit test-framework-quickcheck2
 
-tests: huffman-tests anagram-tests bst-tests rbt-tests
+tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests
 
 
 huffman-tests:
@@ -24,6 +24,9 @@ bst-tests:
 
 rbt-tests:
 	cd src/tree && runhaskell RBTTests
+
+ini-tests:
+	cd src/ && runhaskell LoadAndUpdateIniTests
 
 anagram-run-sample:
 	cd src && runhaskell Anagram Linux rulez
