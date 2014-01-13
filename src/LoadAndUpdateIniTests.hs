@@ -63,15 +63,22 @@ testParseEol4 = () ~=? parseRightExtract (parse eol "\n\r" "\n\r")
 -- unexpected "s"
 -- expecting eol
 
-
 testParseEols :: Test.HUnit.Test
 testParseEols = TestList [testParseEol1,testParseEol2,testParseEol3,testParseEol4]
+
+testParseItem1 :: Test.HUnit.Test
+testParseItem1 = ("Extension0","/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi")
+                 ~=? parseRightExtract (parse item "Extension0=/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi" "Extension0=/home/tony/.mozilla/firefox/vfazausl.default/extensions/{DDC359D1-844A-42a7-9AA1-88A850A938A8}.xpi")
+
+testParseItems :: Test.HUnit.Test
+testParseItems = TestList [testParseItem1]
 
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testParseTests
                  ,testParseComments
-                 ,testParseEols]
+                 ,testParseEols
+                 ,testParseItems]
 
 main :: IO ()
 main = runTestTT tests >>= print
