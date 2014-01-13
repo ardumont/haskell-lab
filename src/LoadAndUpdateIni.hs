@@ -15,18 +15,6 @@ ident = do c <- letter <|> char '_'
            return (c:cs)
         <?> "Identifier"
 
--- *ParseIni2> parseTest ident "ab"
--- "ab"
--- *ParseIni2> parseTest ident "abc1"
--- "abc1"
--- *ParseIni2> parseTest ident "abc1324"
--- "abc1324"
-
--- *ParseIni2> parseTest ident "123"
--- parse error at (line 1, column 1):
--- unexpected "1"
--- expecting Identifier
-
 comment :: Parser ()
 comment = do char '#'
              skipMany (noneOf "\r\n")
