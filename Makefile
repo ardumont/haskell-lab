@@ -7,8 +7,11 @@ push:
 install:
 	sudo apt-get install -y haskell-platform
 
-deps:
-	cabal update && cabal install test-framework test-framework-hunit test-framework-quickcheck2
+update:
+	cabal update
+
+deps: update
+	cabal install test-framework test-framework-hunit test-framework-quickcheck2
 
 tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests
 
