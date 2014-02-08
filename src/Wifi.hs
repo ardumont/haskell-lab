@@ -37,8 +37,8 @@ sliceSSIDSignals :: [String] -> [(String, String)]
 sliceSSIDSignals = map sliceSSIDSignal
 
 scanWifi :: IO (Map.Map String String)
-scanWifi = do ssidSignals <- run "nmcli --terse --fields ssid,signal dev wifi"
-              return $ (Map.fromList . map sliceSSIDSignal) ssidSignals
+scanWifi =
+  fmap (Map.fromList . map sliceSSIDSignal) $ run "nmcli --terse --fields ssid,signal dev wifi"
 
 -- *Wifi> scanWifi
 -- fromList [("Livebox-0ff6","42"),("tatooine","75")]
