@@ -1,6 +1,6 @@
 module WifiTests where
 
-import Wifi (command, cleanString, sliceSSIDSignal, sliceSSIDSignals, wifiToConnect)
+import Wifi (command, cleanString, sliceSSIDSignal, sliceSSIDSignals, wifiToConnect, connectToWifiCommand)
 import Test.HUnit
 import qualified Data.Map as Map
 
@@ -62,6 +62,11 @@ testWifiToConnect2 = ["tatooine", "dantooine"]
 testWifiToConnects :: Test.HUnit.Test
 testWifiToConnects = TestList ["testWifiToConnect1" ~: testWifiToConnect1
                                ,"testWifiToConnect2" ~: testWifiToConnect2]
+
+testConnectToWifiCommand :: Test.HUnit.Test
+testConnectToWifiCommand = "nmcli con up id tatooine"
+                           ~=?
+                           connectToWifiCommand "tatooine"
 
 -- Full tests
 tests :: Test.HUnit.Test
