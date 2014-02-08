@@ -13,7 +13,7 @@ update:
 deps: update
 	cabal install test-framework test-framework-hunit test-framework-quickcheck2 process
 
-tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests
+tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests wifi-tests
 
 
 huffman-tests:
@@ -33,3 +33,6 @@ ini-tests:
 
 anagram-run-sample:
 	cd src && runhaskell Anagram Linux rulez
+
+wifi-tests:
+	cd src/ && runhaskell WifiTests
