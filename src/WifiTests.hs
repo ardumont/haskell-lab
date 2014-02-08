@@ -55,7 +55,7 @@ testWifiToConnect1 = ["tatooine"]
                      wifiToConnect ["AndroidAP-tony","myrkr","tatooine"] (Map.fromList [("Livebox-0ff6","42"),("tatooine","67")])
 
 testWifiToConnect2 :: Test.HUnit.Test
-testWifiToConnect2 = ["tatooine", "dantooine"]
+testWifiToConnect2 = ["dantooine", "tatooine"]
                      ~=?
                      wifiToConnect ["myrkr","dantooine","tatooine"] (Map.fromList [("Livebox-0ff6","42"),("tatooine","67"),("dantooine", "72")])
 
