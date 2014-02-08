@@ -8,7 +8,7 @@ commandListWifiAutoconnect :: String
 commandListWifiAutoconnect = "nmcli --terse --fields ssid,signal dev wifi"
 
 commandScanWifi :: String
-commandScanWifi = "nmcli con list"
+commandScanWifi = "nmcli --terse --fields name con list"
 
 command :: String -> [String]
 command = words
@@ -50,7 +50,7 @@ scanWifi =
 -- fromList [("Livebox-0ff6","42"),("tatooine","75")]
 
 listAutoConnectWifi :: IO [String]
-listAutoConnectWifi = run "nmcli --terse --fields name con list"
+listAutoConnectWifi = run commandScanWifi
 
 -- *Wifi> listAutoConnectWifi
 -- ["AndroidAP-tony","Zenika-1er","tatooine"]
