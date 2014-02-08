@@ -49,6 +49,10 @@ listAutoConnectWifi = run "nmcli --terse --fields name con list"
 -- *Wifi> listAutoConnectWifi
 -- ["AndroidAP-tony","Zenika-1er","tatooine"]
 
+wifiToConnect :: Ord k => [k] -> Map.Map k a -> [k]
+wifiToConnect autoConnectWifis scannedWifis =
+  filter (\x -> Map.member x scannedWifis) autoConnectWifis
+
 main :: IO ()
 main = do result <- run "nmcli con list"
           mapM_ putStrLn result

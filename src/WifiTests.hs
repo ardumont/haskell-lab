@@ -1,7 +1,8 @@
 module WifiTests where
 
-import Wifi (command, cleanString, sliceSSIDSignal, sliceSSIDSignals)
+import Wifi (command, cleanString, sliceSSIDSignal, sliceSSIDSignals, wifiToConnect)
 import Test.HUnit
+import qualified Data.Map as Map
 
 testCommand1 :: Test.HUnit.Test
 testCommand1 = ["nmcli","con","list"] ~=? command "nmcli con list"
@@ -45,16 +46,30 @@ testSliceSSIDSignals1 = [("Livebox-0ff6","42"),("tatooine","71")]
                        ~=?
                        sliceSSIDSignals ["'Livebox-0ff6':42","'tatooine':71"]
 
-
 testSliceSSIDSignalss :: Test.HUnit.Test
 testSliceSSIDSignalss = TestList ["testSliceSSIDSignals1" ~: testSliceSSIDSignals1]
+
+testWifiToConnect1 :: Test.HUnit.Test
+testWifiToConnect1 = ["tatooine"]
+                     ~=?
+                     wifiToConnect ["AndroidAP-tony","myrkr","tatooine"] (Map.fromList [("Livebox-0ff6","42"),("tatooine","67")])
+
+testWifiToConnect2 :: Test.HUnit.Test
+testWifiToConnect2 = ["tatooine", "dantooine"]
+                     ~=?
+                     wifiToConnect ["myrkr","dantooine","tatooine"] (Map.fromList [("Livebox-0ff6","42"),("tatooine","67"),("dantooine", "72")])
+
+testWifiToConnects :: Test.HUnit.Test
+testWifiToConnects = TestList ["testWifiToConnect1" ~: testWifiToConnect1
+                               ,"testWifiToConnect2" ~: testWifiToConnect2]
 
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testCommands
                   ,testCleanStrings
                   ,testSliceSSIDSignals
-                  ,testSliceSSIDSignalss]
+                  ,testSliceSSIDSignalss
+                  ,testWifiToConnects]
 
 main :: IO ()
 main = runTestTT tests >>= print
