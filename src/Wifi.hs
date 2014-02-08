@@ -27,8 +27,8 @@ cleanString s =
   then tail . init $ s
   else s
 
-cleanStrings :: [String] -> [String]
-cleanStrings = map cleanString
+sliceSSIDSignal :: String -> [String]
+sliceSSIDSignal s = [cleanString ssid, tail signal] where (ssid, signal) = break (== ':') s
 main :: IO ()
 main = do result <- run "nmcli con list"
           mapM_ putStrLn result

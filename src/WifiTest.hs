@@ -1,6 +1,6 @@
 module WifiTest where
 
-import Wifi (command, cleanString, cleanStrings)
+import Wifi (command, cleanString, sliceSSIDSignal)
 import Test.HUnit
 
 testCommand1 :: Test.HUnit.Test
@@ -30,19 +30,21 @@ testCleanStrings = TestList ["testCleanString1" ~: testCleanString1
                              ,"testCleanString3" ~: testCleanString3
                              ,"testCleanString4" ~: testCleanString4]
 
-testCleanStrings1 :: Test.HUnit.Test
-testCleanStrings1 = ["'hello'", "hell", "hello"]
-                    ~=?
-                    cleanStrings ["'hello'", "'hello", "hello"]
+testSliceSSIDSignal1 :: Test.HUnit.Test
+testSliceSSIDSignal1 = ["ssid:signal"] ~=? sliceSSIDSignal "ssid:signal"
 
-testCleanStringss :: Test.HUnit.Test
-testCleanStringss = TestList ["testCleanStrings1" ~: testCleanStrings1]
+testSliceSSIDSignal2 :: Test.HUnit.Test
+testSliceSSIDSignal2 = ["'ssid':signal"] ~=? sliceSSIDSignal "ssid:signal"
+
+testSliceSSIDSignals :: Test.HUnit.Test
+testSliceSSIDSignals = TestList ["testSliceSSIDSignal1" ~: testSliceSSIDSignal1
+                                ,"testSliceSSIDSignal2" ~: testSliceSSIDSignal2]
 
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testCommands
                   ,testCleanStrings
-                  ,testCleanStringss]
+                  ,testSliceSSIDSignals]
 
 main :: IO ()
 main = runTestTT tests >>= print
