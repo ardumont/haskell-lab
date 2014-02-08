@@ -43,8 +43,11 @@ scanWifi =
 -- *Wifi> scanWifi
 -- fromList [("Livebox-0ff6","42"),("tatooine","75")]
 
--- listAutoConnectWifi :: IO [[String]]
--- listAutoConnectWifi
+listAutoConnectWifi :: IO [String]
+listAutoConnectWifi = run "nmcli --terse --fields name con list"
+
+-- *Wifi> listAutoConnectWifi
+-- ["AndroidAP-tony","Zenika-1er","tatooine"]
 
 main :: IO ()
 main = do result <- run "nmcli con list"
