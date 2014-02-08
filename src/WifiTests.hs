@@ -63,10 +63,14 @@ testWifiToConnects :: Test.HUnit.Test
 testWifiToConnects = TestList ["testWifiToConnect1" ~: testWifiToConnect1
                                ,"testWifiToConnect2" ~: testWifiToConnect2]
 
-testConnectToWifiCommand :: Test.HUnit.Test
-testConnectToWifiCommand = "nmcli con up id tatooine"
-                           ~=?
-                           connectToWifiCommand "tatooine"
+testConnectToWifiCommand1 :: Test.HUnit.Test
+testConnectToWifiCommand1 = "nmcli con up id tatooine"
+                            ~=?
+                            connectToWifiCommand "tatooine"
+
+testConnectToWifiCommands :: Test.HUnit.Test
+testConnectToWifiCommands = TestList ["testConnectToWifiCommand1" ~: testConnectToWifiCommand1]
+
 
 -- Full tests
 tests :: Test.HUnit.Test
@@ -74,7 +78,8 @@ tests = TestList [testCommands
                   ,testCleanStrings
                   ,testSliceSSIDSignals
                   ,testSliceSSIDSignalss
-                  ,testWifiToConnects]
+                  ,testWifiToConnects
+                  ,testConnectToWifiCommands]
 
 main :: IO ()
 main = runTestTT tests >>= print
