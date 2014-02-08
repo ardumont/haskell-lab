@@ -32,6 +32,10 @@ sliceSSIDSignal s = [cleanString ssid, tail signal] where (ssid, signal) = break
 
 cleanWifiString :: [String] -> [[String]]
 cleanWifiString = map sliceSSIDSignal
+
+scanWifi :: IO [[String]]
+scanWifi = do ssidSignals <- run "nmcli --terse --fields ssid,signal dev wifi"
+              return $ fmap sliceSSIDSignal ssidSignals
 main :: IO ()
 main = do result <- run "nmcli con list"
           mapM_ putStrLn result
