@@ -29,6 +29,9 @@ cleanString s =
 
 sliceSSIDSignal :: String -> [String]
 sliceSSIDSignal s = [cleanString ssid, tail signal] where (ssid, signal) = break (== ':') s
+
+cleanWifiString :: [String] -> [[String]]
+cleanWifiString = map sliceSSIDSignal
 main :: IO ()
 main = do result <- run "nmcli con list"
           mapM_ putStrLn result
