@@ -71,4 +71,4 @@ main = do scannedWifis <- scanWifi
           autoConnectWifis <- listAutoConnectWifi
           let wifi = electWifi (wifiToConnect autoConnectWifis scannedWifis) scannedWifis in
             (run . connectToWifiCommand) wifi
-          return ()
+          putStrLn $ "Connecting to wifi done!"
