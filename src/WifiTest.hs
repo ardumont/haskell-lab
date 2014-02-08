@@ -3,9 +3,6 @@ module WifiTest where
 import Wifi (command, cleanString)
 import Test.HUnit
 
--- *Wifi> command "nmcli con list"
--- ["nmcli","con","list"]
-
 testCommand1 :: Test.HUnit.Test
 testCommand1 = ["nmcli","con","list"] ~=? command "nmcli con list"
 
