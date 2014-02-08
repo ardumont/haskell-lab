@@ -23,6 +23,18 @@ run fullCommand =
 -- Scan the wifi and return the ssid:signal
 -- *Wifi> run "nmcli --terse --fields ssid,signal dev wifi"
 -- ["'Livebox-0ff6':42","'tatooine':72"]
+cleanString :: String -> String
+cleanString s =
+  if (elem '\'' s)
+  then tail . init $ s
+  else s
+
+-- *Wifi> cleanString "'hello'"
+-- "hello"
+-- *Wifi> cleanString "'hello"
+-- "hell"
+-- *Wifi> cleanString "hello"
+-- "hello"
 main :: IO ()
 main = do result <- run "nmcli con list"
           mapM_ putStrLn result
