@@ -59,7 +59,7 @@ listAutoConnectWifi = run commandScanWifi
 
 wifiToConnect :: Ord k => [k] -> Map.Map k a -> [k]
 wifiToConnect autoConnectWifis scannedWifis =
-  filter (\x -> Map.member x scannedWifis) autoConnectWifis
+  filter (flip Map.member scannedWifis) autoConnectWifis
 
 connectToWifiCommand :: String -> String
 connectToWifiCommand wifi = "nmcli con up id " ++ wifi
