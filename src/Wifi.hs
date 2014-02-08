@@ -4,6 +4,12 @@ module Wifi where
 import System.Process
 import qualified Data.Map as Map
 
+commandListWifiAutoconnect :: String
+commandListWifiAutoconnect = "nmcli --terse --fields ssid,signal dev wifi"
+
+commandScanWifi :: String
+commandScanWifi = "nmcli con list"
+
 command :: String -> [String]
 command = words
 
@@ -38,7 +44,7 @@ sliceSSIDSignals = map sliceSSIDSignal
 
 scanWifi :: IO (Map.Map String String)
 scanWifi =
-  fmap (Map.fromList . map sliceSSIDSignal) $ run "nmcli --terse --fields ssid,signal dev wifi"
+  fmap (Map.fromList . map sliceSSIDSignal) $ run commandListWifiAutoconnect
 
 -- *Wifi> scanWifi
 -- fromList [("Livebox-0ff6","42"),("tatooine","75")]
@@ -54,7 +60,7 @@ wifiToConnect autoConnectWifis scannedWifis =
   filter (\x -> Map.member x scannedWifis) autoConnectWifis
 
 main :: IO ()
-main = do result <- run "nmcli con list"
+main = do result <- run commandScanWifi
           mapM_ putStrLn result
 
 -- *Wifi> main
