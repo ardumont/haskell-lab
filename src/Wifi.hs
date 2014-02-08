@@ -62,12 +62,13 @@ wifiToConnect autoConnectWifis scannedWifis =
 connectToWifiCommand :: String -> String
 connectToWifiCommand wifi = "nmcli con up id " ++ wifi
 
-main :: IO ()
-main = do result <- run commandScanWifi
-          mapM_ putStrLn result
+electWifi :: [String] -> Map.Map String String -> String
+electWifi wifis _ = head wifis
 
--- *Wifi> main
--- NAME                      UUID                                   TYPE              TIMESTAMP-REAL
--- AndroidAP-tony            68400207-92c9-4c8f-90b4-725b45c8359f   802-11-wireless   mar. 04 févr. 2014 18:44:15 CET
--- Zenika-1er                076684ca-6287-4625-bab6-524b865e185e   802-11-wireless   never
--- tatooine                  deb87d57-aedc-46a8-8994-ce83c91ce522   802-11-wireless   sam. 08 févr. 2014 13:04:56 CET
+-- Scan the wifi, compute the list of autoconnect wifis, connect to one
+main :: IO ()
+main = do scannedWifis <- scanWifi
+          autoConnectWifis <- listAutoConnectWifi
+          let wifi = electWifi (wifiToConnect autoConnectWifis scannedWifis) scannedWifis in
+            (run . connectToWifiCommand) wifi
+          return ()
