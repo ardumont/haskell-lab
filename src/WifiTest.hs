@@ -1,6 +1,6 @@
 module WifiTest where
 
-import Wifi (command, cleanString)
+import Wifi (command, cleanString, cleanStrings)
 import Test.HUnit
 
 testCommand1 :: Test.HUnit.Test
@@ -21,13 +21,28 @@ testCleanString2 = "hell" ~=? cleanString "'hello"
 testCleanString3 :: Test.HUnit.Test
 testCleanString3 = "hello" ~=? cleanString "hello"
 
+testCleanString4 :: Test.HUnit.Test
+testCleanString4 = "ello" ~=? cleanString "hello'"
+
 testCleanStrings :: Test.HUnit.Test
-testCleanStrings = TestList ["testCleanString1" ~: testCleanString1, "testCleanString2" ~: testCleanString2]
+testCleanStrings = TestList ["testCleanString1" ~: testCleanString1
+                             ,"testCleanString2" ~: testCleanString2
+                             ,"testCleanString3" ~: testCleanString3
+                             ,"testCleanString4" ~: testCleanString4]
+
+testCleanStrings1 :: Test.HUnit.Test
+testCleanStrings1 = ["'hello'", "hell", "hello"]
+                    ~=?
+                    cleanStrings ["'hello'", "'hello", "hello"]
+
+testCleanStringss :: Test.HUnit.Test
+testCleanStringss = TestList ["testCleanStrings1" ~: testCleanStrings1]
 
 -- Full tests
 tests :: Test.HUnit.Test
-tests = TestList [testCommands,
-                  testCleanStrings]
+tests = TestList [testCommands
+                  ,testCleanStrings
+                  ,testCleanStringss]
 
 main :: IO ()
 main = runTestTT tests >>= print

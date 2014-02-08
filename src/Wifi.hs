@@ -27,6 +27,8 @@ cleanString s =
   then tail . init $ s
   else s
 
+cleanStrings :: [String] -> [String]
+cleanStrings = map cleanString
 main :: IO ()
 main = do result <- run "nmcli con list"
           mapM_ putStrLn result
