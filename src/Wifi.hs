@@ -3,6 +3,8 @@ module Wifi where
 -- cabal module `process`
 import System.Process
 import qualified Data.Map as Map
+import Data.Function (on)
+import Data.List (sortBy)
 
 commandListWifiAutoconnect :: String
 commandListWifiAutoconnect = "nmcli --terse --fields ssid,signal dev wifi"
@@ -63,7 +65,11 @@ connectToWifiCommand :: String -> String
 connectToWifiCommand wifi = "nmcli con up id " ++ wifi
 
 electWifi :: [String] -> Map.Map String String -> String
-electWifi wifis _ = head wifis
+electWifi [w] _ = w
+electWifi wifis scannedWifis =
+  (fst . head . sortBy (compare `on` snd) . map filteredWifiCouple) wifis
+  where filteredWifiCouple wifi = (wifi, w)
+          where Just w = Map.lookup wifi scannedWifis
 
 -- Scan the wifi, compute the list of autoconnect wifis, connect to one
 main :: IO ()

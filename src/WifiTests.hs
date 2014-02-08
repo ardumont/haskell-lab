@@ -1,6 +1,6 @@
 module WifiTests where
 
-import Wifi (command, cleanString, sliceSSIDSignal, sliceSSIDSignals, wifiToConnect, connectToWifiCommand)
+import Wifi (command, cleanString, sliceSSIDSignal, sliceSSIDSignals, wifiToConnect, connectToWifiCommand, electWifi)
 import Test.HUnit
 import qualified Data.Map as Map
 
@@ -72,6 +72,28 @@ testConnectToWifiCommands :: Test.HUnit.Test
 testConnectToWifiCommands = TestList ["testConnectToWifiCommand1" ~: testConnectToWifiCommand1]
 
 
+testElectWifi1 :: Test.HUnit.Test
+testElectWifi1 = "some-wifi-alone"
+                 ~=?
+                 electWifi ["some-wifi-alone"] Map.empty
+
+testElectWifi2 :: Test.HUnit.Test
+testElectWifi2 = "high-signal"
+                 ~=?
+                 electWifi ["high-signal", "low-signal"] (Map.fromList [("high-signal", "100"),
+                                                                        ("low-signal", "40")])
+
+testElectWifi3 :: Test.HUnit.Test
+testElectWifi3 = "high-signal"
+                 ~=?
+                 electWifi ["high-signal", "medium-signal", "low-signal"] (Map.fromList [("medium-signal", "60"), ("high-signal", "100"), ("low-signal", "20"), ("useless-signal", "40")])
+
+
+testElectWifis :: Test.HUnit.Test
+testElectWifis = TestList ["testElectWifi1" ~: testElectWifi1
+                          ,"testElectWifi2" ~: testElectWifi2
+                          ,"testElectWifi3" ~: testElectWifi3]
+
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testCommands
@@ -79,7 +101,8 @@ tests = TestList [testCommands
                   ,testSliceSSIDSignals
                   ,testSliceSSIDSignalss
                   ,testWifiToConnects
-                  ,testConnectToWifiCommands]
+                  ,testConnectToWifiCommands
+                  ,testElectWifis]
 
 main :: IO ()
 main = runTestTT tests >>= print
