@@ -1,4 +1,4 @@
-module WifiTest where
+module WifiTests where
 
 import Wifi (command, cleanString, sliceSSIDSignal, sliceSSIDSignals)
 import Test.HUnit
@@ -7,7 +7,7 @@ testCommand1 :: Test.HUnit.Test
 testCommand1 = ["nmcli","con","list"] ~=? command "nmcli con list"
 
 testCommand2 :: Test.HUnit.Test
-testCommand2 = ["nmcli", "-t", "-f", "con","list"] ~=? command "nmcli -t -f name con list"
+testCommand2 = ["nmcli", "-t", "-f", "name", "con","list"] ~=? command "nmcli -t -f name con list"
 
 testCommands :: Test.HUnit.Test
 testCommands = TestList ["testCommand1" ~: testCommand1, "testCommand2" ~: testCommand2]
@@ -34,7 +34,7 @@ testSliceSSIDSignal1 :: Test.HUnit.Test
 testSliceSSIDSignal1 = ("ssid","signal") ~=? sliceSSIDSignal "ssid:signal"
 
 testSliceSSIDSignal2 :: Test.HUnit.Test
-testSliceSSIDSignal2 = ("'ssid'", "signal") ~=? sliceSSIDSignal "ssid:signal"
+testSliceSSIDSignal2 = ("ssid", "signal") ~=? sliceSSIDSignal "'ssid':signal"
 
 testSliceSSIDSignals :: Test.HUnit.Test
 testSliceSSIDSignals = TestList ["testSliceSSIDSignal1" ~: testSliceSSIDSignal1
