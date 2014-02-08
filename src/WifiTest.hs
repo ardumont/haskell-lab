@@ -1,6 +1,6 @@
 module WifiTest where
 
-import Wifi (command, cleanString, sliceSSIDSignal, cleanWifiString)
+import Wifi (command, cleanString, sliceSSIDSignal, sliceSSIDSignals)
 import Test.HUnit
 
 testCommand1 :: Test.HUnit.Test
@@ -31,30 +31,30 @@ testCleanStrings = TestList ["testCleanString1" ~: testCleanString1
                              ,"testCleanString4" ~: testCleanString4]
 
 testSliceSSIDSignal1 :: Test.HUnit.Test
-testSliceSSIDSignal1 = ["ssid:signal"] ~=? sliceSSIDSignal "ssid:signal"
+testSliceSSIDSignal1 = ("ssid","signal") ~=? sliceSSIDSignal "ssid:signal"
 
 testSliceSSIDSignal2 :: Test.HUnit.Test
-testSliceSSIDSignal2 = ["'ssid':signal"] ~=? sliceSSIDSignal "ssid:signal"
+testSliceSSIDSignal2 = ("'ssid'", "signal") ~=? sliceSSIDSignal "ssid:signal"
 
 testSliceSSIDSignals :: Test.HUnit.Test
 testSliceSSIDSignals = TestList ["testSliceSSIDSignal1" ~: testSliceSSIDSignal1
                                 ,"testSliceSSIDSignal2" ~: testSliceSSIDSignal2]
 
-testCleanWifiString1 :: Test.HUnit.Test
-testCleanWifiString1 = [["Livebox-0ff6","42"],["tatooine","71"]]
+testSliceSSIDSignals1 :: Test.HUnit.Test
+testSliceSSIDSignals1 = [("Livebox-0ff6","42"),("tatooine","71")]
                        ~=?
-                       cleanWifiString ["'Livebox-0ff6':42","'tatooine':71"]
+                       sliceSSIDSignals ["'Livebox-0ff6':42","'tatooine':71"]
 
 
-testCleanWifiStrings :: Test.HUnit.Test
-testCleanWifiStrings = TestList ["testCleanWifiString1" ~: testCleanWifiString1]
+testSliceSSIDSignalss :: Test.HUnit.Test
+testSliceSSIDSignalss = TestList ["testSliceSSIDSignals1" ~: testSliceSSIDSignals1]
 
 -- Full tests
 tests :: Test.HUnit.Test
 tests = TestList [testCommands
                   ,testCleanStrings
                   ,testSliceSSIDSignals
-                  ,testCleanWifiStrings]
+                  ,testSliceSSIDSignalss]
 
 main :: IO ()
 main = runTestTT tests >>= print

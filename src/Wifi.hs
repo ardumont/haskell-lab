@@ -2,6 +2,7 @@ module Wifi where
 
 -- cabal module `process`
 import System.Process
+import qualified Data.Map as Map
 
 command :: String -> [String]
 command = words
@@ -27,15 +28,24 @@ cleanString s =
   then tail . init $ s
   else s
 
-sliceSSIDSignal :: String -> [String]
-sliceSSIDSignal s = [cleanString ssid, tail signal] where (ssid, signal) = break (== ':') s
+sliceSSIDSignal :: String -> (String, String)
+sliceSSIDSignal s =
+  (cleanString ssid, tail signal)
+  where (ssid, signal) = break (== ':') s
 
-cleanWifiString :: [String] -> [[String]]
-cleanWifiString = map sliceSSIDSignal
+sliceSSIDSignals :: [String] -> [(String, String)]
+sliceSSIDSignals = map sliceSSIDSignal
 
-scanWifi :: IO [[String]]
+scanWifi :: IO (Map.Map String String)
 scanWifi = do ssidSignals <- run "nmcli --terse --fields ssid,signal dev wifi"
-              return $ fmap sliceSSIDSignal ssidSignals
+              return $ (Map.fromList . map sliceSSIDSignal) ssidSignals
+
+-- *Wifi> scanWifi
+-- fromList [("Livebox-0ff6","42"),("tatooine","75")]
+
+-- listAutoConnectWifi :: IO [[String]]
+-- listAutoConnectWifi
+
 main :: IO ()
 main = do result <- run "nmcli con list"
           mapM_ putStrLn result
