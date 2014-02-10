@@ -94,6 +94,5 @@ electWifi wifis scannedWifis =
 main :: IO ()
 main = do scannedWifis <- scanWifi
           autoConnectWifis <- listAutoConnectWifi
-          let wifi = electWifi (wifiToConnect autoConnectWifis scannedWifis) scannedWifis in
-            (run . connectToWifiCommand) wifi
+          (run . connectToWifiCommand . flip electWifi scannedWifis . wifiToConnect autoConnectWifis) scannedWifis
           putStrLn $ "Connecting to wifi done!"
