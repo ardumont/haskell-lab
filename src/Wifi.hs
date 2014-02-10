@@ -68,10 +68,10 @@ scanWifi =
 -- *Wifi> scanWifi
 -- fromList [("Livebox-0ff6","42"),("freewifi","75")]
 
-listAutoConnectWifi :: IO [String]
-listAutoConnectWifi = run commandScanWifi
+autoConnectWifi :: IO [String]
+autoConnectWifi = run commandScanWifi
 
--- *Wifi> listAutoConnectWifi
+-- *Wifi> autoConnectWifi
 -- ["dantooine","myrkr","tatooine"]
 
 -- Filter the list of wifis the machine (in its current setup) can autoconnect to
@@ -93,6 +93,6 @@ electWifi wifis scannedWifis =
 -- Scan the wifi, compute the list of autoconnect wifis, connect to one (if multiple possible, the one with the most powerful signal is elected)
 main :: IO ()
 main = do scannedWifis <- scanWifi
-          autoConnectWifis <- listAutoConnectWifi
+          autoConnectWifis <- autoConnectWifi
           (run . connectToWifiCommand . flip electWifi scannedWifis . wifiToConnect autoConnectWifis) scannedWifis
           putStrLn $ "Connecting to wifi done!"
