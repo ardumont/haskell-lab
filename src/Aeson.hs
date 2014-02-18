@@ -2,15 +2,15 @@
 {-# OPTIONS_GHC -XDeriveGeneric #-}
 module Aeson where
 
-import qualified Data.Text as T
+import Data.Text
 import Data.Aeson
 import GHC.Generics
 import qualified Data.ByteString.Lazy as B
 import Network.HTTP.Conduit (simpleHttp)
 
 data Person =
-  Person { firstName  :: !T.Text
-         , lastName   :: !T.Text
+  Person { firstName  :: !Text
+         , lastName   :: !Text
          , age        :: Int
          , likesPizza :: Bool
            } deriving (Show, Generic)
