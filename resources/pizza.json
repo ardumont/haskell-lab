@@ -1,0 +1,53 @@
+[
+   { "firstName"  : "Daniel"
+   , "lastName"   : "Díaz"
+   , "age"        :  24
+   , "likesPizza" :  true
+     }
+,
+   { "firstName"  : "Rose"
+   , "lastName"   : "Red"
+   , "age"        :  39
+   , "likesPizza" :  false
+     }
+,  { "firstName"  : "John"
+   , "lastName"   : "Doe"
+   , "age"        :  45
+   , "likesPizza" :  false
+     }
+,  { "firstName"  : "Vladimir"
+   , "lastName"   : "Vygodsky"
+   , "age"        :  27
+   , "likesPizza" :  false
+     }
+,  { "firstName"  : "Foo"
+   , "lastName"   : "Bar"
+   , "age"        :  32
+   , "likesPizza" :  true
+     }
+,  { "firstName"  : "María"
+   , "lastName"   : "Delaoh"
+   , "age"        :  52
+   , "likesPizza" :  false
+     }
+,  { "firstName"  : "Victoria"
+   , "lastName"   : "Haskell"
+   , "age"        :  23
+   , "likesPizza" :  true
+     }
+,  { "firstName"  : "François"
+   , "lastName"   : "Beaulieu"
+   , "age"        :  42
+   , "likesPizza" :  false
+     }
+,  { "firstName"  : "Amalie"
+   , "lastName"   : "Baumann"
+   , "age"        :  28
+   , "likesPizza" :  true
+     }
+,  { "firstName"  : "Rachel"
+   , "lastName"   : "Scott"
+   , "age"        :  23
+   , "likesPizza" :  true
+     }
+]
