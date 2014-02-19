@@ -37,3 +37,6 @@ convert :: Double -- ^ Initial quantity.
         -> String -- ^ Target currency.
         -> IO (Maybe Double) -- ^ Result.
 convert query fromCur toCur = fmap (fmap v) $ getConversion fromCur toCur query
+
+-- *Converter> convert 1 "EUR" "USD"
+-- Just 1.37601
