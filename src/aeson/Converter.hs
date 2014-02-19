@@ -27,3 +27,10 @@ getCurrencyRateUrl fromCur toCur query = "http://rate-exchange.appspot.com/curre
 getConversion :: String -> String -> Double -> IO (Maybe Conversion)
 getConversion fromCur toCur query =
   fmap decode $ simpleHttp $ getCurrencyRateUrl fromCur toCur query
+
+-- | Convert a monetary value from one currency to another.
+convert :: Double -- ^ Initial quantity.
+        -> String -- ^ Initial currency.
+        -> String -- ^ Target currency.
+        -> IO (Maybe Double) -- ^ Result.
+convert q fromCur toCur = fmap (fmap v) $ getConversion fromCur toCur q
