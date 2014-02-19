@@ -42,3 +42,19 @@ timeline name = do
            httpLbs signedreq m
   -- Decode the response body.
   return $ eitherDecode $ responseBody res
+
+-- λ> timeline "Hackage"
+-- Left "could not parse ISO-8601 date"
+
+main :: IO ()
+main = do
+  -- Read the timeline from Hackage user.
+  ets <- timeline "Hackage"
+  case ets of
+   -- When the parsing of the JSON data fails, we report it.
+   Left err -> putStrLn err
+   -- When successful, print in the screen the first 5 tweets.
+   Right ts  -> mapM_ print $ take 5 ts
+
+-- λ> main
+-- could not parse ISO-8601 date
