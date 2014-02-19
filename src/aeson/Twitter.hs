@@ -26,6 +26,18 @@ data Tweet =
 instance FromJSON Tweet
 instance ToJSON Tweet
 
+timeline' name = do
+  -- Firstly, we create a HTTP request with method GET (it is the default so we don't have to change that).
+  req <- parseUrl $ "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=" ++ name
+  -- Using a HTTP manager, we authenticate the request and send it to get a response.
+  res <- withManager $ \m -> do
+           -- OAuth Authentication.
+           signedreq <- signOAuth myoauth mycred req
+           -- Send request.
+           httpLbs signedreq m
+  -- Decode the response body.
+  return $ responseBody res
+
 timeline :: String -- ^ Screen name of the user
          -> IO (Either String [Tweet]) -- ^ If there is any error parsing the JSON data, it
                                        --   will return 'Left String', where the 'String'
