@@ -51,3 +51,12 @@ main = do
   case mr of
    Nothing -> putStrLn "There was an error reading the JSON data."
    Just r  -> putStrLn $ show q ++ " euro(s) is equivalent to " ++ show r ++ " dollar(s)."
+
+-- *Converter> main
+-- *** Exception: ResponseTimeout
+-- *Converter> main
+-- *** Exception: FailedConnectionException "rate-exchange.appspot.com" 80
+-- *Converter> main
+-- *** Exception: InternalIOException getAddrInfo: does not exist (Name or service not known)
+-- *Converter> main
+-- 1.0 euro(s) is equivalent to 1.37579 dollar(s).
