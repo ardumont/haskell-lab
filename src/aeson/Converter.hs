@@ -6,7 +6,6 @@ import Data.Aeson
 import GHC.Generics
 import Data.Text
 import Network.HTTP.Conduit (simpleHttp)
-import qualified Data.ByteString.Lazy as B
 
 data Conversion =
   Conversion { to :: !Text      -- target currency
