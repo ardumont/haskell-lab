@@ -9,10 +9,10 @@ import Network.HTTP.Conduit (simpleHttp)
 import qualified Data.ByteString.Lazy as B
 
 data Conversion =
-  Conversion { to :: !Text
-             , rate :: Double
-             , from :: !Text
-             , v :: Double
+  Conversion { to :: !Text      -- target currency
+             , rate :: Double   -- rate of conversion
+             , from :: !Text    -- origin currency
+             , v :: Double      -- converted value in target currency
                } deriving (Show, Generic)
 
 instance FromJSON Conversion
