@@ -40,3 +40,16 @@ convert query fromCur toCur = fmap (fmap v) $ getConversion fromCur toCur query
 
 -- *Converter> convert 1 "EUR" "USD"
 -- Just 1.37601
+
+-- | As an example, we show the conversion from euros to dollars.
+--   However, feel free to change the initial quantity q and the
+--   origin/target currencies.
+main :: IO ()
+main = do
+  let q = 1
+  mr <- convert q "EUR" "USD"
+  case mr of
+   -- In case of error parsing the JSON data, we report it.
+   Nothing -> putStrLn "There was an error reading the JSON data."
+   -- Otherwise, we show the results in a human-readable way.
+   Just r  -> putStrLn $ show q ++ " euro(s) is equivalent to " ++ show r ++ " dollar(s)."
