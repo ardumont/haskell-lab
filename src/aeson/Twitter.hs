@@ -1,5 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings, DeriveGeneric #-}
 module Twitter where
 
 import Web.Authenticate.OAuth (OAuth, signOAuth, newOAuth, oauthServerName, oauthConsumerKey, oauthConsumerSecret, newCredential, Credential)
