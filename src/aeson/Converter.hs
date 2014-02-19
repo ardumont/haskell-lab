@@ -18,6 +18,7 @@ instance FromJSON Conversion
 instance ToJSON Conversion
 
 -- | Sample extract from conversion API
+-- | full sample url: http://rate-exchange.appspot.com/currency?from=USD&to=EUR&q=1
 sampleJSON :: String
 sampleJSON = "{ \"to\": \"EUR\", \"rate\": 0.74962518700000003, \"from\": \"USD\", \"v\": 0.74962518700000003}"
 
