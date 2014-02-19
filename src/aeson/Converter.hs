@@ -18,12 +18,15 @@ data Conversion =
 instance FromJSON Conversion
 instance ToJSON Conversion
 
+-- | Sample extract from conversion API
 sampleJSON :: String
 sampleJSON = "{ \"to\": \"EUR\", \"rate\": 0.74962518700000003, \"from\": \"USD\", \"v\": 0.74962518700000003}"
 
+-- | Compute the conversion API url
 getCurrencyRateUrl :: String -> String -> Double -> String
 getCurrencyRateUrl fromCur toCur query = "http://rate-exchange.appspot.com/currency?from=" ++ fromCur ++ "&to=" ++ toCur ++ "&q=" ++ show query
 
+-- | Retrieve the current conversion rate
 getConversion :: String -> String -> Double -> IO (Maybe Conversion)
 getConversion fromCur toCur query =
   fmap decode $ simpleHttp $ getCurrencyRateUrl fromCur toCur query
