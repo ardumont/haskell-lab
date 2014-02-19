@@ -19,6 +19,7 @@ myoauth =
 mycred :: Credential
 mycred = newCredential "your access token here"
                        "your access token secret here"
+-- https://dev.twitter.com/docs/platform-objects/tweets
 data Tweet =
   Tweet { text :: !Text
         , created_at :: !UTCTime
