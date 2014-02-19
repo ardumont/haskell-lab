@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -XDeriveGeneric #-}
-module Aeson where
+module Pizza where
 
 import Data.Text
 import Data.Aeson
@@ -20,7 +20,7 @@ instance FromJSON Person
 instance ToJSON Person
 
 jsonFile :: FilePath
-jsonFile = "../resources/pizza.json"
+jsonFile = "../../resources/pizza.json"
 
 getJSON :: IO B.ByteString
 getJSON = B.readFile jsonFile
