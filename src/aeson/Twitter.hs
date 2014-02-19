@@ -7,6 +7,7 @@ import Data.Time.Clock (UTCTime)
 import Data.Aeson (FromJSON, ToJSON, eitherDecode)
 import GHC.Generics
 import Network.HTTP.Conduit (parseUrl, withManager, httpLbs, responseBody)
+import Data.Time.Clock (UTCTime)
 
 myoauth :: OAuth
 myoauth =
