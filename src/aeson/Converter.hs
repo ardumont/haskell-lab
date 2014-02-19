@@ -36,4 +36,4 @@ convert :: Double -- ^ Initial quantity.
         -> String -- ^ Initial currency.
         -> String -- ^ Target currency.
         -> IO (Maybe Double) -- ^ Result.
-convert q fromCur toCur = fmap (fmap v) $ getConversion fromCur toCur q
+convert query fromCur toCur = fmap (fmap v) $ getConversion fromCur toCur query
