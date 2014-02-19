@@ -49,7 +49,5 @@ main = do
   let q = 1
   mr <- convert q "EUR" "USD"
   case mr of
-   -- In case of error parsing the JSON data, we report it.
    Nothing -> putStrLn "There was an error reading the JSON data."
-   -- Otherwise, we show the results in a human-readable way.
    Just r  -> putStrLn $ show q ++ " euro(s) is equivalent to " ++ show r ++ " dollar(s)."
