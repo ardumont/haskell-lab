@@ -11,7 +11,7 @@ update:
 	cabal update
 
 deps: update
-	cabal install test-framework test-framework-hunit test-framework-quickcheck2 aeson process http-conduit authenticate-oauth
+	cabal install test-framework test-framework-hunit test-framework-quickcheck2 aeson process http-conduit authenticate-oauth persistent persistent-sqlite
 
 tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests wifi-tests
 
