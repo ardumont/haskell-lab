@@ -10,7 +10,7 @@ install:
 update:
 	cabal update
 
-sandbox-init
+sandbox-init:
 	cabal sandbox init && cabal install --enable-tests
 
 sandbox-delete:
