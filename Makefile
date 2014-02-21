@@ -22,7 +22,8 @@ deps:
                       http-conduit \
                       authenticate-oauth \
                       persistent \
-                      persistent-sqlite
+                      persistent-sqlite \
+                      yesod-bin
 
 tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests wifi-tests
 
