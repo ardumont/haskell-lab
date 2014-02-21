@@ -10,7 +10,7 @@ install:
 update:
 	cabal update
 
-deps: update
+deps:
 	cabal install test-framework \
                       test-framework-hunit \
                       test-framework-quickcheck2 \
