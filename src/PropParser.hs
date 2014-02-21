@@ -1,4 +1,4 @@
-module PropParsers where
+module PropParser where
 
 import Parsers
 import Prop
