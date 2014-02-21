@@ -2,3 +2,5 @@
 /src/io/hw.hi
 /src/io/hw.o
 /.cabal-sandbox/
+/dist/
+cabal.sandbox.config
