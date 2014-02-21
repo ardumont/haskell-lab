@@ -51,42 +51,8 @@ cabal-version:       >=1.10
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Calculator
-                       , Life
-                       , LoadAndUpdateIni
+  exposed-modules:     LoadAndUpdateIni
                        , Wifi
-                       , FunSet
-                       , IORoutine
-                       , Parsers
-                       , Anagram
-                       , String
-                       , LoadAndUpdateIniTests
-                       , HuffmanTests
-                       , AbstractMachine
-                       , CountingChange
-                       , Nim
-                       , Huffman
-                       , WifiTests
-                       , PropParser
-                       , Combinations
-                       , Prop
-                       , Tests
-                       , Monade
-                       , AnagramTests
-                       , ListManipulation
-                       , LearnBasicPersistent
-                       , Pizza
-                       , Twitter
-                       , Converter
-                       , LearnBasicYesod
-                       , Tree
-                       , BinarySearchTree
-                       , RBT
-                       , Tree2
-                       , BSTTests
-                       , AVL
-                       , RBTTests
-                       , SimpleIO
 
   -- Modules included in this library but not exported.
   -- other-modules:
@@ -119,18 +85,6 @@ library
 
   -- Directories containing source files.
   hs-source-dirs:      src
-                       , src/yesod
-                       , src/tree
-                       , src/aeson
-                       , src/concurrency
-                       , src/countdown
-                       , src/functional-approach
-                       , src/io
-                       , src/learn-you-a-haskell-for-great-good
-                       , src/pascal
-                       , src/persistent
-                       , src/primes
-                       , src/programming-in-haskell
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
