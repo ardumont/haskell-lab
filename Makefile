@@ -10,6 +10,9 @@ install:
 update:
 	cabal update
 
+init:
+	cabal sandbox init
+
 deps:
 	cabal install test-framework \
                       test-framework-hunit \
