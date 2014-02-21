@@ -51,18 +51,86 @@ cabal-version:       >=1.10
 
 library
   -- Modules exported by the library.
-  exposed-modules:     Calculator, Life, LoadAndUpdateIni, Wifi, FunSet, IORoutine, Parsers, Anagram, String, LoadAndUpdateIniTests, HuffmanTests, AbstractMachine, CountingChange, Nim, Huffman, WifiTests, PropParser, Combinations, Prop, Tests, Monad, AnagramTests, ListManipulation, Learn, Pizza, Twitter, Converter, Learn, Tree, BinarySearchTree, RBT, Tree2, BSTTests, AVL, RBTTests, SimpleIO
+  exposed-modules:     Calculator
+                       , Life
+                       , LoadAndUpdateIni
+                       , Wifi
+                       , FunSet
+                       , IORoutine
+                       , Parsers
+                       , Anagram
+                       , String
+                       , LoadAndUpdateIniTests
+                       , HuffmanTests
+                       , AbstractMachine
+                       , CountingChange
+                       , Nim
+                       , Huffman
+                       , WifiTests
+                       , PropParser
+                       , Combinations
+                       , Prop
+                       , Tests
+                       , Monade
+                       , AnagramTests
+                       , ListManipulation
+                       , LearnBasicPersistent
+                       , Pizza
+                       , Twitter
+                       , Converter
+                       , LearnBasicYesod
+                       , Tree
+                       , BinarySearchTree
+                       , RBT
+                       , Tree2
+                       , BSTTests
+                       , AVL
+                       , RBTTests
+                       , SimpleIO
 
   -- Modules included in this library but not exported.
   -- other-modules:
 
   -- LANGUAGE extensions used by modules in this package.
   other-extensions:    TypeFamilies, QuasiQuotes, MultiParamTypeClasses, TemplateHaskell, GADTs, OverloadedStrings, FlexibleContexts, FlexibleInstances, DeriveGeneric, EmptyDataDecls
+
   -- Other library packages from which modules are imported.
-  build-depends:       base >=4.6 && <4.7, containers >=0.5 && <0.6, parsec >=3.1 && <3.2, process >=1.2 && <1.3, HUnit >=1.2 && <1.3, QuickCheck >=2.6 && <2.7, yesod >=1.2 && <1.3, text >=0.11 && <0.12, http-conduit >=2.0 && <2.1, http-types >=0.8 && <0.9, SHA >=1.6 && <1.7, persistent-sqlite >=1.3 && <1.4, lifted-base >=0.2 && <0.3, bytestring >=0.10 && <0.11, aeson >=0.7 && <0.8, authenticate-oauth >=1.4 && <1.5, time >=1.4 && <1.5, transformers >=0.3 && <0.4, persistent >=1.3 && <1.4, persistent-template >=1.3 && <1.4, test-framework >=0.8 && <0.9, test-framework-quickcheck2 >=0.3 && <0.4
-  
+  build-depends:       base >=4.6 && <4.7
+                       , containers >=0.5 && <0.6
+                       , parsec >=3.1 && <3.2
+                       , process >=1.2 && <1.3
+                       , HUnit >=1.2 && <1.3
+                       , QuickCheck >=2.6 && <2.7
+                       , text >=0.11 && <0.12
+                       , http-conduit >=2.0 && <2.1
+                       , http-types >=0.8 && <0.9
+                       , SHA >=1.6 && <1.7
+                       , persistent-sqlite >=1.3 && <1.4
+                       , lifted-base >=0.2 && <0.3
+                       , bytestring >=0.10 && <0.11
+                       , aeson >=0.7 && <0.8
+                       , authenticate-oauth >=1.4 && <1.5
+                       , time >=1.4 && <1.5
+                       , transformers >=0.3 && <0.4
+                       , persistent >=1.3 && <1.4
+                       , persistent-template >=1.3 && <1.4
+                       , test-framework >=0.8 && <0.9
+                       , test-framework-quickcheck2 >=0.3 && <0.4
+
   -- Directories containing source files.
   hs-source-dirs:      src
+                       , src/yesod
+                       , src/tree
+                       , src/aeson
+                       , src/concurrency
+                       , src/countdown
+                       , src/functional-approach
+                       , src/io
+                       , src/learn-you-a-haskell-for-great-good
+                       , src/pascal
+                       , src/persistent
+                       , src/primes
+                       , src/programming-in-haskell
 
   -- Base language which the package is written in.
   default-language:    Haskell2010
