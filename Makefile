@@ -11,7 +11,7 @@ update:
 	cabal update
 
 init:
-	cabal sandbox init
+	cabal sandbox init && cabal install --enable-tests
 
 deps:
 	cabal install test-framework \
