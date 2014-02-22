@@ -27,7 +27,7 @@ deps:
                       persistent \
                       persistent-sqlite
 
-tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests wifi-tests
+tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests
 
 
 huffman-tests:
@@ -47,6 +47,3 @@ ini-tests:
 
 anagram-run-sample:
 	cd src && runhaskell Anagram Linux rulez
-
-wifi-tests:
-	cd src/ && runhaskell WifiTests
