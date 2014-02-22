@@ -16,16 +16,19 @@ sandbox-init:
 sandbox-delete:
 	cabal sandbox delete
 
-deps:
+deps: update
 	cabal install test-framework \
                       test-framework-hunit \
-                      test-framework-quickcheck2 \
-                      aeson \
+                      test-framework-quickcheck2
+
+additional-deps: update
+	cabal install aeson \
                       process \
                       http-conduit \
                       authenticate-oauth \
                       persistent \
                       persistent-sqlite
+
 
 tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests
 
