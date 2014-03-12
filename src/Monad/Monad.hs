@@ -31,7 +31,8 @@ multWithLog :: Writer [String] Int
 multWithLog = do
     a <- logNumber 3
     b <- logNumber 5
+    tell ["gonna multiple this too"]
     return (a*b)
 
 -- *Monad> runWriter multWithLog
--- (15,["Got number: 3","Got number: 5"])
+-- (15,["Got number: 3","Got number: 5","gonna multiple this too"])
