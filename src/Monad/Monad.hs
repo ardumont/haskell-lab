@@ -23,3 +23,15 @@ toDiffList xs = DiffList (xs++)
 
 fromDiffList :: DiffList a -> [a]
 fromDiffList (DiffList f) = f []
+
+logNumber :: Int -> Writer [String] Int
+logNumber x = writer (x, ["Got number: " ++ show x])
+
+multWithLog :: Writer [String] Int
+multWithLog = do
+    a <- logNumber 3
+    b <- logNumber 5
+    return (a*b)
+
+-- *Monad> runWriter multWithLog
+-- (15,["Got number: 3","Got number: 5"])
