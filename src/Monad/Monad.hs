@@ -24,7 +24,20 @@ toDiffList xs = DiffList (xs++)
 fromDiffList :: DiffList a -> [a]
 fromDiffList (DiffList f) = f []
 
-logNumber :: Int -> Writer [String] Int
+applyLog :: (Monoid m) => (a,m) -> (a -> (b,m)) -> (b,m)
+applyLog (x, l) f = let (y, nl) = f x in (y,l `mappend` nl)
+
+type Food = String
+type Price = Sum Int
+
+addDrink :: Food -> (Food,Price)
+addDrink "beans" = ("milk", Sum 25)
+addDrink "jerky" = ("whiskey", Sum 99)
+addDrink _ = ("beer", Sum 30)
+
+-- *Monad> ("smart potion", Sum 10) `applyLog` addDrink
+-- ("beer",Sum {getSum = 40}) logNumber :: Int -> Writer [String] Int
+
 logNumber x = writer (x, ["Got number: " ++ show x])
 
 multWithLog :: Writer [String] Int
