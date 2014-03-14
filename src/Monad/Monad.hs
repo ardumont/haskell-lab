@@ -38,6 +38,7 @@ addDrink _ = ("beer", Sum 30)
 -- *Monad> ("smart potion", Sum 10) `applyLog` addDrink
 -- ("beer",Sum {getSum = 40}) logNumber :: Int -> Writer [String] Int
 
+logNumber :: Int -> Writer [String] Int
 logNumber x = writer (x, ["Got number: " ++ show x])
 
 multWithLog :: Writer [String] Int
