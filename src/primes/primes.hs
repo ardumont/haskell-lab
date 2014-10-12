@@ -1,8 +1,8 @@
 module Prime where
 
-import Test.QuickCheck
-import Data.Set (difference, toList, fromList)
-import System.Environment
+import           Data.Set           (difference, fromList, toList)
+import           System.Environment
+import           Test.QuickCheck
 
 isPrime :: Integral a => a -> Bool
 isPrime n
@@ -11,7 +11,7 @@ isPrime n
   | otherwise =
   all ( \ y -> n `mod` y /= 0) pseudoPrimes
   where
-    pseudoPrimes = (2:[3,5..(floor . sqrt . fromIntegral) n])
+    pseudoPrimes = 2:[3,5..(floor . sqrt . fromIntegral) n]
 
 primes :: [Int]
 primes = sieve [2..]
@@ -31,12 +31,12 @@ prop_not_prime :: Property
 prop_not_prime =
   forAll
   (elements [1..10000])
-  (\ n -> let ps = (takeWhile (< n) primes)
+  (\ n -> let ps = takeWhile (< n) primes
               noPrimes = toList $ difference (fromList [1..n]) (fromList ps) in
     all (not . isPrime) noPrimes)
 
 deepCheck :: Testable prop => prop -> IO ()
-deepCheck p = quickCheckWith stdArgs { maxSuccess = 500} p
+deepCheck = quickCheckWith stdArgs { maxSuccess = 500}
 
 test :: IO ()
 test = do
@@ -51,6 +51,7 @@ test = do
 
 -- Now we can make it as a script
 main :: IO ()
-main = do (num:_) <- getArgs
-          let n = read num :: Int in
-            putStrLn $ show (take n primes)
+main = do
+  (num:_) <- getArgs
+  let n = read num :: Int in
+    print $ show (take n primes)
