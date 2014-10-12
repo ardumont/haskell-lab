@@ -18,8 +18,8 @@ import           Primes.Prime  (isPrime)
 -- Find the product of the coefficients, a and b, for the quadratic expression that produces the maximum number of primes for consecutive values of n, starting with n = 0.
 
 -- | Compute the sequence of primes for a given pair of coefficients
-computePrime :: Integral a => (a, a) -> [a]
-computePrime (a, b) = takeWhile isPrime [ n^2 + a * n + b | n <- [0..]]
+computePrimes :: Integral a => (a, a) -> [a]
+computePrimes (a, b) = takeWhile isPrime [ n^2 + a * n + b | n <- [0..]]
 
 -- | Compute the possible coefficients
 coefficients :: (Enum t, Integral t1, Num t) => [(t, t1)]
@@ -28,7 +28,7 @@ coefficients = [ (a, b) | a <- [-999..999]
 
 -- | Compute the product of coefficients for which the number of primes generated is greater
 computeProduct :: Integral a => a
-computeProduct = fst $ maximumBy (compare `on` snd) $ map (\ c@(a, b) -> (a * b, length $ computePrime c)) $ coefficients
+computeProduct = fst $ maximumBy (compare `on` snd) $ map (\ c@(a, b) -> (a * b, length $ computePrimes c)) $ coefficients
 
 -- λ> computeProduct
 -- -59231
