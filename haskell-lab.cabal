@@ -46,13 +46,11 @@ build-type:          Simple
 extra-source-files:  README.md
 
 -- Constraint on the version of Cabal needed to build this package.
-cabal-version:       >=1.10
-
+cabal-version:       >=1.18
 
 library
   -- Modules exported by the library.
   exposed-modules:     LoadAndUpdateIni
-                       , Wifi
 
   -- Modules included in this library but not exported.
   -- other-modules:
@@ -68,18 +66,18 @@ library
                        , HUnit >=1.2 && <1.3
                        , QuickCheck >=2.7
                        , text >=0.11 && <0.12
-                       , http-conduit >=2.0 && <2.1
-                       , http-types >=0.8 && <0.9
-                       , SHA >=1.6 && <1.7
-                       , persistent-sqlite >=1.3 && <1.4
-                       , lifted-base >=0.2 && <0.3
-                       , bytestring >=0.10 && <0.11
-                       , aeson >=0.7 && <0.8
-                       , authenticate-oauth >=1.5
-                       , time >=1.4 && <1.5
-                       , transformers >=0.3 && <0.4
-                       , persistent >=1.3 && <1.4
-                       , persistent-template >=1.3 && <1.4
+                       -- , http-conduit >=2.0 && <2.1
+                       -- , http-types >=0.8 && <0.9
+                       -- , SHA >=1.6 && <1.7
+                       -- , persistent-sqlite >=1.3 && <1.4
+                       -- , lifted-base >=0.2 && <0.3
+                       -- , bytestring >=0.10 && <0.11
+                       -- , aeson >=0.7 && <0.8
+                       -- , authenticate-oauth >=1.5
+                       -- , time >=1.4 && <1.5
+                       -- , transformers >=0.3 && <0.4
+                       -- , persistent >=1.3 && <1.4
+                       -- , persistent-template >=1.3 && <1.4
                        , test-framework >=0.8 && <0.9
                        , test-framework-quickcheck2 >=0.3 && <0.4
 
