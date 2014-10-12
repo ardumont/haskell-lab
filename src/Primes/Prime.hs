@@ -1,4 +1,5 @@
-module Primes.Prime where
+module Primes.Prime ( isPrime
+                    , primes) where
 
 import           Data.Set           (difference, fromList, toList)
 import           System.Environment
