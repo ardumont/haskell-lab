@@ -10,11 +10,18 @@ install:
 update:
 	cabal update
 
-sandbox-init:
-	cabal sandbox init && cabal install --enable-tests
+init:
+# see ~/.nixpgs/config.nix - https://github.com/ardumont/dot-files/blob/master/.nixpkgs/config.nix
+	nix-env -iA nixos.pkgs.hsEnv
 
-sandbox-delete:
-	cabal sandbox delete
+to-nix:
+	cabal2nix haskell-lab.cabal --sha256 dummy-sha > default.nix
+
+# sandbox-init:
+# 	cabal sandbox init && cabal install --enable-tests
+
+# sandbox-delete:
+# 	cabal sandbox delete
 
 deps:
 	cabal install test-framework \
