@@ -30,10 +30,10 @@ isSumDigitsItself :: Integral a => a -> a -> Bool
 isSumDigitsItself e n = sumDigits e n == n
 
 -- | Compute the sum of digits
-computeSumDigits :: Integral a => a -> a
-computeSumDigits e = sum [ x | x <- setForExponent e, isSumDigitsItself e x ]
+computeSumNumbers :: Integral a => a -> a
+computeSumNumbers e = sum [ x | x <- setForExponent e, isSumDigitsItself e x ]
 
--- λ> computeSumDigits 4
+-- λ> computeSumNumbers 4
 -- 19316
--- λ> computeSumDigits 5
+-- λ> computeSumNumbers 5
 -- 443839
