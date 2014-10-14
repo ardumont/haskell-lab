@@ -9,14 +9,15 @@ let
     QuickCheck
     testFramework
     testFrameworkQuickcheck2
-    text;
+    text
+    digits;
 in cabal.mkDerivation (self: {
   pname = "haskell-lab";
   version = "0.0.0.0";
   sha256 = "dummy-sha";
   src = ./src;
   buildDepends = [
-    HUnit parsec QuickCheck testFramework testFrameworkQuickcheck2 text
+    HUnit parsec QuickCheck testFramework testFrameworkQuickcheck2 text digits
   ];
   buildTools = [
     cabalInstall_1_18_0_3
