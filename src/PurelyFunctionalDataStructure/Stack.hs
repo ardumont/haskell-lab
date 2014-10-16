@@ -9,7 +9,7 @@ module PurelyFunctionalDataStructure.Stack where
 -- Show that the resulting list of suffixes can be generated in O(n) time and represented in O(n) space.
 suffixes :: [a] -> [[a]]
 suffixes [] = [[]]
-suffixes l@(_:xs) = [l] ++ suffixes xs
+suffixes l@(_:xs) = l:suffixes xs
 
 -- λ> suffixes [1,2,3,4]
 -- [[1,2,3,4],[2,3,4],[3,4],[4],[]]
