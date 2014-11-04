@@ -1,42 +1,29 @@
+env-sandbox:
+	nix-shell haskell-lab.nix
+
 pull:
 	git pull --rebase --prune origin master
 
 push:
 	git push origin master
 
-install:
-	sudo apt-get install -y haskell-platform
+install: env-sandbox
 
 update:
 	cabal update
 
 init:
-# see ~/.nixpgs/config.nix - https://github.com/ardumont/dot-files/blob/master/.nixpkgs/config.nix
+	# see ~/.nixpgs/config.nix - https://github.com/ardumont/dot-files/blob/master/.nixpkgs/config.nix
 	nix-env -iA nixos.pkgs.hsEnv
 
 to-nix:
 	cabal2nix haskell-lab.cabal --sha256 dummy-sha > default.nix
 
-# sandbox-init:
-# 	cabal sandbox init && cabal install --enable-tests
+sandbox-init:
+	cabal sandbox init && cabal configure --enable-tests
 
-# sandbox-delete:
-# 	cabal sandbox delete
-
-deps:
-	cabal install test-framework \
-                      test-framework-hunit \
-                      test-framework-quickcheck2
-
-additional-deps:
-	cabal install aeson \
-                      process \
-                      http-conduit \
-                      authenticate-oauth \
-                      persistent \
-                      persistent-sqlite \
-		      contravariant
-
+sandbox-delete:
+	cabal sandbox delete
 
 tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests
 
