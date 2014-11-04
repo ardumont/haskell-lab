@@ -7,7 +7,10 @@ pull:
 push:
 	git push origin master
 
-install:
+install-ci:
+	bash <(curl https://raw.githubusercontent.com/ardumont/sh/master/nix/install-nix.sh)
+
+install-dev:
 # see ~/.nixpgs/config.nix - https://github.com/ardumont/dot-files/blob/master/.nixpkgs/config.nix
 	nix-env -iA nixos.pkgs.hsEnv
 
@@ -27,19 +30,19 @@ tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests
 
 
 huffman-tests:
-	cd src && runhaskell HuffmanTests
+	./run-sandbox.sh "cd src && runhaskell HuffmanTests"
 
 anagram-tests:
-	cd src && runhaskell AnagramTests
+	./run-sandbox.sh "cd src && runhaskell AnagramTests"
 
 bst-tests:
-	cd src/tree && runhaskell BSTTests
+	./run-sandbox.sh "cd src/tree && runhaskell BSTTests"
 
 rbt-tests:
-	cd src/tree && runhaskell RBTTests
+	./run-sandbox.sh "cd src/tree && runhaskell RBTTests"
 
 ini-tests:
-	cd src/ && runhaskell LoadAndUpdateIniTests
+	./run-sandbox.sh "cd src/ && runhaskell LoadAndUpdateIniTests"
 
 anagram-run-sample:
-	cd src && runhaskell Anagram Linux rulez
+	./run-sandbox.sh "cd src && runhaskell Anagram Linux rulez"
