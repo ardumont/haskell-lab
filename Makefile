@@ -1,3 +1,7 @@
+# sandbox variable, `n` means no sandbox (by default)
+# otherwise, runs in sandbox environment (for ci or for local dev not in env-sandbox)
+SANDBOX=n
+
 env-sandbox:
 	nix-shell haskell-lab.nix
 
@@ -30,19 +34,19 @@ tests: huffman-tests anagram-tests bst-tests rbt-tests ini-tests
 
 
 huffman-tests:
-	./run-sandbox.sh "cd src && runhaskell HuffmanTests"
+	./run.sh $(SANDBOX) "cd src && runhaskell HuffmanTests"
 
 anagram-tests:
-	./run-sandbox.sh "cd src && runhaskell AnagramTests"
+	./run.sh $(SANDBOX) "cd src && runhaskell AnagramTests"
 
 bst-tests:
-	./run-sandbox.sh "cd src/tree && runhaskell BSTTests"
+	./run.sh $(SANDBOX) "cd src/tree && runhaskell BSTTests"
 
 rbt-tests:
-	./run-sandbox.sh "cd src/tree && runhaskell RBTTests"
+	./run.sh $(SANDBOX) "cd src/tree && runhaskell RBTTests"
 
 ini-tests:
-	./run-sandbox.sh "cd src/ && runhaskell LoadAndUpdateIniTests"
+	./run.sh $(SANDBOX) "cd src/ && runhaskell LoadAndUpdateIniTests"
 
 anagram-run-sample:
-	./run-sandbox.sh "cd src && runhaskell Anagram Linux rulez"
+	./run.sh $(SANDBOX) "cd src && runhaskell Anagram Linux rulez"

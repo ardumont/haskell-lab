@@ -1,5 +1,5 @@
 before_install:
   - make install-ci
 
-script: make nix-init nix-test
+script: make tests SANDBOX=y
 
