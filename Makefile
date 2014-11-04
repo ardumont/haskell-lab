@@ -7,14 +7,12 @@ pull:
 push:
 	git push origin master
 
-install: env-sandbox
+install:
+# see ~/.nixpgs/config.nix - https://github.com/ardumont/dot-files/blob/master/.nixpkgs/config.nix
+	nix-env -iA nixos.pkgs.hsEnv
 
 update:
 	cabal update
-
-init:
-	# see ~/.nixpgs/config.nix - https://github.com/ardumont/dot-files/blob/master/.nixpkgs/config.nix
-	nix-env -iA nixos.pkgs.hsEnv
 
 to-nix:
 	cabal2nix haskell-lab.cabal --sha256 dummy-sha > default.nix
