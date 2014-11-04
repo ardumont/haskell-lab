@@ -8,7 +8,7 @@ push:
 	git push origin master
 
 install-ci:
-	./install-platform.sh
+	curl https://raw.githubusercontent.com/ardumont/sh/master/nix/install-nix.sh | bash
 
 install-dev:
 # see ~/.nixpgs/config.nix - https://github.com/ardumont/dot-files/blob/master/.nixpkgs/config.nix
