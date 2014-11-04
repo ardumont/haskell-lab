@@ -3,7 +3,7 @@
 let
   inherit (haskellPackages)
     cabal
-    cabalInstall_1_18_0_3
+    cabalInstall
     HUnit
     parsec
     QuickCheck
@@ -20,7 +20,7 @@ in cabal.mkDerivation (self: {
     HUnit parsec QuickCheck testFramework testFrameworkQuickcheck2 text digits
   ];
   buildTools = [
-    cabalInstall_1_18_0_3
+    cabalInstall
   ];
   meta = {
     homepage = "https://github.com/ardumont/haskell-lab.git";
