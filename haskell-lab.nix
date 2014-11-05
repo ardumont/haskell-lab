@@ -12,14 +12,15 @@ let
     testFramework
     testFrameworkQuickcheck2
     text
-    digits;
+    digits
+    mtl;
 in cabal.mkDerivation (self: {
   pname = "haskell-lab";
   version = "0.0.0.0";
   sha256 = "dummy-sha";
   src = ./src;
   buildDepends = [
-    HUnit parsec QuickCheck testFramework testFrameworkQuickcheck2 text digits
+    HUnit parsec QuickCheck testFramework testFrameworkQuickcheck2 text digits mtl
   ];
   buildTools = [
     cabalInstall
