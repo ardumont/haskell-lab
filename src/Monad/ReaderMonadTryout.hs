@@ -3,6 +3,8 @@
 
 module Monad.ReaderMonadTryout where
 
+-- Default Reader monad code
+
 import qualified Control.Monad.Reader as R
 
 -- ask :: Reader r a -> a
