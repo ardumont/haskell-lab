@@ -1,9 +1,9 @@
 module Huffman where
-import Data.List
-import Data.Maybe
-import Data.Function
+import           Data.Function
+import           Data.List
+import           Data.Maybe
 
-data CodeTree = Leaf !Char !Int | Fork !CodeTree !CodeTree ![Char] !Int deriving (Show, Eq)
+data CodeTree = Leaf !Char !Int | Fork !CodeTree !CodeTree !String !Int deriving (Show, Eq)
 
 type Bit = Int
 
@@ -11,11 +11,11 @@ weight :: CodeTree -> Int
 weight (Leaf _ n)     = n
 weight (Fork _ _ _ n) = n
 
-chars :: CodeTree -> [Char]
+chars :: CodeTree -> String
 chars (Leaf c _)      = [c]
 chars (Fork _ _ cs _) = cs
 
-times :: [Char] -> [(Char, Int)]
+times :: String -> [(Char, Int)]
 times = map (\x -> (head x, length x)) . group . sort
 
 mkFork :: CodeTree -> CodeTree -> CodeTree
@@ -32,12 +32,12 @@ combine :: [CodeTree] -> [CodeTree]
 combine (x:y:xs) = insertBy (compare `on` weight) (mkFork x y) xs
 combine x = x
 
-fromList :: [Char] -> CodeTree
+fromList :: String -> CodeTree
 fromList = head . until singleton combine . mkOrdered . times
 
 --------- DECODE
 
-decode :: CodeTree -> [Bit] -> [Char]
+decode :: CodeTree -> [Bit] -> String
 decode cts = decode' cts []
   where decode' (Leaf c _) acc bs     = decode' cts (c:acc) bs
         decode' (Fork l r _ _) acc bs = case bs of
@@ -47,10 +47,10 @@ decode cts = decode' cts []
 
 --------- encode
 
-encode :: CodeTree -> [Char] -> [Bit]
+encode :: CodeTree -> String -> [Bit]
 encode ct = concatMap (encode' ct [])
-  where encode' (Fork l r _ _) acc c | elem c (chars l) = encode' l (0:acc) c
-                                     | elem c (chars r) = encode' r (1:acc) c
+  where encode' (Fork l r _ _) acc c | c `elem` chars l = encode' l (0:acc) c
+                                     | c `elem` chars r = encode' r (1:acc) c
                                      | otherwise =  acc
         encode' _ acc _              = reverse acc
 
@@ -70,5 +70,5 @@ convert :: CodeTree -> CodeTable
 convert ct = foldl1' mergeCodeTables . map createCodeTable . chars $ ct
              where  createCodeTable c = [(c, encode ct [c])]
 
-quickEncode :: CodeTree -> [Char] -> [Bit]
-quickEncode ct = concat . concatMap (maybeToList . (flip codeBits $ convert ct))
+quickEncode :: CodeTree -> String -> [Bit]
+quickEncode ct = concat . mapMaybe (`codeBits` convert ct)
