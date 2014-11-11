@@ -1,9 +1,11 @@
 module Anagram where
 
-import Data.List
-import Data.Char (toLower)
-import qualified Data.Map as Map
-import System.Environment
+import           Control.Arrow      ((&&&))
+import           Data.Char          (toLower)
+import           Data.List
+import qualified Data.Map           as Map
+import           Data.Maybe         (fromMaybe)
+import           System.Environment
 
 -- ######### Definition type
 
@@ -16,10 +18,10 @@ type Occurrences = [(Char, Int)]
 -- ######### Production code
 
 wordOccurrences :: Word -> Occurrences
-wordOccurrences = map (\x -> ((head x), length x)) . group . sort . (map toLower)
+wordOccurrences = map ((&&&) head length) . group . sort . map toLower
 
 sentenceOccurrences :: Sentence -> Occurrences
-sentenceOccurrences = wordOccurrences . (intercalate "")
+sentenceOccurrences = wordOccurrences . intercalate ""
 
 combinations :: Occurrences -> [Occurrences]
 combinations =
@@ -30,12 +32,14 @@ combinations =
         subOccurrences (c, n) = [(c, i) | i <- [1..n]]
 
 substract :: Occurrences -> Occurrences -> Occurrences
-substract occ = foldl' update occ
-                where update :: Occurrences -> (Char, Int) -> Occurrences
-                      update [] _                       = []
-                      update (x@(cc, nn) : xs) e@(c, n) = case cc == c of
-                        True -> let ni = nn - n in if ni <= 0 then xs else (c, ni):xs
-                        _    -> x : update xs e
+substract =
+  foldl' update
+  where update :: Occurrences -> (Char, Int) -> Occurrences
+        update [] _                       = []
+        update (x@(cc, nn) : xs) e@(c, n) =
+          if cc == c
+          then let ni = nn - n in if ni <= 0 then xs else (c, ni):xs
+          else x : update xs e
 
 type DicoOcc = Map.Map Occurrences [Word]
 
@@ -46,16 +50,12 @@ dicoByOccurrences = foldl' add Map.empty
                        where occuKey :: Occurrences
                              occuKey = wordOccurrences word
                              iadd :: Eq a => [a] -> [a] -> [a]
-                             iadd ws (w:_) = if elem w ws then ws else (w:ws)
+                             iadd ws (w:_) = if w `elem` ws then ws else w:ws
 
 -- Returns all the anagrams of a given word.
 wordAnagrams :: Word -> DicoOcc -> [Word]
 wordAnagrams w d =
-  case (flip Map.lookup d . wordOccurrences) w of
-    Nothing -> []
-    Just x  -> x
-
--- ######### I/O
+  fromMaybe [] $ (flip Map.lookup d . wordOccurrences) w
 
 extractLines :: FilePath -> IO [String]
 extractLines filePath =
@@ -85,7 +85,7 @@ sentenceAnagrams s d =
         sentenceCompute (o:os) = case Map.lookup o d of
           Nothing        -> sentenceCompute os
           Just anagrams  -> [y:ys | y <- anagrams, ys <- sentenceCompute oss] ++ sentenceCompute os
-            where oss = map (flip substract o) os
+            where oss = map (`substract` o) os
 
 dictionaryFromFile :: FilePath -> IO DicoOcc
 dictionaryFromFile filepath =
