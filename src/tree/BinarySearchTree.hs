@@ -1,6 +1,6 @@
 module BinarySearchTree where
 
-import Data.List (foldl')
+import           Data.List (foldl')
 
 {--
 Given the following binary Tree data type, provide an implementation of all functions
@@ -22,16 +22,16 @@ leaf :: a -> Tree a
 leaf x = Node x Empty Empty
 
 pp :: Show a => Tree a -> IO ()
-pp = (mapM_ putStrLn) . treeIndent
+pp = mapM_ putStrLn . treeIndent
   where
     treeIndent Empty          = ["-- /-"]
     treeIndent (Node v lb rb) =
-      ["-- " ++ (show v)] ++
+      ["-- " ++ show v] ++
       map ("  |" ++) ls ++
       ("  `" ++ r) : map ("   " ++) rs
       where
-        (r:rs) = treeIndent $ rb
-        ls     = treeIndent $ lb
+        (r:rs) = treeIndent rb
+        ls     = treeIndent lb
 
 -- The size of the tree is taken to be the number n of internal nodes
 --(those with two children)
@@ -43,7 +43,7 @@ size (Node _ l r) = 1 + size l + size r
 -- (we need to be able to rebuild the tree from the list)
 toList :: Tree a -> [a]
 toList Empty        = []
-toList (Node x l r) = x : (toList l) ++ (toList r)
+toList (Node x l r) = x : toList l ++ toList r
 
 fromList :: Ord a => [a] -> Tree a
 fromList = foldl' insert Empty
@@ -126,21 +126,22 @@ isBSearchTree Empty = True
 isBSearchTree (Node x l r) =
   case [value l, value r] of
     [Nothing, Nothing] -> True
-    [Nothing, Just z]  -> and [x < z, isBSearchTree l, isBSearchTree r]
-    [Just y, Nothing]  -> and [y <= x, isBSearchTree l, isBSearchTree r]
-    [Just y, Just z]   -> and [y <= x, x < z, isBSearchTree l, isBSearchTree r]
+    [Nothing, Just z]  -> x < z  &&  isBSearchTree l && isBSearchTree r
+    [Just y, Nothing]  -> y <= x && isBSearchTree l && isBSearchTree r
+    [Just y, Just z]   -> y <= x && x < z && isBSearchTree l && isBSearchTree r
+
 
 deleteMax :: Tree a -> (Maybe a, Tree a)
 deleteMax Empty            = (Nothing, Empty)
 deleteMax (Node x _ Empty) = (Just x, Empty)
 deleteMax (Node x l r)     = let (y, t) = deleteMax r in
-                             (y, (Node x l t))
+                             (y, Node x l t)
 
 deleteMin :: Tree a -> (Maybe a, Tree a)
 deleteMin Empty            = (Nothing, Empty)
 deleteMin (Node x Empty _) = (Just x, Empty)
 deleteMin (Node x l r)     = let (y, t) = deleteMin l in
-                             (y, (Node x t r))
+                             (y, Node x t r)
 
 -- Remove an element from a tree.
 -- To remove a node, take the max element from the left tree and replace the node to be
