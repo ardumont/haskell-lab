@@ -2,61 +2,41 @@
 
 module Monad.ReaderMonadTryout where
 
--- Default Reader monad code
-
-import qualified Control.Monad.Reader as R
-
 -- ask :: Reader r a -> a
 -- asks :: (r -> a) -> Reader r a
 -- local :: (r -> b) -> Reader b a -> Reader r a
 -- runReader :: Reader r a -> r -> a
+
+newtype MReader r a = MReader { rrunReader :: r -> a }
+
+instance Monad (MReader r) where
+  return a = MReader $ const a
+  m >>= k  = MReader $ \r -> rrunReader (k (rrunReader m r)) r
+
+ask :: MReader a a
+ask = MReader id
+
+rasks :: (r -> a) -> MReader r a
+rasks = MReader
+
+local :: (r -> b) -> MReader b a -> MReader r a
+local f m = MReader $ rrunReader m . f
 
 data MyContext = MyContext
   { foo :: String
   , bar :: Int
   } deriving (Show)
 
-computation :: R.Reader MyContext (Maybe String)
-computation = do
-  n <- R.asks bar
-  x <- R.asks foo
+rcomputation :: MReader MyContext (Maybe String)
+rcomputation = do
+  n <- rasks bar
+  x <- rasks foo
   return $ if n > 0
            then Just x
            else Nothing
 
 ex1 :: Maybe String
-ex1 = R.runReader computation $ MyContext "hello" 1
+ex1 = rrunReader rcomputation $ MyContext "hello" 1
 
 ex2 :: Maybe String
-ex2 = R.runReader computation $ MyContext "haskell" 0
-
--- A simple implementation of the Reader monad
-
-newtype MReader r a = MReader { runReader :: r -> a }
-
-instance Monad (MReader r) where
-  return a = MReader $ const a
-  m >>= k  = MReader $ \r -> runReader (k (runReader m r)) r
-
-ask :: MReader a a
-ask = MReader id
-
-asks :: (r -> a) -> MReader r a
-asks = MReader
-
-local :: (r -> b) -> MReader b a -> MReader r a
-local f m = MReader $ runReader m . f
-
-computation' :: MReader MyContext (Maybe String)
-computation' = do
-  n <- asks bar
-  x <- asks foo
-  return $ if n > 0
-           then Just x
-           else Nothing
-
-ex1' :: Maybe String
-ex1' = runReader computation' $ MyContext "hello" 1
-
-ex2' :: Maybe String
-ex2' = runReader computation' $ MyContext "haskell" 0
+ex2 = rrunReader rcomputation $ MyContext "haskell" 0
