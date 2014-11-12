@@ -1,10 +1,10 @@
 module BSTTests where
 
-import BinarySearchTree
+import           BinarySearchTree
 
-import Test.HUnit
-import Test.Framework (defaultMain, testGroup)
-import Test.Framework.Providers.QuickCheck2 (testProperty)
+import           Test.Framework                       (defaultMain, testGroup)
+import           Test.Framework.Providers.QuickCheck2 (testProperty)
+import           Test.HUnit
 
 testLeaf1 :: Test
 testLeaf1 = leaf 1 ~=? t where t = Node 1 Empty Empty :: Tree Int
@@ -51,13 +51,13 @@ testFromListToList1 :: Test
 testFromListToList1 = True ~=? (fromList . toList) t1 == t1
 
 testFromListToList2 :: Test
-testFromListToList2 = False ~=? (fromList . toList) t1 == (leaf 1)
+testFromListToList2 = False ~=? (fromList . toList) t1 == leaf 1
 
 testFromListToList3 :: Test
 testFromListToList3 = True ~=? (fromList . toList) t2 == t2
 
 testFromListToList4 :: Test
-testFromListToList4 = False ~=? (fromList . toList) t2 == (leaf 1)
+testFromListToList4 = False ~=? (fromList . toList) t2 == leaf 1
 
 testFromListToLists :: Test
 testFromListToLists = TestList ["testFromListToList1" ~: testFromListToList1,
@@ -315,32 +315,30 @@ testsHUnit = TestList [testLeafs,
                        testRemoves]
 
 prop_insert_maintains_sbt_properties :: [Int] -> Int -> Bool
-prop_insert_maintains_sbt_properties xs e =
-  (isBSearchTree . flip insert e . fromList) xs == True
+prop_insert_maintains_sbt_properties xs e = (isBSearchTree . flip insert e . fromList) xs
 
 prop_insert_element_is_contained_in_tree :: [Int] -> Int -> Bool
-prop_insert_element_is_contained_in_tree xs e =
-  (contains . flip insert e . fromList) xs e == True
+prop_insert_element_is_contained_in_tree xs e = (contains . flip insert e . fromList) xs e
 
 prop_remove_then_no_longer_contained :: [Int] -> Int -> Bool
 prop_remove_then_no_longer_contained xs e =
-  and [contains t e, not $ contains (remove t e) e]
+  contains t e && not $ contains (remove t e) e
   where t = (flip insert e . fromList) xs
 
 prop_remove_min_then_still_sbt :: [Int] -> Bool
 prop_remove_min_then_still_sbt xs =
-  isBSearchTree t == True
+  isBSearchTree t
   where (_, t) = (deleteMin . fromList) xs
 
 prop_remove_max_then_still_sbt :: [Int] -> Bool
 prop_remove_max_then_still_sbt xs =
-  isBSearchTree t == True
+  isBSearchTree t
   where (_, t) = (deleteMax . fromList) xs
 
 -- deepCheck :: Testable prop => prop -> IO ()
 -- deepCheck p = quickCheckWith stdArgs { maxSuccess = 500} p
 prop_always_sbt  :: [Int] -> Bool
-prop_always_sbt xs = (isBSearchTree . fromList) xs == True
+prop_always_sbt = isBSearchTree . fromList
 
 testsQuick = [
   testGroup "Group of tests" [
