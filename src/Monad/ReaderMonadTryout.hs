@@ -1,6 +1,5 @@
 -- | Trying to understand by practicing on a small ReaderMonad sample
 
-
 module Monad.ReaderMonadTryout where
 
 -- Default Reader monad code
