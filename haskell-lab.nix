@@ -13,7 +13,8 @@ let
     testFrameworkQuickcheck2
     text
     digits
-    mtl;
+    mtl
+    hoogle;
 in cabal.mkDerivation (self: {
   pname = "haskell-lab";
   version = "0.0.0.0";
@@ -23,7 +24,7 @@ in cabal.mkDerivation (self: {
     HUnit parsec QuickCheck testFramework testFrameworkQuickcheck2 text digits mtl
   ];
   buildTools = [
-    cabalInstall
+    cabalInstall hoogle
   ];
   meta = {
     homepage = "https://github.com/ardumont/haskell-lab.git";
