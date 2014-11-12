@@ -322,7 +322,7 @@ prop_insert_element_is_contained_in_tree xs e = (contains . flip insert e . from
 
 prop_remove_then_no_longer_contained :: [Int] -> Int -> Bool
 prop_remove_then_no_longer_contained xs e =
-  contains t e && not $ contains (remove t e) e
+  contains t e && not (contains (remove t e) e)
   where t = (flip insert e . fromList) xs
 
 prop_remove_min_then_still_sbt :: [Int] -> Bool
