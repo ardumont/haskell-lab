@@ -16,7 +16,7 @@ install-ci:
 
 install-dev:
 # see ~/.nixpgs/config.nix - https://github.com/ardumont/dot-files/blob/master/.nixpkgs/config.nix
-	nix-env -iA nixos.pkgs.hsEnv
+	nix-env -i env-haskell
 
 update:
 	cabal update
