@@ -9,15 +9,15 @@ import           System.Environment
 
 -- ######### Definition type
 
-type Word = String
+type Word' = String
 
-type Sentence = [Word]
+type Sentence = [Word']
 
 type Occurrences = [(Char, Int)]
 
 -- ######### Production code
 
-wordOccurrences :: Word -> Occurrences
+wordOccurrences :: Word' -> Occurrences
 wordOccurrences = map ((&&&) head length) . group . sort . map toLower
 
 sentenceOccurrences :: Sentence -> Occurrences
@@ -41,7 +41,7 @@ substract =
           then let ni = nn - n in if ni <= 0 then xs else (c, ni):xs
           else x : update xs e
 
-type DicoOcc = Map.Map Occurrences [Word]
+type DicoOcc = Map.Map Occurrences [Word']
 
 dicoByOccurrences :: [String] -> DicoOcc
 dicoByOccurrences = foldl' add Map.empty
@@ -53,7 +53,7 @@ dicoByOccurrences = foldl' add Map.empty
                              iadd ws (w:_) = if w `elem` ws then ws else w:ws
 
 -- Returns all the anagrams of a given word.
-wordAnagrams :: Word -> DicoOcc -> [Word]
+wordAnagrams :: Word' -> DicoOcc -> [Word']
 wordAnagrams w d =
   fromMaybe [] $ (flip Map.lookup d . wordOccurrences) w
 

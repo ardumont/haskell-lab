@@ -1,8 +1,8 @@
 module AnagramTests where
 
-import Anagram hiding (main)
-import Test.HUnit
-import qualified Data.Map as Map
+import           Anagram    hiding (main)
+import qualified Data.Map   as Map
+import           Test.HUnit
 
 -- ######### Tests
 
@@ -74,7 +74,7 @@ testDicoByOccurrencess :: Test.HUnit.Test
 testDicoByOccurrencess = TestList ["testDicoByOccurrences1" ~: testDicoByOccurrences1,
                                    "testDicoByOccurrences2" ~: testDicoByOccurrences2]
 
-dicoOcc :: [(Occurrences, [Word])] -> DicoOcc
+dicoOcc :: [(Occurrences, [Word'])] -> DicoOcc
 dicoOcc l = Map.fromList l :: DicoOcc
 
 testWordAnagrams1 :: Test.HUnit.Test
