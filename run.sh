@@ -12,4 +12,4 @@ fi
 # Run in sandbox
 . $HOME/.profile
 
-nix-shell --pure haskell-lab.nix --command "$CMD"
+nix-shell --pure shell.nix --command "$CMD"

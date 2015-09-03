@@ -3,7 +3,7 @@
 SANDBOX=n
 
 env-sandbox:
-	nix-shell haskell-lab.nix
+	nix-shell shell.nix
 
 pull:
 	git pull --rebase --prune origin master
