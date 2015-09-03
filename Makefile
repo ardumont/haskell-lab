@@ -22,10 +22,11 @@ update:
 	cabal update
 
 to-nix:
-	cabal2nix haskell-lab.cabal --sha256 dummy-sha > default.nix
+	cabal2nix --shell . > shell.nix
+	nix-shell --command 'cabal configure'
 
 sandbox-init:
-	cabal sandbox init && cabal configure --enable-tests
+	cabal sandbox init
 
 sandbox-delete:
 	cabal sandbox delete

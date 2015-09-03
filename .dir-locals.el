@@ -1,2 +1,2 @@
-((haskell-mode . ((haskell-process-wrapper . ("nix-shell" "haskell-lab.nix" "--command"))
+((haskell-mode . ((haskell-process-wrapper . ("nix-shell" "shell.nix" "--command"))
                   (haskell-process-type . cabal-repl))))
