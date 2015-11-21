@@ -174,17 +174,18 @@ testSentenceAnagrams = TestList ["testSentenceAnagrams1" ~: testSentenceAnagrams
                                  "testSentenceAnagrams2" ~: testSentenceAnagrams2]
 
 -- Full tests
-tests :: Test.HUnit.Test
-tests = TestList [testWordOccurrencess,
-                  testSentenceOccurrencess,
-                  testCombinationss,
-                  testSubstracts,
-                  testDicoByOccurrencess,
-                  testWordAnagrams,
-                  testSentenceAnagrams]
+--tests :: Test.HUnit.Test
+tests :: [Test]
+tests = [testWordOccurrencess,
+         testSentenceOccurrencess,
+         testCombinationss,
+         testSubstracts,
+         testDicoByOccurrencess,
+         testWordAnagrams,
+         testSentenceAnagrams]
 
-main :: IO ()
-main = runTestTT tests >>= print
+runTests :: IO ()
+runTests = runTestTT (TestList tests) >>= print
 
 -- *Anagram> runTestTT tests
 -- Cases: 18  Tried: 18  Errors: 0  Failures: 0

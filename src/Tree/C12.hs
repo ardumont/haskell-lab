@@ -1,4 +1,4 @@
-module C12 where
+module Tree.C12 where
 
 data Tree = Leaf Int | Node Tree Tree
 

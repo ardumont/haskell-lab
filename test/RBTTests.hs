@@ -1,11 +1,11 @@
 module RBTTests where
 
-import RBT
-import Data.List (sort, nub)
-import Test.QuickCheck
-import Test.HUnit
-import Test.Framework (defaultMain, testGroup)
-import Test.Framework.Providers.QuickCheck2 (testProperty)
+import           Data.List                            (nub, sort)
+import           Test.Framework                       (defaultMain, testGroup)
+import           Test.Framework.Providers.QuickCheck2 (testProperty)
+import           Test.HUnit
+import           Test.QuickCheck
+import           Tree.RBT
 
 -- import Test.Framework.Options (TestOptions, TestOptions'(..))
 -- import Test.Framework.Runners.Options (RunnerOptions, RunnerOptions'(..))
@@ -99,13 +99,16 @@ testsQuick = [
      ]
   ]
 
-testsHUnit :: Test
-testsHUnit = TestList [testCountRBs,
-                       testNoRedReds,
-                       testPathss]
+testsHUnit :: [Test]
+testsHUnit = [testCountRBs
+             ,testNoRedReds
+             ,testPathss]
 
-main :: IO ()
-main = runTestTT testsHUnit >> defaultMain testsQuick
+tests :: [Test]
+tests = testsHUnit
+
+runTests :: IO ()
+runTests = runTestTT (TestList tests) >> defaultMain testsQuick
 
 -- tony@dagobah (1,06,) 13:43:47 ~/repo/perso/haskell-lab (master) $ make rbt-tests
 -- cd src/tree && runhaskell RBTTests

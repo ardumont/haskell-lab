@@ -1,4 +1,4 @@
-module BinarySearchTree where
+module Tree.BinarySearchTree where
 
 import           Data.List (foldl')
 

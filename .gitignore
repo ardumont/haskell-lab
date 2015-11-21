@@ -4,3 +4,4 @@
 /.cabal-sandbox/
 /dist/
 cabal.sandbox.config
+.stack-work/

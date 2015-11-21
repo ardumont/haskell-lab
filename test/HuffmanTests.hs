@@ -1,8 +1,8 @@
 module HuffmanTests where
 
-import Huffman
-import Test.HUnit
-import Data.List
+import           Data.List
+import           Huffman
+import           Test.HUnit
 
 testWeight1 :: Test.HUnit.Test
 testWeight1 = 2 ~=? weight (Leaf 'c' 2)
@@ -177,23 +177,23 @@ testQuickEncodeDecodes :: Test.HUnit.Test
 testQuickEncodeDecodes = TestList ["testQuickEncode1" ~: testQuickEncode1]
 
 -- Full tests
-tests :: Test.HUnit.Test
-tests = TestList [testWeights,
-                  testChars,
-                  testMakeCodeTrees,
-                  testTimess,
-                  testMakeOrderedLeafLists,
-                  testSingletons,
-                  testCombines,
-                  testCreateCodeTrees,
-                  testDecodes,
-                  testEncodes,
-                  testEncodeDecodes,
-                  testCodeBitss,
-                  testMergeCodeTabless,
-                  testConverts,
-                  testQuickEncodes,
-                  testQuickEncodeDecodes]
+tests :: [Test]
+tests = [testWeights,
+         testChars,
+         testMakeCodeTrees,
+         testTimess,
+         testMakeOrderedLeafLists,
+         testSingletons,
+         testCombines,
+         testCreateCodeTrees,
+         testDecodes,
+         testEncodes,
+         testEncodeDecodes,
+         testCodeBitss,
+         testMergeCodeTabless,
+         testConverts,
+         testQuickEncodes,
+         testQuickEncodeDecodes]
 
-main :: IO ()
-main = runTestTT tests >>= print
+runTests :: IO ()
+runTests = runTestTT (TestList tests) >>= print

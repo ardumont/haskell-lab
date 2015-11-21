@@ -51,20 +51,63 @@ cabal-version:       >=1.18
 library
   -- Modules exported by the library.
   exposed-modules:     LoadAndUpdateIni
+                     , Anagram
+                     , Huffman
+                     , Tree.BinarySearchTree
+                     , Tree.RBT
 
   -- Modules included in this library but not exported.
   -- other-modules:
 
   -- LANGUAGE extensions used by modules in this package.
-  other-extensions:    TypeFamilies, QuasiQuotes, MultiParamTypeClasses, TemplateHaskell, GADTs, OverloadedStrings, FlexibleContexts, FlexibleInstances, DeriveGeneric, EmptyDataDecls
+  other-extensions:    TypeFamilies
+                     , QuasiQuotes
+                     , MultiParamTypeClasses
+                     , TemplateHaskell
+                     , GADTs
+                     , OverloadedStrings
+                     , FlexibleContexts
+                     , FlexibleInstances
+                     , DeriveGeneric
+                     , EmptyDataDecls
 
   -- Other library packages from which modules are imported.
-  build-depends:       HUnit >=1.2 && <1.3
-                     , QuickCheck >=2.7
-                     , base >=4.7
+  build-depends:       base >=4.7
+                     , containers >=0.5
+                     , mtl >= 2.1.3.1
+                     , parsec
+                     , process >=1.2
+                     , text >=0.11
+                       -- , http-conduit >=2.0 && <2.1
+                       -- , http-types >=0.8 && <0.9
+                       -- , SHA >=1.6 && <1.7
+                       -- , persistent-sqlite >=1.3 && <1.4
+                       -- , lifted-base >=0.2 && <0.3
+                       -- , bytestring >=0.10 && <0.11
+                       -- , aeson >=0.7 && <0.8
+                       -- , authenticate-oauth >=1.5
+                       -- , time >=1.4 && <1.5
+                       -- , transformers >=0.3 && <0.4
+                       -- , persistent >=1.3 && <1.4
+                       -- , persistent-template >=1.3 && <1.4
+--                       , test-framework
+                       , digits
+
+  -- Directories containing source files.
+  hs-source-dirs:      src
+
+  -- Base language which the package is written in.
+  default-language:    Haskell2010
+
+executable haskell-lab
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base >=4.7
                      , containers >=0.5 && <0.6
                      , mtl >= 2.1.3.1
-                     , parsec >=3.1 && <3.2
+                     , parsec
                      , process >=1.2 && <1.3
                      , text >=0.11
                        -- , http-conduit >=2.0 && <2.1
@@ -79,12 +122,21 @@ library
                        -- , transformers >=0.3 && <0.4
                        -- , persistent >=1.3 && <1.4
                        -- , persistent-template >=1.3 && <1.4
-                       , test-framework >=0.8 && <0.9
-                       , test-framework-quickcheck2 >=0.3 && <0.4
+--                       , test-framework
                        , digits
-
-  -- Directories containing source files.
-  hs-source-dirs:      src
-
-  -- Base language which the package is written in.
   default-language:    Haskell2010
+
+test-suite haskell-lab-tests
+  type:                 exitcode-stdio-1.0
+  main-is:              Main.hs
+  hs-source-dirs:       test
+  build-depends:        HUnit >= 1.2
+                      , QuickCheck >= 2.7
+                      , test-framework
+                      , test-framework-quickcheck2
+                      , base
+                      , containers
+                      , parsec
+                      , haskell-lab
+  ghc-options:          -Werror -w -threaded
+  default-language:     Haskell2010

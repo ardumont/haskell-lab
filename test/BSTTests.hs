@@ -1,6 +1,6 @@
 module BSTTests where
 
-import           BinarySearchTree
+import           Tree.BinarySearchTree
 
 import           Test.Framework                       (defaultMain, testGroup)
 import           Test.Framework.Providers.QuickCheck2 (testProperty)
@@ -297,22 +297,22 @@ testRemoves = TestList["testRemove1" ~: testRemove1,
                        "testRemove3" ~: testRemove3,
                        "testRemove4" ~: testRemove4]
 
-testsHUnit :: Test
-testsHUnit = TestList [testLeafs,
-                       testSizes,
-                       testToLists,
-                       testFromListToLists,
-                       testToSortedLists,
-                       testGreatValues,
-                       testMirrors,
-                       testContainss,
-                       testRightSons,
-                       testInserts,
-                       testValues,
-                       testIsBinarySearchTrees,
-                       testDeleteMaxs,
-                       testDeleteMins,
-                       testRemoves]
+testsHUnit :: [Test]
+testsHUnit = [testLeafs,
+              testSizes,
+              testToLists,
+              testFromListToLists,
+              testToSortedLists,
+              testGreatValues,
+              testMirrors,
+              testContainss,
+              testRightSons,
+              testInserts,
+              testValues,
+              testIsBinarySearchTrees,
+              testDeleteMaxs,
+              testDeleteMins,
+              testRemoves]
 
 prop_insert_maintains_sbt_properties :: [Int] -> Int -> Bool
 prop_insert_maintains_sbt_properties xs e = (isBSearchTree . flip insert e . fromList) xs
@@ -351,8 +351,11 @@ testsQuick = [
      ]
   ]
 
-main :: IO ()
-main = runTestTT testsHUnit >> defaultMain testsQuick >> return ()
+tests :: [Test]
+tests = testsHUnit
+
+runTests :: IO ()
+runTests = runTestTT (TestList tests) >> defaultMain testsQuick >> return ()
 
 -- tony@dagobah (0,74,) 13:24:22 ~/repo/perso/haskell-lab (master) $ make bst-tests
 -- cd src/tree && runhaskell BSTTests

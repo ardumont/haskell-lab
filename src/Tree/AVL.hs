@@ -1,9 +1,9 @@
-module AVL where
+module Tree.AVL where
 
 -- import Test.QuickCheck
 -- import Test.QuickCheck.All
 
-import BinarySearchTree as BST
+import           Tree.BinarySearchTree as BST
 
 -- Some examples of structure in code
 t3 :: Tree Int

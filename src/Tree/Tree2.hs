@@ -1,4 +1,4 @@
-module Tree2 where
+module Tree.Tree2 where
 
 data Tree = Leaf Int | Node Tree Tree deriving Show
 

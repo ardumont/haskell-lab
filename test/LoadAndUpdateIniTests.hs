@@ -1,9 +1,9 @@
 module LoadAndUpdateIniTests where
 
-import LoadAndUpdateIni hiding (main)
-import Test.HUnit
-import Text.ParserCombinators.Parsec
-import qualified Data.Map as Map
+import qualified Data.Map                      as Map
+import           LoadAndUpdateIni              hiding (main)
+import           Test.HUnit
+import           Text.ParserCombinators.Parsec
 
 parseRightExtract :: Either t t1 -> t1
 parseRightExtract (Right v) = v
@@ -186,19 +186,19 @@ wtestUpdateNewExtensions :: Test.HUnit.Test
 wtestUpdateNewExtensions = TestList ["testUpdateNewExtension1" ~: testUpdateNewExtension1]
 
 -- Full tests
-tests :: Test.HUnit.Test
-tests = TestList [testParseTests
-                 ,testParseComments
-                 ,testParseEols
-                 ,testParseItems
-                 ,testParseSections
-                 ,testParseFileContents
-                 ,testMapifys
-                 ,testStringifys
-                 ,testFromStrings
-                 ,testCountPropertiess
-                 ,testSetProperties
-                 ,wtestUpdateNewExtensions]
+tests :: [Test]
+tests = [testParseTests
+        ,testParseComments
+        ,testParseEols
+        ,testParseItems
+        ,testParseSections
+        ,testParseFileContents
+        ,testMapifys
+        ,testStringifys
+        ,testFromStrings
+        ,testCountPropertiess
+        ,testSetProperties
+        ,wtestUpdateNewExtensions]
 
-main :: IO ()
-main = runTestTT tests >>= print
+runTests :: IO ()
+runTests = runTestTT (TestList tests) >>= print

@@ -1,9 +1,9 @@
 module LoadAndUpdateIni where
 
-import qualified Data.Map as Map
-import Text.ParserCombinators.Parsec
-import Data.Maybe
-import System.Environment
+import qualified Data.Map                      as Map
+import           Data.Maybe
+import           System.Environment
+import           Text.ParserCombinators.Parsec
 
 ---------------- Using Parsec - http://www.serpentine.com/blog/2007/01/31/parsing-a-simple-config-file-in-haskell/
 

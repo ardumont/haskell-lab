@@ -1,6 +1,6 @@
-module RBT where
+module Tree.RBT where
 
-import Data.List (foldl')
+import           Data.List (foldl')
 
 data Color  = R | B deriving (Eq, Show)
 data Tree a = Empty | Node Color (Tree a) a (Tree a) deriving (Eq, Show)
@@ -27,16 +27,16 @@ value Empty          = Nothing
 value (Node _ _ v _) = Just v
 
 pp :: Show a => Tree a -> IO ()
-pp = (mapM_ putStrLn) . treeIndent
+pp = mapM_ putStrLn . treeIndent
   where
     treeIndent Empty          = ["-- /-"]
     treeIndent (Node c lb v rb) =
-      ["--" ++ (show c) ++ " " ++ (show v)] ++
+      ["--" ++ show c ++ ' ':show v] ++
       map ("  |" ++) ls ++
       ("  `" ++ r) : map ("   " ++) rs
       where
-        (r:rs) = treeIndent $ rb
-        ls     = treeIndent $ lb
+        (r:rs) = treeIndent rb
+        ls     = treeIndent lb
 
 makeLeaf :: Color -> a -> Tree a
 makeLeaf c v = Node c Empty v Empty
@@ -45,7 +45,7 @@ makeLeft :: Color -> a -> Tree a -> Tree a
 makeLeft c v l = Node c l v Empty
 
 makeRight :: Color -> a -> Tree a -> Tree a
-makeRight c v r = Node c Empty v r
+makeRight c = Node c Empty
 
 
 -- *RBT> rbt2
